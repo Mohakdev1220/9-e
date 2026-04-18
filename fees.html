@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Structure 2026-27 | St. Paul Indore</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --school-red: #f44336;
+            --school-yellow: #ffeb3b;
+            --school-dark: #b71c1c;
+            --money-green: #2e7d32;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid var(--school-red);
+        }
+
+        .logo { height: 50px; }
+
+        .home-btn {
+            text-decoration: none;
+            color: white;
+            background: var(--school-red);
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 5px;
+            transition: 0.3s;
+            border: 2px solid var(--school-dark);
+        }
+
+        .home-btn:hover { background: var(--school-yellow); color: var(--school-dark); }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .fee-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            background: var(--school-red);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-header h2 { margin: 0; font-size: 1.5rem; }
+
+        /* General Fees List */
+        .one-time-fees {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            background: #fffde7;
+        }
+
+        .fee-item {
+            padding: 15px;
+            border: 1px solid #ffe082;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .fee-item b { display: block; font-size: 1.2rem; color: var(--school-dark); }
+        .fee-item span { font-size: 0.8rem; color: #666; }
+
+        /* Table Style */
+        .table-wrapper { overflow-x: auto; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; background: #f5f5f5; border-bottom: 2px solid #ddd; font-size: 0.9rem; }
+        td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        
+        .total-col { font-weight: 700; color: var(--money-green); }
+
+        /* Deadlines */
+        .deadlines {
+            padding: 20px;
+            background: #f1f8e9;
+            border-left: 8px solid var(--money-green);
+        }
+
+        .deadline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .date-box {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #c8e6c9;
+            font-size: 0.85rem;
+        }
+
+        .penalty-warning {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            text-align: center;
+            border: 1px solid #ffcdd2;
+        }
+
+        .footer-disclaimer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 20px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="top-bar">
+    <img src="IX.png" alt="IX" class="logo">
+    <a href="index.html" class="home-btn">HOME PAGE</a>
+    <img src="logo.png" alt="Logo" class="logo">
+</nav>
+
+<div class="container">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: var(--school-dark); margin: 0;">FEE STRUCTURE 2026-2027</h1>
+        <p>St. Paul Higher Secondary School, Indore</p>
+    </div>
+
+    <div class="fee-card">
+        <div class="card-header"><h2>One-Time & Admission Fees</h2></div>
+        <div class="one-time-fees">
+            <div class="fee-item">
+                <span>Registration Fees</span>
+                <b>₹500.00</b>
+                <small>(Includes Prospectus)</small>
+            </div>
+            <div class="fee-item">
+                <span>Admission / Re-admission</span>
+                <b>₹6000.00</b>
+            </div>
+            <div class="fee-item">
+                <span>Caution Money</span>
+                <b>₹2000.00</b>
+                <small>(Refundable @ T.C.)</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="fee-card">
+        <div class="card-header"><h2>Class-wise School Fees</h2></div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Per Installment</th>
+                        <th>Total Annual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Nursery</td><td>₹16,775.00</td><td class="total-col">₹67,100.00</td></tr>
+                    <tr><td>KG-I & KG-II</td><td>₹16,935.00</td><td class="total-col">₹67,740.00</td></tr>
+                    <tr><td>I - V</td><td>₹17,525.00</td><td class="total-col">₹70,100.00</td></tr>
+                    <tr style="background: #fff9c4;"><td><b>IX - X (Our Class)</b></td><td><b>₹18,650.00</b></td><td class="total-col"><b>₹74,600.00</b></td></tr>
+                    <tr><td>XI - XII (Standard)</td><td>₹19,125.00</td><td class="total-col">₹76,500.00</td></tr>
+                    <tr><td>Science / Commerce / Hum (with IT/AI)</td><td>₹19,400.00</td><td class="total-col">₹77,600.00</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="fee-card deadlines">
+        <h3 style="margin-top: 0; color: var(--money-green);">📅 Payment Schedule (4 Installments)</h3>
+        <div class="deadline-grid">
+            <div class="date-box"><b>1st:</b> On/Before 10 April 2026</div>
+            <div class="date-box"><b>2nd:</b> On/Before 10 Aug 2026</div>
+            <div class="date-box"><b>3rd:</b> On/Before 10 Nov 2026</div>
+            <div class="date-box"><b>4th:</b> On/Before 10 Jan 2027</div>
+        </div>
+        <p style="font-size: 0.85rem; margin-top: 15px;">Note: New admissions must pay Admission fees + Caution money + 2 Installments at the time of admission.</p>
+    </div>
+
+    <div class="penalty-warning">
+        ⚠️ <b>Late Payment Penalty:</b> ₹5/- per day per installment (Max ₹300/- per installment).<br>
+        Payment through Demand Draft in favour of: <b>ST PAUL HR. SEC. SCHOOL, INDORE</b>.
+    </div>
+
+    <div class="footer-disclaimer">
+        📌 check diary for true results, this page may contain wrong info.
+    </div>
+</div>
+
+</body>
+</html>
