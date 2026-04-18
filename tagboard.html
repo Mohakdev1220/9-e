@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag Board Activities | St. Paul Indore</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --school-red: #f44336;
+            --school-yellow: #ffeb3b;
+            --school-dark: #b71c1c;
+            --text-main: #333;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Top Navigation Bar */
+        .top-bar {
+            background: white;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid var(--school-red);
+        }
+
+        .logo { height: 50px; }
+
+        .home-btn {
+            text-decoration: none;
+            color: white;
+            background: var(--school-red);
+            font-weight: 600;
+            padding: 8px 25px;
+            border-radius: 5px;
+            transition: 0.3s;
+            border: 2px solid var(--school-dark);
+        }
+
+        .home-btn:hover {
+            background: var(--school-yellow);
+            color: var(--school-dark);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-bottom: 5px solid var(--school-yellow);
+        }
+
+        .header-section h1 {
+            color: var(--school-dark);
+            font-size: 2.2rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .header-section p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        /* Activities Table */
+        .table-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--school-red);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95rem;
+        }
+
+        .date-col {
+            font-weight: 700;
+            color: var(--school-dark);
+            width: 150px;
+            background: #fffdf0;
+        }
+
+        .activity-name {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        tr:nth-child(even) { background: #fafafa; }
+        tr:hover { background: #fff9c4; }
+
+        /* Status Badge */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            background: #eee;
+            color: #666;
+        }
+
+        /* Footer Note */
+        .disclaimer-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            color: #e65100;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 600px) {
+            .header-section h1 { font-size: 1.5rem; }
+            .date-col { width: 110px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="top-bar">
+        <img src="IX.png" alt="IX-E" class="logo">
+        <a href="index.html" class="home-btn">HOME PAGE</a>
+        <img src="logo.png" alt="St. Paul Logo" class="logo">
+    </nav>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>Tag Board Activities</h1>
+            <p>St. Paul H.S. School, Indore | Session 2026-27</p>
+            <span class="badge" style="background: var(--school-dark); color: white;">STANDARD VI TO X</span>
+        </div>
+
+        <div class="table-card">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Activity Topic</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="date-col">01.04.2026</td><td class="activity-name">Welcome Board by all Teachers</td></tr>
+                        <tr><td class="date-col">06.04.2026</td><td class="activity-name">Class Etiquettes + Rules</td></tr>
+                        <tr><td class="date-col">13.04.2026</td><td class="activity-name">Health and Nutrition</td></tr>
+                        <tr><td class="date-col">21.04.2026</td><td class="activity-name">Eco Friendly habits</td></tr>
+                        <tr><td class="date-col">27.04.2026</td><td class="activity-name">Medicinal Plants</td></tr>
+                        <tr><td class="date-col">15.06.2026</td><td class="activity-name">My Vacation with Grandparents and Relatives</td></tr>
+                        <tr><td class="date-col">22.06.2026</td><td class="activity-name">My Fitness - Yoga Day</td></tr>
+                        <tr><td class="date-col">29.06.2026</td><td class="activity-name">Van Mahotsava - Breath Fresh</td></tr>
+                        <tr><td class="date-col">06.07.2026</td><td class="activity-name">Ways to Keep your spirits up - (Stress Management)</td></tr>
+                        <tr><td class="date-col">20.07.2026</td><td class="activity-name">Moral stories</td></tr>
+                        <tr><td class="date-col">27.07.2026</td><td class="activity-name">Precaution during Monsoon</td></tr>
+                        <tr><td class="date-col">03.08.2026</td><td class="activity-name">Green and Clean Future (Renewable Energy)</td></tr>
+                        <tr><td class="date-col">10.08.2026</td><td class="activity-name">My India My Pride - (Independence Day)</td></tr>
+                        <tr><td class="date-col">17.08.2026</td><td class="activity-name">Celebrate together (Eid-e-Milad, Rakhi and Janmashtami)</td></tr>
+                        <tr><td class="date-col">24.08.2026</td><td class="activity-name">Honouring our sports legends (National Sports Day)</td></tr>
+                        <tr><td class="date-col">31.08.2026</td><td class="activity-name">Sculpturer's of tomorrow - Teachers' day</td></tr>
+                        <tr><td class="date-col">07.09.2026</td><td class="activity-name">My Friend Ganesha - (Teachings of Ganesha)</td></tr>
+                        <tr><td class="date-col">28.09.2026</td><td class="activity-name">Swachh Bharat (Cleanliness Drive)</td></tr>
+                        <tr><td class="date-col">05.10.2026</td><td class="activity-name">Our Army, Navy and Air Force (Air force Day)</td></tr>
+                        <tr><td class="date-col">12.10.2026</td><td class="activity-name">Good over Evil (Dussera)</td></tr>
+                        <tr><td class="date-col">22.10.2026</td><td class="activity-name">National and International Awards and Awardees (UN Day) / Discovery of India</td></tr>
+                        <tr><td class="date-col">27.10.2026</td><td class="activity-name">Discovery of India </td></tr>
+                        <tr><td class="date-col">02.11.2026</td><td class="activity-name">Light up with Good values (Diwali)</td></tr>
+                        <tr><td class="date-col">12.11.2026</td><td class="activity-name"> Madhya Pradesh Foundation day </td></tr>
+                        <tr><td class="date-col">16.11.2026</td><td class="activity-name"> A saint for Humanity (Gurunanak Jayanthi) </td></tr>
+                        <tr><td class="date-col">25.11.2026</td><td class="activity-name"> Constitution day </td></tr>
+                        <tr><td class="date-col">07.12.2026</td><td class="activity-name">Amazing Facts </td></tr>
+                        <tr><td class="date-col">14.12.2026</td><td class="activity-name"> Christmas - A time for Love and Care </td></tr>
+                        <tr><td class="date-col">21.12.2026</td><td class="activity-name"> Geometrical Shapes </td></tr>
+                        <tr><td class="date-col">28.12.2026</td><td class="activity-name"> World is a Global Village </td></tr>
+                        <tr><td class="date-col">05.01.2027</td><td class="activity-name"> New year Resolutions </td></tr>
+                        <tr><td class="date-col">11.01.2027</td><td class="activity-name">Motivational quotes </td></tr>
+<tr><td class="date-col">11.01.2027</td><td class="activity-name">flights of ambitons (sankranti) </td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="disclaimer-box">
+            ⚠️ <b>Check diary for true results</b>, this page may contain wrong info.
+        </div>
+    </div>
+
+    <footer>
+        © 2026 St. Paul Higher Secondary School, Indore | Managed by Mohak Choubey
+    </footer>
+</body>
+</html>
