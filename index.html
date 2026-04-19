@@ -184,10 +184,55 @@
         @media (max-width: 768px) {
             .footer-content { grid-template-columns: 1fr; }
             .hero h1 { font-size: 2.5rem; }
-        }
+        } 
+        /* Audio Floating Button */
+.audio-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--google-blue);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: inherit;
+    font-weight: 500;
+    z-index: 2000;
+    transition: all 0.3s ease;
+}
+
+.audio-btn:hover {
+    transform: scale(1.08);
+    background: #3367d6;
+}
+
+/* Audio Playing Animation */
+.playing {
+    animation: pulse-blue 1.5s infinite;
+    background: var(--google-green) !important;
+}
+
+@keyframes pulse-blue {
+    0% { box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(52, 168, 83, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(52, 168, 83, 0); }
+}
+
+.audio-icon { font-size: 1.3rem; }
     </style>
 </head>
-<body>
+<body> 
+    <button class="audio-btn" id="audioControl" onclick="toggleAudio()">
+    <span class="audio-icon" id="speakerIcon">🔊</span> 
+    <span id="btnText">Listen Intro</span>
+</button>
+
+<audio id="introSpeech" src="about.mp3"></audio>
 
     <header>
         <div style="font-weight: 500; font-size: 1.1rem;">
@@ -273,7 +318,34 @@
                 let title = cards[i].innerText.toLowerCase();
                 cards[i].style.display = title.includes(input) ? "" : "none";
             }
-        }
+
+            const audio = document.getElementById('introSpeech');
+const btn = document.getElementById('audioControl');
+const icon = document.getElementById('speakerIcon');
+const txt = document.getElementById('btnText');
+
+function toggleAudio() {
+    if (audio.paused) {
+        audio.play();
+        btn.classList.add('playing');
+        icon.innerText = "⏸️";
+        txt.innerText = "Playing...";
+    } else {
+        audio.pause();
+        stopStyling();
+    }
+}
+
+// Jab audio khud khatam ho jaye
+audio.onended = function() {
+    stopStyling();
+};
+
+function stopStyling() {
+    btn.classList.remove('playing');
+    icon.innerText = "🔊";
+    txt.innerText = "Listen Intro";
+}
     </script>
 </body>
 </html>
