@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Prizes | St. Paul IX</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --school-red: #f44336;
+            --gold: #FFD700;
+            --silver: #C0C0C0;
+            --bronze: #CD7F32;
+            --dark-blue: #1a237e;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fdfdfd;
+            margin: 0;
+            color: #333;
+        }
+
+        .navbar {
+            background: white;
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--gold);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { height: 40px; }
+        .btn-home {
+            text-decoration: none;
+            color: white;
+            background: var(--school-red);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        .hero-section {
+            text-align: center;
+            background: linear-gradient(135deg, var(--dark-blue), #0d47a1);
+            color: white;
+            padding: 50px 20px;
+            border-radius: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .hero-section h1 { font-size: 2.5rem; margin: 0; letter-spacing: 2px; }
+        .hero-section p { opacity: 0.9; font-weight: 300; }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 40px 0 25px;
+            color: var(--dark-blue);
+        }
+
+        .section-title hr { flex: 1; border: 1px solid #ddd; }
+
+        /* Grid for Team Shields */
+        .prize-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .prize-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+
+        .prize-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.15);
+        }
+
+        .number-circle {
+            background: var(--gold);
+            color: var(--dark-blue);
+            min-width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .prize-info h3 { margin: 0; font-size: 1rem; color: #b71c1c; text-transform: uppercase; }
+        .prize-info p { margin: 5px 0 0; font-size: 0.9rem; color: #666; }
+
+        /* Individual Prizes Styling */
+        .individual-list {
+            background: #fff9c4;
+            padding: 30px;
+            border-radius: 20px;
+            border-left: 10px solid var(--gold);
+        }
+
+        .individual-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .individual-item span { color: var(--school-red); font-size: 1.2rem; }
+
+        @media (max-width: 600px) {
+            .hero-section h1 { font-size: 1.8rem; }
+            .prize-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <img src="logo.png" alt="St. Paul" class="logo">
+        <a href="index.html" class="btn-home">BACK TO HOME PAGE</a>
+   <img src="IX.png" alt="IX LOGO" class="logo">
+    </nav>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1>SPORTS PRIZES</h1>
+            <p>Celebrating Excellence, Teamwork, and Spirit</p>
+        </div>
+
+        <div class="section-title">
+            <h3>ROLLING SHIELDS & CUPS</h3>
+            <hr>
+        </div>
+
+        <div class="prize-grid">
+            <div class="prize-card"><div class="number-circle">1</div><div class="prize-info"><h3>ST. PAUL SPORTS SHIELD</h3><p>To the House that scores highest points in sports events.</p></div></div>
+            <div class="prize-card"><div class="number-circle">2</div><div class="prize-info"><h3>ST. PAUL GAMES SHIELD</h3><p>To the House that scores highest points in games events.</p></div></div>
+            <div class="prize-card"><div class="number-circle">3</div><div class="prize-info"><h3>KORDE SHIELD</h3><p>To the Best House in sports and games combined.</p></div></div>
+            <div class="prize-card"><div class="number-circle">4</div><div class="prize-info"><h3>SHAILENDRA SINGH TOMAR SHIELD</h3><p>Champion Team in Cricket.</p></div></div>
+            <div class="prize-card"><div class="number-circle">5</div><div class="prize-info"><h3>BALJEET SINGH MEMORIAL SHIELDS</h3><p>Champion Team in Volley Ball and Tug-of-war.</p></div></div>
+            <div class="prize-card"><div class="number-circle">6</div><div class="prize-info"><h3>JASPAL SINGH MEMORIAL SHIELDS</h3><p>Best House (Inters & Juniors) in Games and Sports.</p></div></div>
+            <div class="prize-card"><div class="number-circle">7</div><div class="prize-info"><h3>SAMEER BISHT MEMORIAL SHIELD</h3><p>Senior Football Champion Team.</p></div></div>
+            <div class="prize-card"><div class="number-circle">8</div><div class="prize-info"><h3>CHI. P.B. ANOOP MEMORIAL SHIELD</h3><p>Junior Football Champion Team.</p></div></div>
+            <div class="prize-card"><div class="number-circle">9</div><div class="prize-info"><h3>MADAM NORONHA TROPHY</h3><p>Best House of the session.</p></div></div>
+            <div class="prize-card"><div class="number-circle">10</div><div class="prize-info"><h3>PRIMARY SHIELDS</h3><p>Winners & Runner-up in Cricket, Basketball & Football.</p></div></div>
+        </div>
+
+        <div class="section-title">
+            <h3>INDIVIDUAL AWARDS</h3>
+            <hr>
+        </div>
+
+        <div class="individual-list">
+            <div class="individual-item"><span>🏆</span><p><b>Outstanding Players' Award:</b> Special mementoes and Certificates for students with outstanding sports performance.</p></div>
+            <div class="individual-item"><span>🥇</span><p><b>Medals and Certificates:</b> To students who stand first, second and third in all sports events.</p></div>
+            <div class="individual-item"><span>🌟</span><p><b>National Level:</b> Winners at National level get a Special Award.</p></div>
+            <div class="individual-item"><span>🤝</span><p><b>P.T.A. Prizes:</b> To outstanding students who played at the National Level.</p></div>
+            <div class="individual-item"><span>💰</span><p><b>Dinesh Shahra Sports Awards:</b> Cash Awards to Best Sports Persons in Primary & Secondary Schools.</p></div>
+        </div>
+    </div>
+
+</body>
+</html>
