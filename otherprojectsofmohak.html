@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects | Mohak Dev</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-bg: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-orange: #fb923c;
+            --text-main: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            border: 1px solid var(--accent-blue);
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            background: var(--accent-blue);
+            color: var(--primary-bg);
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 90%;
+            padding: 40px 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-blue);
+        }
+
+        .project-card h2 {
+            font-size: 1.8rem;
+            margin-top: 0;
+            color: var(--accent-blue);
+        }
+
+        .project-card p {
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .visit-btn {
+            text-decoration: none;
+            background: var(--accent-blue);
+            color: var(--primary-bg);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .visit-btn:hover {
+            filter: brightness(1.2);
+            letter-spacing: 1px;
+        }
+
+        /* Unique Border Colors for each card */
+        .card-toolify { border-top: 4px solid var(--accent-green); }
+        .card-portal { border-top: 4px solid var(--accent-blue); }
+        .card-facts { border-top: 4px solid var(--accent-orange); }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div style="font-weight: 700; font-size: 1.2rem;">MOHAK <span style="color: var(--accent-blue);">DEV</span></div>
+        <a href="index.html" class="btn-back">← Back to IX-E website </a>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>MY OTHER WEBSITES</h1>
+            <p style="color: #64748b; margin-top: 10px;">Explore the tools and projects I've built from scratch.</p>
+        </div>
+
+        <div class="project-grid">
+            
+            <div class="project-card card-toolify">
+                <div>
+                    <h2>Toolify</h2>
+                    <p>Mera ultimate utility hub! Isme maine clocks, calculators, alarms aur daily use ke small tools ko ek hi platform par integrate kiya hai. Clean UI aur functional programming ka perfect combo.</p>
+                </div>
+                <a href="https://mohakdev1220.github.io/toolify" target="_blank" class="visit-btn">Launch Toolify</a>
+            </div>
+
+            <div class="project-card card-portal">
+                <div>
+                    <h2>ChromePortal</h2>
+                    <p>Web browsing ko asaan banane ke liye ek custom dashboard. Isme important links aur useful widgets hain jo work-flow ko fast kar dete hain. Productivity ke liye best portal hai.</p>
+                </div>
+                <a href="https://mohakdev1220.github.io/chromeportal" target="_blank" class="visit-btn">Open Portal</a>
+            </div>
+
+            <div class="project-card card-facts">
+                <div>
+                    <h2>Facts</h2>
+                    <p>Duniya bhar ki interesting aur anjan baaton ka collection. Is website ko maine data rendering aur clean layouts ko practice karne ke liye banaya hai, jaha informative content milta hai.</p>
+                </div>
+                <a href="https://mohakdev1220.github.io/facts" target="_blank" class="visit-btn">Explore Facts</a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
