@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prayers Dashboard | St. Paul</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --school-red: #f44336;
+            --school-yellow: #ffeb3b;
+            --school-dark: #b71c1c;
+            --glass-white: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            color: #333;
+        }
+
+        .navbar {
+            background: var(--glass-white);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid var(--school-yellow);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .logo-group { display: flex; align-items: center; gap: 15px; }
+        .logo { height: 45px; }
+
+        .btn-home {
+            text-decoration: none;
+            color: white;
+            background: var(--school-red);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 2px solid var(--school-yellow);
+            transition: 0.3s;
+        }
+
+        .btn-home:hover { background: var(--school-yellow); color: var(--school-dark); }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .category-card {
+            background: white;
+            padding: 25px 15px;
+            text-align: center;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 1px solid #eee;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--school-red);
+            box-shadow: 0 15px 30px rgba(244, 67, 54, 0.1);
+        }
+
+        .category-card.active {
+            background: var(--school-red);
+            color: white;
+            border-color: var(--school-yellow);
+        }
+
+        .category-card .icon { font-size: 2.2rem; margin-bottom: 8px; display: block; }
+
+        .content-section {
+            display: none;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .content-section.active { display: block; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .prayer-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 6px solid var(--school-red);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .prayer-box h3 { margin-top: 0; color: var(--school-dark); border-bottom: 1px solid #f1f1f1; padding-bottom: 10px; text-transform: uppercase; font-size: 1.1rem; }
+        
+        .lyrics-area { 
+            white-space: pre-line; 
+            color: #444; 
+            line-height: 1.8; 
+            font-style: italic; 
+            background: #fafafa;
+            padding: 18px;
+            border-radius: 8px;
+        }
+
+        .hymn-header {
+            text-align: center;
+            color: var(--school-red);
+            margin: 40px 0 20px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            .dashboard-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-group"><img src="IX.png" alt="IX" class="logo"></div>
+        <a href="index.html" class="btn-home">back to HOME PAGE</a> 
+        <img src="logo.png" alt="St. Paul" class="logo">
+    </nav>
+
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="color: var(--school-dark); text-transform: uppercase; margin: 0;">Prayer Selection</h1>
+            <p style="color: #666;">Choose a category to view the lyrics</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="category-card active" onclick="toggleCategory('school', this)">
+                <span class="icon">🙏</span>
+                <h4>School Prayers</h4>
+            </div>
+            <div class="category-card" onclick="toggleCategory('hymns', this)">
+                <span class="icon">🎵</span>
+                <h4>Hymns & Bhajans</h4>
+            </div>
+            <div class="category-card" onclick="toggleCategory('anthem', this)">
+                <span class="icon">🏫</span>
+                <h4>School Anthem</h4>
+            </div>
+            <div class="category-card" onclick="toggleCategory('national', this)">
+                <span class="icon">🇮🇳</span>
+                <h4>National & Pledge</h4>
+            </div>
+        </div>
+
+        <div id="school" class="content-section active">
+            <div class="prayer-box">
+                <h3>Monday & Thursday</h3>
+                <div class="lyrics-area">O My God, fill the hearts of Thy faithful and enkindle in them the fire of Thy Love.
+
+                Eternal God, Creator of all - I firmly believe that I am now in Thy presence. I adore Thy Divine Majesty and I ask of Thee to enlighten my mind - that I may know Thee more clearly - and to move my heart - that I may love Thee above all things - and my neighbour for Thy sake.
+
+                Help me, that I may never in my thoughts, words or deeds offend Thy holy law.</div>
+            </div>
+
+            <div class="prayer-box">
+                <h3>Tuesday & Friday</h3>
+                <div class="lyrics-area">O my God - at the beginning of this day - I turn to You my Lord and Father - Who looks upon me lovingly as Your child. To You I commit myself and all that is mine that You may protect me from all dangers strengthen me against temptation and keep me away from all evils. Grant me to desire always what is most acceptable to You that Your Will may be mine that my will be conformed to Yours. You alone can help me, deliver me and save me.
+
+                Accept the offering of all my thoughts, words and deeds. Grant that all my activities may be directed towards You.</div>
+            </div>
+
+            <div class="prayer-box">
+                <h3>Wednesday & Saturday</h3>
+                <div class="lyrics-area">O God you are the truth and the origin of all knowledge bless our studies - which we consecrate to you. Enlighten our minds, strengthen our memories - direct our wills - towards what is right. Grant us to seek the truth always and make us truly wise.
+
+                Angel of God, My guardian dear, to whom His love commits me here, ever this day be at my side, to watch and guard, to rule and guide.</div>
+            </div>
+
+            <div class="prayer-box">
+                <h3>Daily Short Prayers</h3>
+                <div class="lyrics-area"><b>Before Each Period:</b>
+                Oh! My God bless us and enlighten us.
+
+                <b>After Each Period:</b>
+                Oh! My God we thank you for enlightening us.
+
+                <b>Before Class:</b>
+                O my God - I offer you today. My work - my lessons and my play. My heart, dear God - I give you. Protect it and keep it true.
+
+                <b>After Class:</b>
+                We give You thanks / Almighty God/ for all the benefits/You have bestowed upon us / We thank You very specially / for all the new things / we have learnt today / Grant that we may use them / for Your greater glory.</div>
+            </div>
+
+            <div class="prayer-box">
+                <h3>Special Prayers</h3>
+                <div class="lyrics-area"><b>For Our Benefactors:</b>
+                Reward with eternal life, O Lord, All those who do good to us for Thy name sake. Amen.
+
+                <b>For the Sick:</b>
+                Lord heavenly Father, [Name] is ailing and suffering from [Illness]. We ask You, Lord, in a very fervent manner to help him/her to bear this suffering patiently and in a spirit of fortitude. You know best what is good for each one of us. Give us the grace to surrender to Your Holy Will. We place our trust in You and pray that with Your Divine help and mercy, he/she will regain normal health.
+
+                <b>For the Deceased:</b>
+                Lord Heavenly Father, we are very sorrowful at the demise of [Name]. We earnestly implore Your Divine Help for the bereaved members of the family in their hour of trial. Give them the strength to bear their grief at the loss of their dear one. We ask You, Merciful Lord, to grant Eternal Rest and Peace to the departed soul. May Your Perpetual Light shine upon him/her.</div>
+            </div>
+
+            <div class="prayer-box">
+                <h3>A Prayer for Educators (Parents & Teachers)</h3>
+                <div class="lyrics-area">O Lord, give us the wisdom to deal with our children as You would. To see in each of them Your holy image. To develop in them a genuine love for all men, not only a select few. To nurture in them a divine desire to 'put in' and not simply to 'take out'. To teach them to be 'go-givers' rather than 'go-getters'.
+
+                O God, in training these dear ones whom Thou hast entrusted to our charge, help us:
+                To encourage rather than discourage them,
+                To discipline with kindness not softness,
+                To guide them intelligently, not blindly,
+                To coach, not scold, to nudge not nag.</div>
+            </div>
+        </div>
+
+  <div id="hymns" class="content-section">
+            <h2 class="hymn-header">English Hymns</h2>
+            <div class="prayer-box"><h3> 1. We are one in the spirit... </h3><div class="lyrics-area"> 
+1. We are one in the Spirit, we are one in the Lord, (2)
+And we pray that all unity may one day be restored. 
+<b> And by they'll know our love, we are by our Paulians love.
+ Yes, they'll know we are Paulians by our love.</b> 
+2. We will walk with each other, we will walk hand in hand (2) And together we'll spread the news that God is in our land.
+3. We will work with each other, we will work side by side (2) And we'll guard each man's dignity and save each man's pride.
+</div></div> 
+
+
+            <div class="prayer-box"><h3> 2. God's love is so wonderful,(3) </h3><div class="lyrics-area">
+O wonderful love So high,
+ you can't get over it,
+ So deep, you can't get under it,
+ So wide, you can't get around it.
+O wonderful love!
+   </div>
+</div>
+
+
+  <div class="prayer-box"><h3>3. Praise Him, </h3><div class="lyrics-area"> 
+ Praise Him, praise Him,
+ Praise Him in the morning 
+Praise Him in the noon time
+ Praise Him, Praise Him
+ Praise Him when the sun goes down.
+ Love Him... Serve Him.. Thank Him.......
+</div></div>
+
+
+  
+
+            
+ <h2 class="hymn-header">Hindi Bhajans</h2>
+            <div class="prayer-box"><h3>1.इतनी शक्ति हमें देना दाता </h3><div class="lyrics-area"> 
+इतनी शक्ति हमें देना दाता, मन का विश्वास कमज़ोर हो ना
+हम चलें नेक रस्ते पे हमसे, भूलकर भी कोई भूल हो ना। दूर अज्ञान के हो अँधेरे, तू हमें ज्ञान की रौशनी दे
+हर बुराई से बचके रहें हम, जितनी भी दे भली ज़िन्दगी दे
+बैर हो ना किसी का किसी से, भावना मन में बदले की हो ना
+हम चलें नेक रस्ते पे हमसे, भूलकर भी कोई भूल हो ना इतनी शक्ति हमें देना दाता, मन का विश्वास कमज़ोर हो ना
+हम न सोचें हमें क्या मिला है, हम ये सोचें किया क्या है अर्पण
+फूल खुशियों के बांटें सभी को, सबका जीवन ही बन जाए मधुवन
+अपनी करुणा का जल तू बहा के,कर दे पावन हर एक मन का कोना
+हम चलें नेक रस्ते पे हमसे, भूलकर भी कोई भूल हो ना
+इतनी शक्ति हमें देना दाता, मन का विश्वास कमज़ोर हो ना</div></div>
+
+            <div class="prayer-box"><h3>2. हे प्रभु साधन बना लो </h3><div class="lyrics-area"> हे प्रभु साधन बना लो, मुझको अपनी शांति का
+
+1. हो जहाँ घृणा वहाँ मैं प्रीत भर दूँ, प्रीत भर दूँ हो जहाँ आघात वहाँ मैं क्षमा भर दूँ, क्षमा भर दूँ हो जहाँ शंका वहाँ विश्वास भर दूँ। आ... ऐसा तुम वर दो (2)
+2. हो जहाँ निराशा मैं आशा जगा दूँ, आशा जगा दूँ हो जहाँ अंधकार मैं ज्योति जला दूँ, ज्योति जला दूँ हो जहाँ खिन्नता मैं हर्ष भर दूँ । आ... ऐसा तुम वर दो (2)
+3. ओ स्वामी, मुझको ये वर दो कि मैं सांत्वना पाने की आशा न करूँ, सांत्वना देता रहूँ, समझा जाने की आशा न करूँ, समझता ही रहूँ प्यार पाने की आशा न न करूँ, प्यार देता ही रहूँ प्यार के द्वारा ही प्राप्ति होती है ... आ ...
+माफ के द्वारा ही माफी मिलती है ... आ
+मृत्यु के द्वारा ही जीवन मिलता है ... आ
+जीवन अमर ... (3)
+ </div></div>
+
+            <div class="prayer-box"><h3>3. तुम्हीं हो माता, पिता तुम्हीं हो </h3><div class="lyrics-area">
+
+तुम्हीं हो माता, पिता तुम्हीं हो
+ तुम्हीं हो बंधु, सखा तुम्हीं हो
+
+1. जो खिल सके ना, वो फूल हम हैं
+ तुम्हारे चरणों की धूल हम हैं 
+दया की दृष्टि सदा ही रखना
+ तुम्हीं हो बंधु सखा तुम्हीं हो...
+
+2. तुम्हीं हो साथी, तुम्हीं सहारे 
+कोई न अपना, सिवा तुम्हारे 
+तुम्हीं हो नैया, तुम्हीं खैवय्या
+ तुम्हीं हो बंधु, सखा तुम्हीं हो 
+</div></div>
+
+            <div class="prayer-box"><h3>4.  प्रभु तुम प्रकाश दो </h3><div class="lyrics-area"> 
+
+प्रभु तुम प्रकाश दो (4)
+प्रभु तुम ज्ञान दो (4)
+प्रभु तुम प्रेम दो (4)
+प्रभु तुम शांति दो (4) 
+
+</div></div>
+
+
+            <div class="prayer-box"><h3>5. पवित्र मन रखो.. </h3><div class="lyrics-area">
+
+ पवित्र मन रखो, पवित्र तन रखो पवित्रता मनुष्यता की शान है,
+पवित्र मन रखो, पवित्र तन रखो पवित्रता मनुष्यता की शान है,
+ जो मन, वचन, कर्म से पवित्र है वो चरित्रवान ही यहाँ महान है।
+बड़ा ही मूल्यवान है तुम्हारा ये जनम, तुम्हारा ये जनम जगत की 
+कर्मभूमि पे करो भले करम, करो भले करम ।
+अच्छे रखो विचार, उत्तम करो व्यवहार (2) आदर्श व्यक्ति की
+ यही पहचान है।
+जो मन, वचन, कर्म से पवित्र है, वो चरित्रवान ही यहाँ महान है।
+तुम अपनी आँखों में अमृत रखो विमल विमल, सदा विमल - विमल
+तुम्हारी वाणी में माधुर्य हो सदा सरल सरल, सदा सरल - सरल । 
+तुम हो के निर्विकार, सबका करो सत्कार (3) ये जन्म तुम्हारा इम्तहान है। 
+जो मन, वचन, कर्म से पवित्र है, वो चरित्रवान ही यहाँ महान है। 
+ </div></div> 
+
+
+<div class="prayer-box"><h3> 6. सूरज चाँद सितारे करते तेरा ही गुणगान,</h3><div class="lyrics-area"> 
+
+ सूरज चाँद सितारे करते तेरा ही गुणगान,
+धरती, अम्बर, पर्वत नदियाँ गाते हैं यशगान ।
+
+1. बिन तेरे तो कुछ भी नहीं प्रभु, तू ही तारणहार 
+तेरी दया का अंत नहीं प्रभु, माँगे तेरा प्यार
+
+</div></div>
+        </div>
+
+        <div id="anthem" class="content-section">
+            <div class="prayer-box" style="border-left-color: var(--school-yellow);">
+                <h3 style="text-align: center;">ST. PAUL SCHOOL ANTHEM</h3>
+                <div class="lyrics-area" style="text-align: center; font-weight: 600; color: var(--school-dark);">
+                    Onward we go marching 
+                    Brightly led by keen mentors 
+                    Striving truly for joy and glory 
+                    Braving challenges
+
+                    Enthused by the excellence 
+                    Effused by Saint Paul Patron 
+                    We have set our ideal goal 
+                    And prepared for the race.
+
+                    We are the Paulians, we value quality 
+                    We salute loyalty, and run, then for victory.
+
+                    Efforts make find harvest 
+                    Rewards go with attitude 
+                    Winners we are ready for action 
+                    Seeking Golden Crown.
+
+                    We grow countless ways in school and 
+                    Augment knowledge and wisdom 
+                    Achieve greatness surpassing milestones 
+                    Blessed by Lord our God
+                </div>
+            </div>
+        </div>
+
+
+        <div id="national" class="content-section">
+            <div class="prayer-box"><h3>JANA GANA MANA</h3><div class="lyrics-area"> जन गण मन अधिनायक जय हे,
+भारत भाग्य विधाता।
+पंजाब सिंध गुजरात मराठा,
+द्राविड़ उत्कल बंग।
+विंध्य हिमाचल यमुना गंगा,
+उच्छल जलधि तरंग।
+तव शुभ नामे जागे,
+तव शुभ आशीष मांगे,
+गाहे तव जय गाथा।
+जन गण मंगलदायक जय हे,
+भारत भाग्य विधाता।
+जय हे, जय हे, जय हे,
+जय जय जय जय हे।</div></div>
+            <div class="prayer-box"><h3>PLEDGE</h3><div class="lyrics-area"> India is my country and all Indians are my brothers and sisters.
+I love my country and I am proud of its rich and varied heritage.
+I shall always strive to be worthy of it.
+
+I shall give respect to my parents, teachers and elders
+and treat everyone with courtesy.
+
+To my country and my people,
+I pledge my devotion.
+
+In their well-being and prosperity alone lies my happiness.  </div></div>
+            <div class="prayer-box"><h3>VANDE MATARAM</h3><div class="lyrics-area"> वंदे मातरम्।
+सुजलाम् सुफलाम् मलयज शीतलाम्,
+शस्य श्यामलाम् मातरम्।
+वंदे मातरम्॥
+
+शुभ्र ज्योत्स्ना पुलकित यामिनीम्,
+फुल्ल कुसुमित द्रुमदल शोभिनीम्,
+सुहासिनीम् सुमधुर भाषिणीम्,
+सुखदाम् वरदाम् मातरम्।
+वंदे मातरम्॥ </div></div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleCategory(id, element) {
+            document.querySelectorAll('.category-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+            const targetSection = document.getElementById(id);
+            if (targetSection) { targetSection.classList.add('active'); }
+            window.scrollTo({ top: 350, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
