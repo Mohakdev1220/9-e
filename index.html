@@ -295,57 +295,71 @@
         </center>
     </footer>
 
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
-            document.getElementById('current-time').innerText = now.toLocaleDateString('en-IN', options);
+ <script>
+    // 1. Clock Update Logic
+    function updateClock() {
+        const now = new Date();
+        const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
+        const timeElement = document.getElementById('current-time');
+        if (timeElement) {
+            timeElement.innerText = now.toLocaleDateString('en-IN', options);
         }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('visible'); }
-            });
-        }, { threshold: 0.05 });
-        observer.observe(document.getElementById('categoryGrid'));
-
-        function searchCategories() {
-            let input = document.getElementById('categorySearch').value.toLowerCase();
-            let cards = document.getElementsByClassName('category-card');
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].innerText.toLowerCase();
-                cards[i].style.display = title.includes(input) ? "" : "none";
-            }
-
-            const audio = document.getElementById('introSpeech');
-const btn = document.getElementById('audioControl');
-const icon = document.getElementById('speakerIcon');
-const txt = document.getElementById('btnText');
-
-function toggleAudio() {
-    if (audio.paused) {
-        audio.play();
-        btn.classList.add('playing');
-        icon.innerText = "⏸️";
-        txt.innerText = "Playing...";
-    } else {
-        audio.pause();
-        stopStyling();
     }
-}
+    setInterval(updateClock, 1000);
+    updateClock();
 
-// Jab audio khud khatam ho jaye
-audio.onended = function() {
-    stopStyling();
-};
+    // 2. Scroll Animation (Intersection Observer)
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) { 
+                entry.target.classList.add('visible'); 
+            }
+        });
+    }, { threshold: 0.05 });
 
-function stopStyling() {
-    btn.classList.remove('playing');
-    icon.innerText = "🔊";
-    txt.innerText = "Listen Intro";
-}
-    </script>
+    const grid = document.getElementById('categoryGrid');
+    if (grid) { observer.observe(grid); }
+
+    // 3. Search Functionality
+    function searchCategories() {
+        let input = document.getElementById('categorySearch').value.toLowerCase();
+        let cards = document.getElementsByClassName('category-card');
+        for (let i = 0; i < cards.length; i++) {
+            let title = cards[i].innerText.toLowerCase();
+            cards[i].style.display = title.includes(input) ? "" : "none";
+        }
+    }
+
+    // 4. Audio Control Logic
+    const audio = document.getElementById('introSpeech');
+    const btn = document.getElementById('audioControl');
+    const icon = document.getElementById('speakerIcon');
+    const txt = document.getElementById('btnText');
+
+    function toggleAudio() {
+        if (!audio) return; // Safety check
+        if (audio.paused) {
+            audio.play().catch(e => console.log("Audio play blocked by browser. Click again!"));
+            btn.classList.add('playing');
+            icon.innerText = "⏸️";
+            txt.innerText = "Playing...";
+        } else {
+            audio.pause();
+            stopStyling();
+        }
+    }
+
+    if (audio) {
+        audio.onended = function() {
+            stopStyling();
+        };
+    }
+
+    function stopStyling() {
+        if (btn) btn.classList.remove('playing');
+        if (icon) icon.innerText = "🔊";
+        if (txt) txt.innerText = "Listen Intro";
+    }
+</script>
 </body>
 </html>
