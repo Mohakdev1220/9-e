@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTA Scholarships | St. Paul IX</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --school-red: #f44336;
+            --pta-blue: #003366;
+            --gold: #FFD700;
+            --bg-gray: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gray);
+            margin: 0;
+            color: #333;
+        }
+
+        .navbar {
+            background: white;
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--pta-blue);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { height: 40px; }
+        .btn-home {
+            text-decoration: none;
+            color: white;
+            background: var(--pta-blue);
+            padding: 8px 18px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .container { max-width: 950px; margin: 40px auto; padding: 0 20px; }
+
+        .header {
+            text-align: center;
+            background: white;
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .header h1 { color: var(--pta-blue); margin: 0; font-size: 2.2rem; }
+        .header p { color: var(--school-red); font-weight: 700; letter-spacing: 1px; margin-top: 5px; }
+
+        .prizes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .award-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border-top: 5px solid var(--gold);
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .award-card i { font-size: 2rem; color: var(--pta-blue); }
+        .award-card h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: #1a237e; }
+        .award-card p { margin: 0; font-size: 0.9rem; line-height: 1.6; color: #555; }
+
+        .rules-section {
+            background: #fff;
+            margin-top: 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .rules-header {
+            background: var(--pta-blue);
+            color: white;
+            padding: 15px 25px;
+            font-weight: 600;
+        }
+
+        .rules-body { padding: 25px; }
+        .rule-item {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .rule-item::before {
+            content: '📌';
+            position: absolute;
+            left: 0;
+        }
+
+        .note-box {
+            background: #fffde7;
+            padding: 20px;
+            border-left: 5px solid #fbc02d;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .prizes-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <img src="logo.png" alt="St. Paul" class="logo">
+        <a href="index.html" class="btn-home">BACK TO HOME PAGE</a>
+    <img src="IX.png" alt="IX LOGO" class="logo">
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>P.T.A. PRIZES</h1>
+            <p>PARENT TEACHER ASSOCIATION AWARDS</p>
+        </div>
+
+        <div class="prizes-grid">
+            <div class="award-card">
+                <div><h3>Language Excellence</h3><p>Awarded to a student in each class for highest total (min. 9 grade points) in English, Hindi, and Sanskrit.</p></div>
+            </div>
+            <div class="award-card">
+                <div><h3>Scholarship for Good Application</h3><p>Granted for classes K.G. to XII for General Proficiency in the preceding academic year.</p></div>
+            </div>
+            <div class="award-card">
+                <div><h3>Faculty Medals</h3><p>Highest marks in Science, Commerce, and Humanities streams in Senior Secondary Exams.</p></div>
+            </div>
+            <div class="award-card">
+                <div><h3>Proficiency Medal</h3><p>Awarded to students appearing in the Merit list of the Secondary School Examination.</p></div>
+            </div>
+        </div>
+
+        <div class="note-box">
+            <b>Note:</b> No student can receive two Scholarships/Cash Prizes simultaneously. The higher value scholarship is retained, others must be surrendered. The Principal's decision is final.
+        </div>
+
+        <div class="rules-section">
+            <div class="rules-header">General Conditions for Academic Prizes & Scholarships</div>
+            <div class="rules-body">
+                <div class="rule-item">Passing in all subjects, regular attendance, and good conduct are indispensable conditions.</div>
+                <div class="rule-item">Absence from Prize Distribution without intimation results in disqualification.</div>
+                <div class="rule-item">In case of school withdrawal, the award moves to the next eligible student (except Proficiency prizes).</div>
+                <div class="rule-item">Scholarships are awarded for one year and can be stopped if conditions are no longer fulfilled.</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
