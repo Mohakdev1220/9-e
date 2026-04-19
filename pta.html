@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTA Prizes | St. Paul IX</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            --school-red: #f44336;
+            --elegant-blue: #2c3e50;
+            --gold-soft: #f1c40f;
+            --bg-light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            margin: 0;
+            color: #333;
+        }
+
+        .navbar {
+            background: white;
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--school-red);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { height: 40px; }
+        .btn-home {
+            text-decoration: none;
+            color: white;
+            background: var(--elegant-blue);
+            padding: 8px 18px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .btn-home:hover { background: var(--school-red); }
+
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+        .header-card {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            border-top: 8px solid var(--school-red);
+        }
+
+        .header-card h1 { 
+            font-family: 'Playfair Display', serif; 
+            color: var(--elegant-blue); 
+            font-size: 2.2rem;
+            margin: 0;
+        }
+
+        .header-card p { color: #888; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; margin-top: 10px; }
+
+        .prizes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .award-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .award-box:hover {
+            transform: scale(1.02);
+            border-color: var(--gold-soft);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .icon-wrap {
+            background: #fff3e0;
+            min-width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .award-content h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--elegant-blue);
+            text-transform: capitalize;
+        }
+
+        .award-content p {
+            margin: 5px 0 0;
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .special-section {
+            margin-top: 50px;
+            background: var(--elegant-blue);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .special-section h2 { 
+            font-family: 'Playfair Display', serif; 
+            border-bottom: 2px solid var(--gold-soft);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        @media (max-width: 600px) {
+            .header-card { padding: 20px; }
+            .award-box { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <img src="logo.png" alt="St. Paul" class="logo">
+        <a href="index.html" class="btn-home">BACK TO HOME PAGE </a> 
+
+        <img src="IX.png" alt="IX LOGO" class="logo">
+    </nav>
+
+    <div class="container">
+        <div class="header-card">
+            <h1>Cultural & Literary Prizes</h1>
+            <p>PTA Excellence Awards</p>
+        </div>
+
+        <div class="prizes-container">
+            <div class="award-box">
+                <div class="icon-wrap">🎨</div>
+                <div class="award-content">
+                    <h3>Prizes & Certificates</h3>
+                    <p>Awarded to those who win first and second positions in cultural and literary competitions.</p>
+                </div>
+            </div>
+
+            <div class="award-box">
+                <div class="icon-wrap">🎤</div>
+                <div class="award-content">
+                    <h3>Gaurav Jain Memorial Running Trophy</h3>
+                    <p>For excellence in the Inter-School English Speech competition.</p>
+                </div>
+            </div>
+
+            <div class="award-box">
+                <div class="icon-wrap">📚</div>
+                <div class="award-content">
+                    <h3>Prakash Thakkar Memorial Running Trophy</h3>
+                    <p>Dedicated to the winners of the Inter-School Literary Competition.</p>
+                </div>
+            </div>
+
+            <div class="award-box">
+                <div class="icon-wrap">🧠</div>
+                <div class="award-content">
+                    <h3>Sunil Manglani Memorial Trophy</h3>
+                    <p>Awarded to the winning house of the Inter-House Quiz Competition.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="special-section">
+            <h2>Prestigious Recognition</h2>
+            <div style="margin-top: 20px;">
+                <p><b>✨ Special Achievement Award:</b> To a student who makes extraordinary achievement in cultural or literary fields.</p>
+                <hr style="border: 0.5px solid rgba(255,255,255,0.1); margin: 15px 0;">
+                <p><b>👑 Achiever of the Year Award:</b> Based on a student's overall achievement during the preceding academic year.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
