@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | IX-E Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --school-red: #f44336;
+            --school-yellow: #ffeb3b;
+            --school-dark: #b71c1c;
+            --google-blue: #4285F4;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #ffffff;
+            margin: 0;
+            color: #333;
+        }
+
+        /* Nav Bar */
+        header {
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+        }
+
+        .home-link {
+            text-decoration: none;
+            color: var(--school-red);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* Hero Section */
+        .about-hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('school-building.jpg'); /* Agar photo ho toh */
+            background-color: var(--school-dark);
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .about-hero h1 { font-size: 2.5rem; margin: 0; }
+
+        /* Content Sections */
+        .content-container {
+            max-width: 900px;
+            margin: -50px auto 50px;
+            padding: 0 20px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h2 { color: var(--school-red); border-left: 5px solid var(--school-yellow); padding-left: 15px; margin-bottom: 20px; }
+        
+        p { line-height: 1.8; color: #555; font-size: 1rem; }
+
+        .developer-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .dev-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--google-blue);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .dev-info h3 { margin: 0; color: #222; }
+        .dev-info span { color: var(--google-blue); font-weight: 600; font-size: 0.9rem; }
+
+        footer { text-align: center; padding: 40px; color: #888; border-top: 1px solid #eee; }
+
+        @media (max-width: 768px) {
+            .developer-section { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="home-link">ST. PAUL IX-E</a>
+        <img src="logo.png" alt="Logo" style="height: 40px;">
+    </header>
+
+    <section class="about-hero">
+        <h1>Our Legacy & Vision</h1>
+        <p>Established to lead, educated to serve.</p>
+    </section>
+
+    <div class="content-container">
+        <div class="info-card">
+            <h2>About St. Paul H.S. School</h2>
+            <p>
+                St. Paul Higher Secondary School, Indore, is one of the most prestigious educational institutions in the city. 
+                With a mission to provide quality education and foster moral values, the school has been a second home 
+                to thousands of students. We believe in "Empowering Minds" and creating future leaders through a 
+                perfect blend of academics, sports, and cultural activities.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <h2>The IX-E Digital Handbook</h2>
+            <p>
+                This portal is a student-led initiative for <b>Class IX-E (Session 2026-27)</b>. 
+                Our goal was to transform the traditional school diary into a digital experience. 
+                From real-time time-tables to easy access to fees and uniform guides, this handbook 
+                ensures that every student and parent has all the information they need at their fingertips.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <h2>Meet the Developer</h2>
+            <div class="developer-section">
+                <div class="dev-img">M</div> <div class="dev-info">
+                    <h3>Mohak Choubey</h3>
+                    <span>Web Developer & Student (IX-E)</span>
+                    <p>
+                        Passionate about coding and building utility tools. This website was handcrafted using 
+                        HTML, CSS, and JS to help my classmates stay organized and updated.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 St. Paul Higher Secondary School, Indore | Built with passion by IX-E Students
+    </footer>
+
+</body>
+</html>
