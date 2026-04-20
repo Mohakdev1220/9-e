@@ -242,9 +242,7 @@
         </div> 
 
         <a class="weatherwidget-io" href="https://forecast7.com/en/22d7275d86/indore/" data-label_1="INDORE" data-label_2="WEATHER" data-theme="clear" >INDORE WEATHER</a>
-<script>
-!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-</script> 
+
         <div id="current-time">Loading...</div>
     </header>
 
@@ -363,11 +361,23 @@
         };
     }
 
-    function stopStyling() {
-        if (btn) btn.classList.remove('playing');
-        if (icon) icon.innerText = "🔊";
-        if (txt) txt.innerText = "Listen Intro";
+   function stopStyling() {
+    if (btn) btn.classList.remove('playing');
+    if (icon) icon.innerText = "🔊";
+    if (txt) txt.innerText = "Listen Intro";
+}
+
+// Weather widget script
+!function(d,s,id){
+    var js,fjs=d.getElementsByTagName(s)[0];
+    if(!d.getElementById(id)){
+        js=d.createElement(s);
+        js.id=id;
+        js.src='https://weatherwidget.io/js/widget.min.js';
+        fjs.parentNode.insertBefore(js,fjs);
     }
-</script>
+}(document,'script','weatherwidget-io-js');
+</script> 
+
 </body>
 </html>
