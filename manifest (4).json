@@ -1,0 +1,27 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "IX-E (digital handbook)",
+  "orientation": "natural",
+  "scope": "/",
+  "short_name": "IX-E",
+  "start_url": "mohakdev1220.github.io/9-e",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "https://mohakdev1220.github.io/favicon.png",
+      "type": "image/png",
+      "isSquare": false,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 0,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
+    }
+  ],
+  "id": "IX-E (digital handbook)",
+  "description": "This is a digital version of school's handbook, our website helps the students of class 9th-e to see their time table,  school timing, prizes , and year planner etc."
+}
