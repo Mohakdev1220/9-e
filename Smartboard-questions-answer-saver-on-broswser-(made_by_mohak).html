@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Smartboard Classroom Reader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&family=Comic+Neue:wght@700&family=Lexend:wght@400;600&family=Playfair+Display&family=Roboto+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============== DESIGN TOKENS ============== */
+        :root {
+            --primary: #0071e3;
+            --primary-hover: #0a68d9;
+            --success: #34c759;
+            --danger: #ff453a;
+            --warning: #ff9500;
+            --info: #30b0c0;
+            
+            --bg-primary: #f5f5f7;
+            --bg-secondary: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #6f6f77;
+            
+            --border: #d2d2d7;
+            --border-radius: 12px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 20px;
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.16);
+            --shadow-xl: 0 20px 64px rgba(0, 0, 0, 0.2);
+            
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --border: #333333;
+        }
+
+        /* Theme Presets */
+        [data-preset="cream"] {
+            --bg-primary: #f4ecd8;
+            --bg-secondary: #fdfaf2;
+            --text-primary: #5b4636;
+            --text-secondary: #8b7355;
+        }
+
+        [data-preset="cyan"] {
+            --bg-primary: #000000;
+            --bg-secondary: #111111;
+            --text-primary: #00ffff;
+            --text-secondary: #00cccc;
+            --border: #00ffff;
+        }
+
+        [data-preset="yellow"] {
+            --bg-primary: #1a1a00;
+            --bg-secondary: #262600;
+            --text-primary: #ffff00;
+            --text-secondary: #ffff99;
+            --border: #ffff00;
+        }
+
+        [data-preset="green"] {
+            --bg-primary: #0d1b15;
+            --bg-secondary: #162a20;
+            --text-primary: #4af626;
+            --text-secondary: #2dd617;
+            --border: #4af626;
+        }
+
+        [data-preset="blue"] {
+            --bg-primary: #0a2540;
+            --bg-secondary: #123456;
+            --text-primary: #ffffff;
+            --text-secondary: #b0d4ff;
+            --border: #1e5a96;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ============== LAYOUT ============== */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            overflow-y: auto;
+            max-height: 120px;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            max-width: 100%;
+            margin: 0 auto;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .app-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+            margin-right: auto;
+        }
+
+        .controls {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: center;
+        }
+
+        /* ============== BUTTONS & INPUTS ============== */
+        button, select, input {
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px 12px;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        button:hover:not(:disabled),
+        select:hover,
+        input:hover {
+            background: var(--bg-primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border: none;
+        }
+
+        .btn-success:hover {
+            opacity: 0.9;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        select {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        input[type="range"] {
+            cursor: pointer;
+            padding: 0;
+        }
+
+        /* ============== MAIN CONTENT ============== */
+        .content {
+            display: flex;
+            flex: 1;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            overflow: hidden;
+        }
+
+        .panel {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            flex: 1;
+            min-width: 0;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-secondary);
+        }
+
+        .panel-content {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        textarea {
+            width: 100%;
+            flex: 1;
+            padding: var(--spacing-lg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Lexend', monospace;
+            font-size: 16px;
+            resize: none;
+            transition: var(--transition);
+            line-height: 1.6;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+        }
+
+        #reader-output {
+            width: 100%;
+            flex: 1;
+            padding: var(--spacing-xl);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.8;
+            font-size: 28px;
+        }
+
+        #reader-output.empty::before {
+            content: "Your clean text will show up here...";
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        /* ============== FULLSCREEN ============== */
+        #reader-output:fullscreen {
+            padding: 50px;
+            font-size: 48px;
+            line-height: 1.9;
+            border-radius: 0;
+        }
+
+        #reader-output:-webkit-full-screen {
+            padding: 50px;
+            font-size: 48px;
+            border-radius: 0;
+        }
+
+        /* ============== FONT CLASSES ============== */
+        .font-lexend { font-family: 'Lexend', sans-serif; }
+        .font-hyperlegible { font-family: 'Atkinson Hyperlegible', sans-serif; }
+        .font-dyslexia { font-family: 'Comic Neue', cursive; font-weight: 700; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+
+        /* ============== UTILITIES ============== */
+        .stats-bar {
+            display: flex;
+            gap: var(--spacing-lg);
+            font-size: 12px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease-out;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.info { border-left: 4px solid var(--info); }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ============== MODAL ============== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-xl);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: var(--spacing-xl);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: var(--spacing-xl);
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: var(--spacing-xl);
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: flex-end;
+        }
+
+        .modal-body h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .modal-body h3:first-child {
+            margin-top: 0;
+        }
+
+        .modal-body p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-secondary);
+        }
+
+        .modal-body ul {
+            margin-left: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .modal-body li {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-secondary);
+        }
+
+        /* ============== SAVED FILES LIST ============== */
+        .files-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            padding: var(--spacing-md);
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-md);
+            transition: var(--transition);
+        }
+
+        .file-item:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+        }
+
+        .file-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .file-actions button {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        /* ============== RESPONSIVE ============== */
+        @media (max-width: 1024px) {
+            .content {
+                flex-direction: column;
+            }
+
+            .controls {
+                gap: var(--spacing-xs);
+            }
+
+            button, select {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+
+            .control-group {
+                flex: 1;
+            }
+
+            header {
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .app-title {
+                margin-right: 0;
+            }
+
+            .controls {
+                width: 100%;
+            }
+
+            .control-group {
+                width: 100%;
+            }
+
+            button, select {
+                flex: 1;
+            }
+
+            .panel {
+                padding: var(--spacing-md);
+            }
+
+            #reader-output {
+                font-size: 20px;
+                padding: var(--spacing-lg);
+            }
+
+            .modal {
+                width: 95%;
+            }
+
+            .stats-bar {
+                font-size: 11px;
+                gap: var(--spacing-md);
+            }
+        }
+
+        /* ============== LOADING SPINNER ============== */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============== SLIDER STYLING ============== */
+        input[type="range"] {
+            width: 120px;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .size-display {
+            font-size: 12px;
+            color: var(--text-secondary);
+            min-width: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1 class="app-title">🏫 Smartboard Reader Pro</h1>
+                <div class="controls">
+                    <div class="control-group">
+                        <select id="theme-select" onchange="app.settings.changeTheme()" title="Change color theme">
+                            <option value="light">☀️ Light</option>
+                            <option value="dark">🌙 Dark</option>
+                        </select>
+
+                        <select id="preset-select" onchange="app.settings.changePreset()" title="High contrast presets">
+                            <option value="default">✨ Default</option>
+                            <option value="cream">📜 Cream</option>
+                            <option value="cyan">🧪 Cyan</option>
+                            <option value="yellow">💛 Yellow</option>
+                            <option value="green">📟 Green</option>
+                            <option value="blue">🔷 Blue</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <select id="font-select" onchange="app.settings.changeFont()" title="Choose font family">
+                            <option value="font-lexend">Lexend</option>
+                            <option value="font-hyperlegible">Atkinson</option>
+                            <option value="font-dyslexia">Comic Neue</option>
+                            <option value="font-serif">Playfair</option>
+                            <option value="font-mono">Roboto</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <input type="range" id="size-slider" min="16" max="96" value="28" onchange="app.settings.changeFontSize()" oninput="app.settings.updateSizeDisplay()" title="Font size slider">
+                        <span class="size-display" id="size-display">28px</span>
+                    </div>
+
+                    <div class="control-group">
+                        <button class="btn-primary" onclick="app.storage.openSavedFiles()" title="View saved files">💾 Saved</button>
+                        <button class="btn-success" onclick="app.reader.goFullscreen()" title="Enter fullscreen">📺 Full</button>
+                        <button class="btn-danger" onclick="app.editor.clearWithConfirm()" title="Clear all text">🗑️ Clear</button>
+                        <button class="btn-icon" onclick="app.modals.openHelp()" title="Help & Info">❓</button>
+                        <button class="btn-icon" onclick="app.modals.openTerms()" title="Privacy & Terms">⚙️</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Input Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">📝 Input</h2>
+                    <div class="stats-bar">
+                        <div class="stat">
+                            <span>Words:</span>
+                            <span id="word-count">0</span>
+                        </div>
+                        <div class="stat">
+                            <span>Chars:</span>
+                            <span id="char-count">0</span>
+                        </div>
+                        <div class="stat">
+                            <span>Size:</span>
+                            <span id="size-info">0 B</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <textarea id="text-input" placeholder="Paste your lesson, script, or Q&A here... Everything syncs automatically to the display panel."></textarea>
+                </div>
+            </div>
+
+            <!-- Output Panel -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">📺 Smartboard Display</h2>
+                    <button class="btn-primary" onclick="app.storage.saveCurrentText()" title="Save current text to browser storage">💾 Save File</button>
+                </div>
+                <div class="panel-content">
+                    <div id="reader-output" class="font-lexend empty"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============== MODALS ============== -->
+
+    <!-- Saved Files Modal -->
+    <div class="modal-overlay" id="saved-files-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">📁 Your Saved Files</h2>
+                <button class="modal-close" onclick="app.modals.closeSavedFiles()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="files-container" class="files-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal-overlay" id="help-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">❓ Help & Features</h2>
+                <button class="modal-close" onclick="app.modals.closeHelp()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>🎯 Quick Start</h3>
+                <p>Type or paste your text in the left panel. It will instantly appear in the right display panel with your chosen formatting.</p>
+
+                <h3>💾 Saving Files</h3>
+                <p>Click "Save File" to store text in your browser's local storage. Access it anytime from the "Saved Files" section. Files persist even after closing your browser.</p>
+
+                <h3>🎨 Customization</h3>
+                <ul>
+                    <li><strong>Themes:</strong> Light, Dark, and 5 high-contrast presets for accessibility</li>
+                    <li><strong>Fonts:</strong> Choose from 5 carefully selected fonts including dyslexia-friendly options</li>
+                    <li><strong>Font Size:</strong> Adjust from 16px to 96px using the slider</li>
+                </ul>
+
+                <h3>📺 Fullscreen Mode</h3>
+                <p>Click "Full" to enter fullscreen mode for maximum display area. Perfect for classroom presentations.</p>
+
+                <h3>📊 Statistics</h3>
+                <p>Real-time word count, character count, and file size tracking for your text.</p>
+
+                <h3>🖥️ Browser Storage</h3>
+                <p>All your settings and saved files are stored locally in your browser. No data is sent to any server.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="app.modals.closeHelp()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy & Terms Modal -->
+    <div class="modal-overlay" id="terms-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">📋 Privacy & Terms</h2>
+                <button class="modal-close" onclick="app.modals.closeTerms()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>🔒 Privacy Policy</h3>
+                <p><strong>No Data Collection:</strong> This application does not collect, store, or transmit your personal data to any external servers. All data remains on your device.</p>
+
+                <p><strong>Local Storage Only:</strong> All text, files, and settings are stored exclusively in your browser's local storage using IndexedDB and LocalStorage APIs.</p>
+
+                <p><strong>No Tracking:</strong> We do not use analytics, cookies, or tracking scripts. Your usage is completely private.</p>
+
+                <p><strong>No Cloud Sync:</strong> Your data is never synchronized to the cloud or any external service.</p>
+
+                <h3>📜 Terms of Use</h3>
+                <p><strong>Educational Use:</strong> This tool is designed for educational purposes, including classroom presentations and learning materials.</p>
+
+                <p><strong>Responsibility:</strong> Users are responsible for ensuring that the content they create and display complies with applicable laws and institutional policies.</p>
+
+                <p><strong>Accuracy:</strong> While we strive to provide accurate features, we make no warranty about the reliability or availability of this tool.</p>
+
+                <p><strong>Accessibility:</strong> We are committed to accessibility. If you encounter issues, please report them for improvements.</p>
+
+                <h3>✨ Data Ownership</h3>
+                <p>All content you create remains entirely your intellectual property. We have no rights to your data.</p>
+
+                <h3>🗑️ Clearing Data</h3>
+                <p>You can delete all your saved files at any time using the "Clear" button. Alternatively, clearing your browser's storage will remove all application data.</p>
+
+                <h3>🔄 Updates</h3>
+                <p>We may update this policy at any time. Continued use of the application constitutes acceptance of changes.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="app.modals.closeTerms()">I Understand</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <script>
+        /**
+         * ============== SMARTBOARD APP MODULE ==============
+         * Premium Educational Application with Full Feature Set
+         * Built for Accessibility, Privacy, and Classroom Use
+         */
+
+        const app = (() => {
+            // ============== CONSTANTS ==============
+            const STORAGE_KEYS = {
+                text: 'smartboard-text',
+                theme: 'smartboard-theme',
+                preset: 'smartboard-preset',
+                font: 'smartboard-font',
+                size: 'smartboard-size',
+                termsAccepted: 'smartboard-terms-accepted',
+            };
+
+            const DB_CONFIG = {
+                name: 'SmartboardDB',
+                version: 1,
+                storeName: 'savedFiles',
+            };
+
+            // ============== DOM HELPERS ==============
+            const DOM = {
+                textInput: () => document.getElementById('text-input'),
+                readerOutput: () => document.getElementById('reader-output'),
+                wordCount: () => document.getElementById('word-count'),
+                charCount: () => document.getElementById('char-count'),
+                sizeInfo: () => document.getElementById('size-info'),
+                sizeSlider: () => document.getElementById('size-slider'),
+                sizeDisplay: () => document.getElementById('size-display'),
+                html: () => document.documentElement,
+                toastContainer: () => document.getElementById('toast-container'),
+                filesContainer: () => document.getElementById('files-container'),
+            };
+
+            // ============== DATABASE MANAGEMENT ==============
+            let db = null;
+
+            const database = {
+                init: async () => {
+                    return new Promise((resolve, reject) => {
+                        const request = indexedDB.open(DB_CONFIG.name, DB_CONFIG.version);
+
+                        request.onerror = () => reject(new Error('DB open failed'));
+                        request.onsuccess = () => {
+                            db = request.result;
+                            resolve(db);
+                        };
+
+                        request.onupgradeneeded = (e) => {
+                            const database = e.target.result;
+                            if (!database.objectStoreNames.contains(DB_CONFIG.storeName)) {
+                                database.createObjectStore(DB_CONFIG.storeName, { keyPath: 'id', autoIncrement: true });
+                            }
+                        };
+                    });
+                },
+
+                saveFile: async (text, name) => {
+                    if (!db) await database.init();
+
+                    return new Promise((resolve, reject) => {
+                        const transaction = db.transaction([DB_CONFIG.storeName], 'readwrite');
+                        const store = transaction.objectStore(DB_CONFIG.storeName);
+                        const file = {
+                            name: name || `smartboard_${new Date().toLocaleString()}`,
+                            text: text,
+                            size: new Blob([text]).size,
+                            created: new Date().getTime(),
+                            wordCount: utils.countWords(text),
+                        };
+
+                        const request = store.add(file);
+                        request.onerror = () => reject(new Error('Save failed'));
+                        request.onsuccess = () => resolve(file);
+                    });
+                },
+
+                getFiles: async () => {
+                    if (!db) await database.init();
+
+                    return new Promise((resolve, reject) => {
+                        const transaction = db.transaction([DB_CONFIG.storeName], 'readonly');
+                        const store = transaction.objectStore(DB_CONFIG.storeName);
+                        const request = store.getAll();
+
+                        request.onerror = () => reject(new Error('Read failed'));
+                        request.onsuccess = () => resolve(request.result.reverse());
+                    });
+                },
+
+                deleteFile: async (id) => {
+                    if (!db) await database.init();
+
+                    return new Promise((resolve, reject) => {
+                        const transaction = db.transaction([DB_CONFIG.storeName], 'readwrite');
+                        const store = transaction.objectStore(DB_CONFIG.storeName);
+                        const request = store.delete(id);
+
+                        request.onerror = () => reject(new Error('Delete failed'));
+                        request.onsuccess = () => resolve();
+                    });
+                },
+            };
+
+            // ============== UTILITY FUNCTIONS ==============
+            const utils = {
+                saveToStorage: (key, value) => {
+                    try {
+                        localStorage.setItem(key, value);
+                    } catch (e) {
+                        console.warn('Storage full:', e);
+                        showToast('Storage limit reached', 'error');
+                    }
+                },
+
+                getFromStorage: (key, defaultValue = '') => {
+                    try {
+                        return localStorage.getItem(key) || defaultValue;
+                    } catch (e) {
+                        return defaultValue;
+                    }
+                },
+
+                countWords: (text) => {
+                    return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+                },
+
+                formatBytes: (bytes) => {
+                    if (bytes === 0) return '0 B';
+                    const k = 1024;
+                    const sizes = ['B', 'KB', 'MB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                },
+
+                debounce: (func, delay = 300) => {
+                    let timeoutId;
+                    return function (...args) {
+                        clearTimeout(timeoutId);
+                        timeoutId = setTimeout(() => func.apply(this, args), delay);
+                    };
+                },
+
+                formatDate: (timestamp) => {
+                    return new Date(timestamp).toLocaleDateString() + ' ' + 
+                           new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                },
+            };
+
+            // ============== EDITOR MODULE ==============
+            const editor = {
+                init: () => {
+                    const savedText = utils.getFromStorage(STORAGE_KEYS.text);
+                    DOM.textInput().value = savedText;
+                    editor.updateStats();
+                    editor.syncToDisplay();
+
+                    DOM.textInput().addEventListener('input', utils.debounce(() => {
+                        editor.syncToDisplay();
+                        editor.updateStats();
+                    }, 200));
+                },
+
+                syncToDisplay: () => {
+                    const text = DOM.textInput().value;
+                    const output = DOM.readerOutput();
+
+                    if (text.trim() === '') {
+                        output.classList.add('empty');
+                        output.innerText = '';
+                    } else {
+                        output.classList.remove('empty');
+                        output.innerText = text;
+                    }
+
+                    utils.saveToStorage(STORAGE_KEYS.text, text);
+                },
+
+                updateStats: () => {
+                    const text = DOM.textInput().value;
+                    const words = utils.countWords(text);
+                    const chars = text.length;
+                    const bytes = new Blob([text]).size;
+
+                    DOM.wordCount().innerText = words;
+                    DOM.charCount().innerText = chars;
+                    DOM.sizeInfo().innerText = utils.formatBytes(bytes);
+                },
+
+                clearWithConfirm: () => {
+                    if (confirm('Clear all text? This cannot be undone.')) {
+                        DOM.textInput().value = '';
+                        localStorage.removeItem(STORAGE_KEYS.text);
+                        editor.syncToDisplay();
+                        editor.updateStats();
+                        showToast('Cleared', 'info');
+                    }
+                },
+            };
+
+            // ============== STORAGE MODULE ==============
+            const storage = {
+                saveCurrentText: async () => {
+                    const text = DOM.textInput().value;
+                    if (!text.trim()) {
+                        showToast('Nothing to save!', 'error');
+                        return;
+                    }
+
+                    try {
+                        const file = await database.saveFile(text);
+                        showToast(`Saved: ${file.name}`, 'success');
+                        editor.updateStats();
+                    } catch (e) {
+                        console.error(e);
+                        showToast('Save failed', 'error');
+                    }
+                },
+
+                openSavedFiles: async () => {
+                    try {
+                        const files = await database.getFiles();
+                        const container = DOM.filesContainer();
+
+                        if (files.length === 0) {
+                            container.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">No saved files yet</p>';
+                        } else {
+                            container.innerHTML = files.map(file => `
+                                <div class="file-item">
+                                    <div class="file-info">
+                                        <div class="file-name">${escapeHtml(file.name)}</div>
+                                        <div class="file-meta">${utils.formatDate(file.created)} • ${file.wordCount} words • ${utils.formatBytes(file.size)}</div>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="btn-primary" onclick="app.storage.loadFile(${file.id})">Load</button>
+                                        <button class="btn-danger" onclick="app.storage.deleteFileConfirm(${file.id})">Del</button>
+                                    </div>
+                                </div>
+                            `).join('');
+                        }
+
+                        document.getElementById('saved-files-modal').classList.add('show');
+                    } catch (e) {
+                        showToast('Failed to load files', 'error');
+                    }
+                },
+
+                closeSavedFiles: () => {
+                    document.getElementById('saved-files-modal').classList.remove('show');
+                },
+
+                loadFile: async (id) => {
+                    try {
+                        if (!db) await database.init();
+
+                        const transaction = db.transaction([DB_CONFIG.storeName], 'readonly');
+                        const store = transaction.objectStore(DB_CONFIG.storeName);
+                        const request = store.get(id);
+
+                        request.onsuccess = () => {
+                            const file = request.result;
+                            if (file) {
+                                DOM.textInput().value = file.text;
+                                editor.syncToDisplay();
+                                editor.updateStats();
+                                storage.closeSavedFiles();
+                                showToast(`Loaded: ${file.name}`, 'success');
+                            }
+                        };
+                    } catch (e) {
+                        showToast('Failed to load file', 'error');
+                    }
+                },
+
+                deleteFileConfirm: async (id) => {
+                    if (confirm('Delete this file?')) {
+                        try {
+                            await database.deleteFile(id);
+                            storage.openSavedFiles();
+                            showToast('File deleted', 'info');
+                        } catch (e) {
+                            showToast('Delete failed', 'error');
+                        }
+                    }
+                },
+            };
+
+            // ============== SETTINGS MODULE ==============
+            const settings = {
+                init: () => {
+                    settings.restoreSettings();
+                },
+
+                changeTheme: () => {
+                    const theme = document.getElementById('theme-select').value;
+                    if (theme === 'dark') {
+                        DOM.html().setAttribute('data-theme', 'dark');
+                    } else {
+                        DOM.html().removeAttribute('data-theme');
+                    }
+                    utils.saveToStorage(STORAGE_KEYS.theme, theme);
+                },
+
+                changePreset: () => {
+                    const preset = document.getElementById('preset-select').value;
+                    DOM.html().removeAttribute('data-preset');
+                    if (preset !== 'default') {
+                        DOM.html().setAttribute('data-preset', preset);
+                    }
+                    utils.saveToStorage(STORAGE_KEYS.preset, preset);
+                },
+
+                changeFont: () => {
+                    const font = document.getElementById('font-select').value;
+                    const output = DOM.readerOutput();
+                    output.className = font + ' empty';
+                    utils.saveToStorage(STORAGE_KEYS.font, font);
+                },
+
+                changeFontSize: () => {
+                    const size = DOM.sizeSlider().value;
+                    DOM.readerOutput().style.fontSize = size + 'px';
+                    DOM.sizeDisplay().innerText = size + 'px';
+                    utils.saveToStorage(STORAGE_KEYS.size, size);
+                },
+
+                updateSizeDisplay: () => {
+                    const size = DOM.sizeSlider().value;
+                    DOM.sizeDisplay().innerText = size + 'px';
+                },
+
+                restoreSettings: () => {
+                    // Theme
+                    const theme = utils.getFromStorage(STORAGE_KEYS.theme, 'light');
+                    document.getElementById('theme-select').value = theme;
+                    if (theme === 'dark') {
+                        DOM.html().setAttribute('data-theme', 'dark');
+                    }
+
+                    // Preset
+                    const preset = utils.getFromStorage(STORAGE_KEYS.preset, 'default');
+                    document.getElementById('preset-select').value = preset;
+                    if (preset !== 'default') {
+                        DOM.html().setAttribute('data-preset', preset);
+                    }
+
+                    // Font
+                    const font = utils.getFromStorage(STORAGE_KEYS.font, 'font-lexend');
+                    document.getElementById('font-select').value = font;
+                    DOM.readerOutput().className = font + ' empty';
+
+                    // Size
+                    const size = utils.getFromStorage(STORAGE_KEYS.size, '28');
+                    DOM.sizeSlider().value = size;
+                    DOM.sizeDisplay().innerText = size + 'px';
+                    DOM.readerOutput().style.fontSize = size + 'px';
+                },
+            };
+
+            // ============== READER MODULE ==============
+            const reader = {
+                goFullscreen: () => {
+                    const element = DOM.readerOutput();
+                    const reqFullscreen = element.requestFullscreen ||
+                                        element.webkitRequestFullscreen ||
+                                        element.mozRequestFullScreen;
+                    if (reqFullscreen) {
+                        reqFullscreen.call(element).catch(err => {
+                            showToast('Fullscreen not available', 'error');
+                        });
+                    }
+                },
+            };
+
+            // ============== MODALS MODULE ==============
+            const modals = {
+                openHelp: () => {
+                    document.getElementById('help-modal').classList.add('show');
+                },
+
+                closeHelp: () => {
+                    document.getElementById('help-modal').classList.remove('show');
+                },
+
+                openTerms: () => {
+                    document.getElementById('terms-modal').classList.add('show');
+                },
+
+                closeTerms: () => {
+                    document.getElementById('terms-modal').classList.remove('show');
+                },
+            };
+
+            // ============== INITIALIZATION ==============
+            const init = async () => {
+                try {
+                    await database.init();
+                    editor.init();
+                    settings.init();
+                    console.log('✨ Smartboard Pro initialized with IndexedDB');
+                } catch (e) {
+                    console.error('Initialization error:', e);
+                    showToast('Database error - features may be limited', 'error');
+                }
+            };
+
+            // ============== PUBLIC API ==============
+            return {
+                editor,
+                settings,
+                reader,
+                storage,
+                modals,
+                init,
+            };
+        })();
+
+        // ============== GLOBAL FUNCTIONS ==============
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerText = message;
+            document.getElementById('toast-container').appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============== EVENT LISTENERS ==============
+        document.addEventListener('DOMContentLoaded', () => app.init());
+
+        // Prevent accidental data loss
+        window.addEventListener('beforeunload', (e) => {
+            if (document.getElementById('text-input').value.trim().length > 0) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // Close modals on outside click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('show');
+                }
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 's') {
+                    e.preventDefault();
+                    app.storage.saveCurrentText();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
