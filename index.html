@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<meta name="google-site-verification" content="xrZFu5cpuycZgitIQWcRT0DmD7er9zSVNmzWktTYs10" /> 
-    <meta name="description" content="Welcome to 9th E, the official class website featuring student information, announcements, timetables, achievements, activities, resources, and memorable moments.">
-    
+    <meta name="google-site-verification" content="xrZFu5cpuycZgitIQWcRT0DmD7er9zSVNmzWktTYs10" /> 
+    <meta name="description" content="Welcome to 9th E, the official class website featuring student information, announcements, timetables, achievements, activities, resources, and memorable moments.">    
     <title>Class 9th -E | Digital handbook | St. Paul Indore</title> 
     <link rel="icon" type="image/png" href="favicon.png">
+    
     <style>
         :root {
             --primary: #202124;
-            --google-blue: #4285F4;
-            --google-red: #EA4335;
-            --google-yellow: #FBBC05;
-            --google-green: #34A853;
-            --bg: #ffffff;
+            --google-blue: #1a73e8;
+            --google-red: #ea4335;
+            --google-yellow: #fbbc05;
+            --google-green: #34a853;
+            --bg: #f8f9fa;
+            --surface: #ffffff;
+            --border: #dadce0;
+            --text-secondary: #5f6368;
+            --radius-md: 12px;
+            --radius-lg: 28px;
+            --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
@@ -24,53 +32,67 @@
             background-color: var(--bg);
             color: var(--primary);
             overflow-x: hidden;
+            line-height: 1.5;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 5%;
-            background: white;
+            padding: 16px 8%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         #current-time {
             font-weight: 500;
-            color: #5f6368;
+            color: var(--text-secondary);
             font-size: 0.9rem;
+            background: rgba(0,0,0,0.04);
+            padding: 6px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
         }
 
         .hero {
-            height: 50vh;
+            min-height: 40vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 20px;
-            animation: fadeInDown 1.2s ease-out;
+            padding: 40px 20px;
+            background: radial-gradient(circle at top, rgba(66,133,244,0.08) 0%, transparent 70%);
+            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
+            from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .class-logo {
-            width: 80px;
+            width: 90px;
             height: auto;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+            transition: var(--transition);
+        }
+        .class-logo:hover {
+            transform: scale(1.05) rotate(3deg);
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             margin: 0;
-            font-weight: 400;
+            font-weight: 700;
             color: var(--primary);
+            letter-spacing: -0.5px;
         }
 
         .color-i { color: var(--google-blue); }
@@ -79,41 +101,47 @@
         .color-e { color: var(--google-green); }
 
         .hero p {
-            font-size: 1.2rem;
-            color: #5f6368;
-            margin-top: 10px;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-top: 12px;
+            font-weight: 400;
         }
 
         .search-container {
             display: flex;
             justify-content: center;
-            margin-top: -25px;
+            margin-top: -28px;
             padding: 0 5%;
+            position: relative;
+            z-index: 10;
         }
 
         #categorySearch {
             width: 100%;
-            max-width: 580px;
-            padding: 14px 28px;
-            border-radius: 24px;
-            border: 1px solid #dfe1e5;
+            max-width: 600px;
+            padding: 16px 32px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: var(--surface);
             font-size: 16px;
             outline: none;
-            transition: box-shadow 0.2s;
+            box-shadow: 0 2px 5px 1px rgba(64,60,67,.16);
+            transition: var(--transition);
         }
 
-        #categorySearch:hover, #categorySearch:focus {
-            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+        #categorySearch:focus {
+            box-shadow: 0 2px 8px 1px rgba(66,133,244,0.30);
+            border-color: var(--google-blue);
         }
 
         .categories-container {
             padding: 60px 8%;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 1s ease-in-out;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .categories-container.visible {
@@ -122,144 +150,204 @@
         }
 
         .category-card {
-            background: #fff;
-            padding: 30px 20px;
-            border-radius: 8px;
+            background: var(--surface);
+            padding: 24px 20px;
+            border-radius: var(--radius-md);
             text-align: center;
             text-decoration: none;
             color: #3c4043;
-            border: 1px solid #dadce0;
-            transition: all 0.2s ease-in-out;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1), 0 1px 3px 1px rgba(60,64,67,0.05);
+            transition: var(--transition);
+        }
+
+        .category-card h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .category-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
+            box-shadow: 0 4px 16px 0 rgba(60,64,67,0.15);
+            transform: translateY(-4px);
+            border-color: #b3d1ff;
+            background: linear-gradient(to bottom, #ffffff, #fcfdfe);
+        }
+
+        /* Weather Widget custom wrapper styling */
+        .weatherwidget-io {
+            border-radius: 0;
+            margin-bottom: 10px;
+            box-shadow: inset 0 -1px 0 var(--border);
         }
 
         /* Footer */
         footer {
-            background: #f8f9fa;
-            border-top: 1px solid #e0e0e0;
-            padding: 40px 5% 20px 5%;
-            margin-top: 80px;
+            background: #ffffff;
+            border-top: 1px solid var(--border);
+            padding: 60px 8% 30px 8%;
+            margin-top: 100px;
         }
 
         .footer-content {
             display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 30px;
+            grid-template-columns: 1.3fr 0.8fr 1.2fr;
+            gap: 50px;
+            margin-bottom: 40px;
         }
 
         .school-logo-small {
-            width: 35px;
+            width: 32px;
             height: auto;
             vertical-align: middle;
-            margin-right: 10px;
+            margin-right: 12px;
         }
 
-        .contact-info h4 { margin-bottom: 15px; color: var(--primary); display: flex; align-items: center; }
-        .contact-info p { margin: 6px 0; font-size: 0.85rem; color: #5f6368; line-height: 1.4; }
-        .contact-info b { color: #3c4043; }
+        .contact-info h4, .footer-links h4, .map-area h4 { 
+            margin-top: 0;
+            margin-bottom: 20px; 
+            color: var(--primary); 
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex; 
+            align-items: center; 
+        }        
+        
+        .contact-info p { 
+            margin: 10px 0; 
+            font-size: 0.9rem; 
+            color: var(--text-secondary); 
+            line-height: 1.5; 
+        }        
+        
+        .contact-info b { 
+            color: #3c4043; 
+            font-weight: 500;
+        }
 
-        .footer-links h4 { margin-bottom: 15px; }
         .footer-links a {
             display: block;
-            margin-bottom: 10px;
-            color: #5f6368;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.9rem;
+            transition: var(--transition);
         }
 
-        .footer-links a:hover { text-decoration: underline; }
+        .footer-links a:hover { 
+            color: var(--google-blue);
+            text-decoration: underline; 
+        }
 
         .map-container {
             width: 100%;
-            height: 180px;
-            border-radius: 8px;
+            height: 200px;
+            border-radius: var(--radius-md);
             overflow: hidden;
-            border: 1px solid #dadce0;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
         }
 
-        iframe { width: 100%; height: 100%; border: none; }
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+        }
+
+        @media (max-width: 992px) {
+            .footer-content { grid-template-columns: 1fr 1fr; gap: 30px; }
+            .map-area { grid-column: span 2; }
+        }
 
         @media (max-width: 768px) {
             .footer-content { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.5rem; }
-        } 
+            .map-area { grid-column: span 1; }
+            .hero h1 { font-size: 2.4rem; }
+            .hero p { font-size: 1.1rem; }
+            header { padding: 15px 5%; }
+            .categories-container { padding: 50px 5%; gap: 16px; }
+        }         
+
         /* Audio Floating Button */
-.audio-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: var(--google-blue);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: inherit;
-    font-weight: 500;
-    z-index: 2000;
-    transition: all 0.3s ease;
-}
+        .audio-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--google-blue);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(66, 133, 244, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.95rem;
+            z-index: 2000;
+            transition: var(--transition);
+        }
 
-.audio-btn:hover {
-    transform: scale(1.08);
-    background: #3367d6;
-}
+        .audio-btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 6px 24px rgba(66, 133, 244, 0.45);
+        }
 
-/* Audio Playing Animation */
-.playing {
-    animation: pulse-blue 1.5s infinite;
-    background: var(--google-green) !important;
-}
+        /* Audio Playing Animation */
+        .playing {
+            animation: pulse-green 1.5s infinite;
+            background: var(--google-green) !important;
+            box-shadow: 0 4px 20px rgba(52, 168, 83, 0.35);
+        }
 
-@keyframes pulse-blue {
-    0% { box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.7); }
-    70% { box-shadow: 0 0 0 15px rgba(52, 168, 83, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(52, 168, 83, 0); }
-}
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(52, 168, 83, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 168, 83, 0); }
+        }
 
-.audio-icon { font-size: 1.3rem; }
+        .audio-icon { font-size: 1.2rem; }
     </style>
 </head>
-<body> 
-    <button class="audio-btn" id="audioControl" onclick="toggleAudio()">
-    <span class="audio-icon" id="speakerIcon">🔊</span> 
-    <span id="btnText">Listen Intro</span>
-</button>
+<body>
 
-<audio id="introSpeech" src="about.mp3"></audio>
+    <button class="audio-btn" id="audioControl" onclick="toggleAudio()">
+        <span class="audio-icon" id="speakerIcon">🔊</span> 
+        <span id="btnText">Listen Intro</span>
+    </button>
+
+    <audio id="introSpeech" src="about.mp3"></audio>
 
     <header>
-        <div style="font-weight: 500; font-size: 1.1rem;">
+        <div style="font-weight: 700; font-size: 1.25rem; letter-spacing: -0.3px;">
             <span style="color: #4285F4;">P</span><span style="color: #EA4335;">o</span><span style="color: #FBBC05;">r</span><span style="color: #4285F4;">t</span><span style="color: #34A853;">a</span><span style="color: #EA4335;">l</span> IX-E
         </div> 
-
         <div id="current-time">Loading...</div>
     </header>
 
-<a class="weatherwidget-io" href="https://forecast7.com/en/22d7275d86/indore/" data-label_1="INDORE" data-label_2="WEATHER" data-theme="clear" >INDORE WEATHER</a>
+    <a class="weatherwidget-io" href="https://forecast7.com/en/22d7275d86/indore/" data-label_1="INDORE" data-label_2="WEATHER" data-theme="clear" >INDORE WEATHER</a>
 
-
-  <section class="hero">
+    <section class="hero">
         <img src="IX.png" alt="Class IX-E Logo" class="class-logo">
-        
         <h1>Welcome to Class <span class="color-i">I</span><span class="color-x">X</span> <span class="color-dash">-</span> <span class="color-e">E</span></h1>
         <p>St. Paul Higher Secondary School, Indore</p>
     </section>
+
     <div class="search-container">
         <input type="text" id="categorySearch" placeholder="Search handbook sections..." onkeyup="searchCategories()">
     </div>
 
     <div class="categories-container" id="categoryGrid">
-         <a href="Smartboard-questions-answer-saver-on-browser-(made_by_mohak)" class="category-card"><h3> 🙈 Text Tool </h3></a>
+        <a href="Smartboard-questions-answer-saver-on-browser-(made_by_mohak)" class="category-card"><h3> 🙈 Text Tool </h3></a>
         <a href="calendar.html" class="category-card"><h3>📅 View Calendar</h3></a>
         <a href="uniform.html" class="category-card"><h3>👔 School Uniform</h3></a>
         <a href="tagboard.html" class="category-card"><h3> Tag board 📌 </h3></a>
@@ -288,92 +376,89 @@
             <div class="footer-links">
                 <h4>Quick Links</h4>
                 <a href="feedback.html">Feedback My Site</a>
-                <a href="about.html">About Us</a> 
-              <a href="https://mohakdev1220.github.io/websites_link/" target="_blank" rel="noopener">Our Other Sites</a>
+                <a href="about.html">About Us</a>
+                <a href="https://mohakdev1220.github.io/websites_link/" target="_blank" rel="noopener">Our Other Sites</a>
             </div>
 
             <div class="map-area">
                 <h4>Location</h4>
                 <div class="map-container">
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2928.012585733553!2d75.88962099999999!3d22.714022699999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd6d5c629411%3A0xb6c4d3f81d6308be!2sSt.%20Paul%20Higher%20Secondary%20School%2C%20Indore!5e1!3m2!1sen!2sin!4v1776524828444!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2928.012585733553!2d75.88962099999999!3d22.714022699999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd6d5c629411%3A0xb6c4d3f81d6308be!2sSt.%20Paul%20Higher%20Secondary%20School%2C%20Indore!5e1!3m2!1sen!2sin!4v1776524828444!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </div>
-        <center style="color: #70757a; font-size: 0.8rem; border-top: 1px solid #e0e0e0; padding-top: 20px;">
+        <center style="color: #70757a; font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 24px; font-weight: 400;">
             Handcrafted for Class IX-E 2026
         </center>
     </footer>
 
- <script>
-    // 1. Clock Update Logic
-    function updateClock() {
-        const now = new Date();
-        const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
-        const timeElement = document.getElementById('current-time');
-        if (timeElement) {
-            timeElement.innerText = now.toLocaleDateString('en-IN', options);
-        }
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // 2. Scroll Animation (Intersection Observer)
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) { 
-                entry.target.classList.add('visible'); 
+    <script>
+        // 1. Clock Update Logic
+        function updateClock() {
+            const now = new Date();
+            const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
+            const timeElement = document.getElementById('current-time');
+            if (timeElement) {
+                timeElement.innerText = now.toLocaleDateString('en-IN', options);
             }
-        });
-    }, { threshold: 0.05 });
-
-    const grid = document.getElementById('categoryGrid');
-    if (grid) { observer.observe(grid); }
-
-    // 3. Search Functionality
-    function searchCategories() {
-        let input = document.getElementById('categorySearch').value.toLowerCase();
-        let cards = document.getElementsByClassName('category-card');
-        for (let i = 0; i < cards.length; i++) {
-            let title = cards[i].innerText.toLowerCase();
-            cards[i].style.display = title.includes(input) ? "" : "none";
         }
-    }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-    // 4. Audio Control Logic
-    const audio = document.getElementById('introSpeech');
-    const btn = document.getElementById('audioControl');
-    const icon = document.getElementById('speakerIcon');
-    const txt = document.getElementById('btnText');
+        // 2. Scroll Animation (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { 
+                    entry.target.classList.add('visible'); 
+                }
+            });
+        }, { threshold: 0.05 });
 
-    function toggleAudio() {
-        if (!audio) return; // Safety check
-        if (audio.paused) {
-            audio.play().catch(e => console.log("Audio play blocked by browser. Click again!"));
-            btn.classList.add('playing');
-            icon.innerText = "⏸️";
-            txt.innerText = "Playing...";
-        } else {
-            audio.pause();
-            stopStyling();
+        const grid = document.getElementById('categoryGrid');
+        if (grid) { observer.observe(grid); }
+
+        // 3. Search Functionality
+        function searchCategories() {
+            let input = document.getElementById('categorySearch').value.toLowerCase();
+            let cards = document.getElementsByClassName('category-card');
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].innerText.toLowerCase();
+                cards[i].style.display = title.includes(input) ? "" : "none";
+            }
         }
-    }
 
-    if (audio) {
-        audio.onended = function() {
-            stopStyling();
-        };
-    }
+        // 4. Audio Control Logic
+        const audio = document.getElementById('introSpeech');
+        const btn = document.getElementById('audioControl');
+        const icon = document.getElementById('speakerIcon');
+        const txt = document.getElementById('btnText');
 
-   function stopStyling() {
-    if (btn) btn.classList.remove('playing');
-    if (icon) icon.innerText = "🔊";
-    if (txt) txt.innerText = "Listen Intro";
-}
+        function toggleAudio() {
+            if (!audio) return; // Safety check
+            if (audio.paused) {
+                audio.play().catch(e => console.log("Audio play blocked by browser. Click again!"));
+                btn.classList.add('playing');
+                icon.innerText = "⏸️";
+                txt.innerText = "Playing...";
+            } else {
+                audio.pause();
+                stopStyling();
+            }
+        }
 
-!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+        if (audio) {
+            audio.onended = function() {
+                stopStyling();
+            };
+        }
 
+        function stopStyling() {
+            if (btn) btn.classList.remove('playing');
+            if (icon) icon.innerText = "🔊";
+            if (txt) txt.innerText = "Listen Intro";
+        }
 
-                </script>
-
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+    </script>
 </body>
 </html>
