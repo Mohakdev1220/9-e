@@ -2,466 +2,1001 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <meta name="google-site-verification" content="xrZFu5cpuycZgitIQWcRT0DmD7er9zSVNmzWktTYs10" /> 
-    <meta name="description" content="Welcome to 9th E, the official class website featuring student information, announcements, timetables, achievements, activities, resources, and memorable moments.">    
-    <title>Class 9th -E | Digital handbook | St. Paul Indore</title> 
-    <link rel="icon" type="image/png" href="favicon.png">
-    
-    <style>
-        :root {
-            --primary: #202124;
-            --google-blue: #1a73e8;
-            --google-red: #ea4335;
-            --google-yellow: #fbbc05;
-            --google-green: #34a853;
-            --bg: #f8f9fa;
-            --surface: #ffffff;
-            --border: #dadce0;
-            --text-secondary: #5f6368;
-            --radius-md: 12px;
-            --radius-lg: 28px;
-            --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="xrZFu5cpuycZgitIQWcRT0DmD7er9zSVNmzWktTYs10">
+<meta name="description" content="Class IX-E digital handbook — St. Paul Higher Secondary School, Indore.">
+<title>Class IX-E · St. Paul Indore</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap" rel="stylesheet">
 
-        body {
-            font-family: 'Product Sans', 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            background-color: var(--bg);
-            color: var(--primary);
-            overflow-x: hidden;
-            line-height: 1.5;
-        }
+<style>
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+:root {
+  --bg:          #f4f6f9;
+  --surface:     #ffffff;
+  --border:      #e2e6ea;
+  --text:        #1a1d23;
+  --text-2:      #5a6072;
+  --text-3:      #8b92a5;
+  --blue:        #1a73e8;
+  --blue-dark:   #1557b0;
+  --blue-light:  #e8f0fe;
+  --green:       #137333;
+  --green-light: #e6f4ea;
+  --amber:       #b45309;
+  --amber-light: #fef3c7;
+  --red:         #c5221f;
+  --red-light:   #fce8e6;
+  --purple:      #6b21a8;
+  --purple-light:#f3e8ff;
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 8%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(8px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid var(--border);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
 
-        #current-time {
-            font-weight: 500;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            background: rgba(0,0,0,0.04);
-            padding: 6px 14px;
-            border-radius: 20px;
-            letter-spacing: 0.3px;
-        }
+  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 8px rgba(0,0,0,.04);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.06);
 
-        .hero {
-            min-height: 40vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px 20px;
-            background: radial-gradient(circle at top, rgba(66,133,244,0.08) 0%, transparent 70%);
-            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+  --f: 'Inter', system-ui, sans-serif;
+  --ease: cubic-bezier(.2,0,0,1);
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+  /* Smartboard-friendly sizing */
+  --touch: 52px;
+}
 
-        .class-logo {
-            width: 90px;
-            height: auto;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
-            transition: var(--transition);
-        }
-        .class-logo:hover {
-            transform: scale(1.05) rotate(3deg);
-        }
+/* ══════════════════════════════════════════
+   BASE
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
-        .hero h1 {
-            font-size: 3.2rem;
-            margin: 0;
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: -0.5px;
-        }
+body {
+  font-family: var(--f);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 
-        .color-i { color: var(--google-blue); }
-        .color-x { color: var(--google-red); }
-        .color-dash { color: var(--google-yellow); }
-        .color-e { color: var(--google-green); }
+/* ══════════════════════════════════════════
+   LOADER
+══════════════════════════════════════════ */
+#loader {
+  position: fixed; inset: 0;
+  background: #fff;
+  z-index: 9999;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 18px;
+  transition: opacity .35s var(--ease), visibility .35s;
+}
+.ld-dots { display: flex; gap: 8px; }
+.ld-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  animation: ldBounce 1.1s ease-in-out infinite;
+}
+.ld-dot:nth-child(1){background:#4285F4;animation-delay:0s}
+.ld-dot:nth-child(2){background:#EA4335;animation-delay:.12s}
+.ld-dot:nth-child(3){background:#FBBC05;animation-delay:.24s}
+.ld-dot:nth-child(4){background:#34A853;animation-delay:.36s}
+@keyframes ldBounce{0%,80%,100%{transform:scale(.55);opacity:.35}40%{transform:scale(1);opacity:1}}
+.ld-label {
+  font-size: .78rem; font-weight: 500;
+  letter-spacing: .6px;
+  color: var(--text-3);
+  text-transform: uppercase;
+}
 
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-top: 12px;
-            font-weight: 400;
-        }
+/* ══════════════════════════════════════════
+   PAGE LAYOUT
+══════════════════════════════════════════ */
+.page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 28px 60px;
+}
 
-        .search-container {
-            display: flex;
-            justify-content: center;
-            margin-top: -28px;
-            padding: 0 5%;
-            position: relative;
-            z-index: 10;
-        }
+/* ══════════════════════════════════════════
+   TOPBAR
+══════════════════════════════════════════ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.topbar-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 
-        #categorySearch {
-            width: 100%;
-            max-width: 600px;
-            padding: 16px 32px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            background: var(--surface);
-            font-size: 16px;
-            outline: none;
-            box-shadow: 0 2px 5px 1px rgba(64,60,67,.16);
-            transition: var(--transition);
-        }
+/* Logo */
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; flex-shrink: 0;
+}
+.logo-badge {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#4285F4,#1557b0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; font-weight: 800; color: #fff;
+  letter-spacing: -.5px;
+}
+.logo-text { line-height: 1.1; }
+.logo-title {
+  font-size: .9rem; font-weight: 700;
+  color: var(--text);
+}
+.logo-sub {
+  font-size: .67rem; color: var(--text-3); font-weight: 400;
+}
 
-        #categorySearch:focus {
-            box-shadow: 0 2px 8px 1px rgba(66,133,244,0.30);
-            border-color: var(--google-blue);
-        }
+/* Topbar actions */
+.topbar-spacer { flex: 1; }
+.topbar-actions { display: flex; align-items: center; gap: 6px; }
 
-        .categories-container {
-            padding: 60px 8%;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 24px;
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+.tb-btn {
+  display: flex; align-items: center; gap: 7px;
+  height: 36px; padding: 0 14px;
+  border-radius: 20px;
+  font-family: var(--f); font-size: .8rem; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: background .15s var(--ease), color .15s;
+  border: none;
+  white-space: nowrap;
+}
+.tb-btn-ghost {
+  background: transparent; color: var(--text-2);
+}
+.tb-btn-ghost:hover { background: var(--bg); color: var(--text); }
 
-        .categories-container.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+.tb-btn-primary {
+  background: var(--blue); color: #fff;
+}
+.tb-btn-primary:hover { background: var(--blue-dark); }
 
-        .category-card {
-            background: var(--surface);
-            padding: 24px 20px;
-            border-radius: var(--radius-md);
-            text-align: center;
-            text-decoration: none;
-            color: #3c4043;
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 50px;
-            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.1), 0 1px 3px 1px rgba(60,64,67,0.05);
-            transition: var(--transition);
-        }
+/* Clock in topbar (desktop) */
+.tb-clock {
+  font-size: .8rem; font-weight: 600;
+  color: var(--text-2);
+  padding: 0 12px;
+  border-left: 1px solid var(--border);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
 
-        .category-card h3 {
-            margin: 0;
-            font-size: 1.1rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+/* Menu toggle (mobile / smartboard) */
+.tb-menu-btn {
+  display: none;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: none; background: transparent; cursor: pointer;
+  font-size: 1.2rem; color: var(--text-2);
+  transition: background .15s;
+  align-items: center; justify-content: center;
+}
+.tb-menu-btn:hover { background: var(--bg); }
 
-        .category-card:hover {
-            box-shadow: 0 4px 16px 0 rgba(60,64,67,0.15);
-            transform: translateY(-4px);
-            border-color: #b3d1ff;
-            background: linear-gradient(to bottom, #ffffff, #fcfdfe);
-        }
+/* ══════════════════════════════════════════
+   HERO BANNER
+══════════════════════════════════════════ */
+.hero {
+  background: linear-gradient(120deg, #1557b0 0%, #1a73e8 55%, #0ea5e9 100%);
+  border-radius: var(--r-lg);
+  padding: 40px 44px;
+  margin: 24px 0 20px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+/* Subtle rings */
+.hero::before {
+  content: '';
+  position: absolute; right: -80px; top: -80px;
+  width: 360px; height: 360px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.12);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; right: 40px; bottom: -120px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.08);
+  pointer-events: none;
+}
+.hero-left { position: relative; z-index: 1; }
+.hero-eyebrow {
+  font-size: .72rem; font-weight: 600;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  color: rgba(255,255,255,.65);
+  margin-bottom: 8px;
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  font-weight: 800; letter-spacing: -.5px;
+  line-height: 1.1; color: #fff;
+  margin-bottom: 6px;
+}
+.hero-sub {
+  font-size: .9rem; color: rgba(255,255,255,.75);
+  margin-bottom: 22px;
+}
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 13px;
+  border-radius: 20px;
+  font-size: .75rem; font-weight: 600;
+  text-decoration: none;
+  transition: all .15s;
+  border: 1.5px solid rgba(255,255,255,.35);
+  color: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.12);
+}
+.hero-tag:hover {
+  background: rgba(255,255,255,.25);
+  border-color: rgba(255,255,255,.7);
+}
+.hero-tag.solid {
+  background: #fff; color: var(--blue-dark);
+  border-color: #fff;
+  cursor: default;
+}
 
-        /* Weather Widget custom wrapper styling */
-        .weatherwidget-io {
-            border-radius: 0;
-            margin-bottom: 10px;
-            box-shadow: inset 0 -1px 0 var(--border);
-        }
+/* Hero right: big clock */
+.hero-clock {
+  position: relative; z-index: 1;
+  text-align: right;
+  flex-shrink: 0;
+}
+.hero-time {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 800; letter-spacing: -2px;
+  color: #fff; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.hero-date-line {
+  font-size: .85rem; color: rgba(255,255,255,.7);
+  margin-top: 4px;
+}
 
-        /* Footer */
-        footer {
-            background: #ffffff;
-            border-top: 1px solid var(--border);
-            padding: 60px 8% 30px 8%;
-            margin-top: 100px;
-        }
+/* ══════════════════════════════════════════
+   STATS ROW
+══════════════════════════════════════════ */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 18px 20px;
+  display: flex; align-items: center; gap: 14px;
+  text-decoration: none; color: inherit;
+  transition: box-shadow .15s var(--ease), transform .15s var(--ease);
+  min-height: var(--touch);
+}
+.stat:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+.stat-ico {
+  width: 42px; height: 42px;
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+}
+.ico-blue   { background: var(--blue-light); }
+.ico-green  { background: var(--green-light); }
+.ico-amber  { background: var(--amber-light); }
+.ico-red    { background: var(--red-light); }
+.ico-purple { background: var(--purple-light); }
 
-        .footer-content {
-            display: grid;
-            grid-template-columns: 1.3fr 0.8fr 1.2fr;
-            gap: 50px;
-            margin-bottom: 40px;
-        }
+.stat-body {}
+.stat-label { font-size: .7rem; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .5px; }
+.stat-val   { font-size: 1.4rem; font-weight: 800; color: var(--text); line-height: 1.1; }
 
-        .school-logo-small {
-            width: 32px;
-            height: auto;
-            vertical-align: middle;
-            margin-right: 12px;
-        }
+/* ══════════════════════════════════════════
+   SECTION TITLE
+══════════════════════════════════════════ */
+.sec-title {
+  font-size: .7rem; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text-3);
+  margin: 24px 0 12px;
+}
 
-        .contact-info h4, .footer-links h4, .map-area h4 { 
-            margin-top: 0;
-            margin-bottom: 20px; 
-            color: var(--primary); 
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: flex; 
-            align-items: center; 
-        }        
-        
-        .contact-info p { 
-            margin: 10px 0; 
-            font-size: 0.9rem; 
-            color: var(--text-secondary); 
-            line-height: 1.5; 
-        }        
-        
-        .contact-info b { 
-            color: #3c4043; 
-            font-weight: 500;
-        }
+/* ══════════════════════════════════════════
+   NAV TILES — the main event
+══════════════════════════════════════════ */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 22px 12px 18px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+  text-decoration: none; color: inherit;
+  transition: box-shadow .15s var(--ease), transform .15s var(--ease), border-color .15s;
+  min-height: 100px;
+  position: relative;
+  overflow: hidden;
+}
+.tile:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: transparent;
+}
+.tile:hover .tile-ico { transform: scale(1.08); }
+.tile:active { transform: translateY(0); box-shadow: var(--shadow); }
 
-        .footer-links a {
-            display: block;
-            margin-bottom: 12px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
+.tile-ico {
+  font-size: 1.6rem;
+  line-height: 1;
+  transition: transform .15s var(--ease);
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px;
+  border-radius: var(--r-sm);
+}
 
-        .footer-links a:hover { 
-            color: var(--google-blue);
-            text-decoration: underline; 
-        }
+/* Colour variants per tile */
+.t-blue   { background: var(--blue-light); }
+.t-green  { background: var(--green-light); }
+.t-amber  { background: var(--amber-light); }
+.t-red    { background: var(--red-light); }
+.t-purple { background: var(--purple-light); }
+.t-teal   { background: #e0f7fa; }
+.t-pink   { background: #fce4ec; }
+.t-indigo { background: #e8eaf6; }
+.t-lime   { background: #f1f8e9; }
+.t-orange { background: #fff3e0; }
+.t-cyan   { background: #e0f2f1; }
+.t-slate  { background: #f1f5f9; }
 
-        .map-container {
-            width: 100%;
-            height: 200px;
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
-        }
+.tile-label {
+  font-size: .78rem; font-weight: 600;
+  color: var(--text-2);
+  text-align: center;
+  line-height: 1.2;
+}
 
-        iframe { 
-            width: 100%; 
-            height: 100%; 
-            border: none; 
-        }
+/* NEW badge */
+.tile-badge {
+  position: absolute; top: 8px; right: 8px;
+  background: var(--blue); color: #fff;
+  font-size: .55rem; font-weight: 700;
+  letter-spacing: .5px; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 6px;
+}
 
-        @media (max-width: 992px) {
-            .footer-content { grid-template-columns: 1fr 1fr; gap: 30px; }
-            .map-area { grid-column: span 2; }
-        }
+/* ══════════════════════════════════════════
+   BOTTOM ROW — audio + weather
+══════════════════════════════════════════ */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
 
-        @media (max-width: 768px) {
-            .footer-content { grid-template-columns: 1fr; }
-            .map-area { grid-column: span 1; }
-            .hero h1 { font-size: 2.4rem; }
-            .hero p { font-size: 1.1rem; }
-            header { padding: 15px 5%; }
-            .categories-container { padding: 50px 5%; gap: 16px; }
-        }         
+/* Audio card */
+.audio-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 20px 22px;
+  display: flex; align-items: center; gap: 16px;
+}
+.play-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--blue); color: #fff;
+  border: none; cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(26,115,232,.35);
+  transition: background .15s, transform .15s, box-shadow .15s;
+}
+.play-btn:hover { background: var(--blue-dark); transform: scale(1.06); box-shadow: 0 6px 16px rgba(26,115,232,.45); }
+.play-btn:active { transform: scale(.97); }
+.audio-meta { flex: 1; min-width: 0; }
+.audio-title { font-size: .9rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.audio-status { font-size: .75rem; color: var(--text-3); }
+.prog { height: 3px; background: var(--border); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+.prog-fill { height: 100%; width: 0%; background: var(--blue); border-radius: 2px; transition: width .1s linear; }
 
-        /* Audio Floating Button */
-        .audio-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--google-blue);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 14px 28px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(66, 133, 244, 0.35);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-family: inherit;
-            font-weight: 500;
-            font-size: 0.95rem;
-            z-index: 2000;
-            transition: var(--transition);
-        }
+/* Weather card */
+.weather-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 16px 18px 12px;
+  overflow: hidden;
+}
+.weather-card-label {
+  font-size: .7rem; font-weight: 700; letter-spacing: .8px;
+  text-transform: uppercase; color: var(--text-3);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
 
-        .audio-btn:hover {
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 6px 24px rgba(66, 133, 244, 0.45);
-        }
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.footer {
+  border-top: 1px solid var(--border);
+  padding-top: 32px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1.4fr;
+  gap: 40px;
+  margin-top: 8px;
+}
+.foot-col h4 {
+  font-size: .7rem; font-weight: 700;
+  letter-spacing: .8px; text-transform: uppercase;
+  color: var(--text-3); margin-bottom: 14px;
+}
+.foot-col address { font-style: normal; }
+.foot-col p { font-size: .82rem; color: var(--text-2); line-height: 1.65; }
+.foot-col b { color: var(--text); font-weight: 600; }
+.foot-links { list-style: none; }
+.foot-links li { margin-bottom: 9px; }
+.foot-links a {
+  font-size: .82rem; color: var(--text-2); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 7px;
+  transition: color .15s;
+}
+.foot-links a::before { content: '→'; font-size: .7rem; opacity: .4; }
+.foot-links a:hover { color: var(--blue); }
+.map-wrap {
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  height: 160px;
+}
+.map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 
-        /* Audio Playing Animation */
-        .playing {
-            animation: pulse-green 1.5s infinite;
-            background: var(--google-green) !important;
-            box-shadow: 0 4px 20px rgba(52, 168, 83, 0.35);
-        }
+.foot-bottom {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.foot-brand {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .78rem; color: var(--text-3);
+}
+.g-dots { display: flex; gap: 3px; }
+.g-dot  { width: 7px; height: 7px; border-radius: 50%; }
+.g-dot:nth-child(1){background:#4285F4}
+.g-dot:nth-child(2){background:#EA4335}
+.g-dot:nth-child(3){background:#FBBC05}
+.g-dot:nth-child(4){background:#34A853}
+.foot-nav { display: flex; gap: 18px; }
+.foot-nav a { font-size: .78rem; color: var(--text-3); text-decoration: none; transition: color .15s; }
+.foot-nav a:hover { color: var(--blue); }
 
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.6); }
-            70% { box-shadow: 0 0 0 15px rgba(52, 168, 83, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(52, 168, 83, 0); }
-        }
+/* ══════════════════════════════════════════
+   MOBILE DRAWER
+══════════════════════════════════════════ */
+.drawer-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.38);
+  z-index: 299;
+  opacity: 0; transition: opacity .25s;
+}
+.drawer {
+  position: fixed; left: 0; top: 0; bottom: 0;
+  width: 300px; max-width: 85vw;
+  background: var(--surface);
+  z-index: 300;
+  transform: translateX(-100%);
+  transition: transform .28s var(--ease);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.drawer.open { transform: translateX(0); }
+.drawer-overlay.open { opacity: 1; pointer-events: all; display: block; }
 
-        .audio-icon { font-size: 1.2rem; }
-    </style>
+.drawer-head {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.drawer-close {
+  margin-left: auto; width: 32px; height: 32px;
+  border-radius: 50%; border: none; background: var(--bg);
+  cursor: pointer; font-size: .9rem; color: var(--text-2);
+  display: flex; align-items: center; justify-content: center;
+}
+.drawer-links {
+  list-style: none;
+  padding: 12px;
+  overflow-y: auto; flex: 1;
+}
+.drawer-links::-webkit-scrollbar { width: 3px; }
+.drawer-links::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.drawer-link {
+  display: flex; align-items: center; gap: 13px;
+  padding: 11px 14px;
+  border-radius: var(--r-xl);
+  font-size: .875rem; font-weight: 500;
+  color: var(--text-2); text-decoration: none;
+  transition: background .12s, color .12s;
+  margin-bottom: 2px;
+}
+.drawer-link:hover, .drawer-link.active {
+  background: var(--blue-light);
+  color: var(--blue-dark);
+  font-weight: 600;
+}
+.drawer-link-ico { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+.drawer-divider { height: 1px; background: var(--border); margin: 8px 4px; }
+.drawer-section {
+  padding: 10px 14px 4px;
+  font-size: .65rem; font-weight: 700; letter-spacing: .8px;
+  text-transform: uppercase; color: var(--text-3);
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — TABLET (≤1100px)
+══════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .tiles { grid-template-columns: repeat(4,1fr); }
+  .stats { grid-template-columns: repeat(2,1fr); }
+  .hero { padding: 30px 28px; }
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — SMARTBOARD PORTRAIT / LARGE TABLET (≤900px)
+══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .page { padding: 0 18px 48px; }
+  .topbar-inner { padding: 0 18px; }
+  .tb-menu-btn { display: flex; }
+  .tb-clock { display: none; }
+  .topbar-actions .tb-btn { display: none; }
+  .hero { flex-direction: column; align-items: flex-start; gap: 18px; }
+  .hero-clock { text-align: left; }
+  .hero h1 { font-size: 1.8rem; }
+  .tiles { grid-template-columns: repeat(4,1fr); gap: 10px; }
+  .stats { grid-template-columns: repeat(4,1fr); gap: 10px; }
+  .bottom-row { grid-template-columns: 1fr; }
+  .footer { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .foot-col:last-child { grid-column: span 2; }
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — PHONE (≤600px)
+══════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .page { padding: 0 14px 40px; }
+  .topbar-inner { padding: 0 14px; }
+  .hero { padding: 22px 20px; border-radius: var(--r-md); }
+  .hero h1 { font-size: 1.55rem; }
+  .hero-time { font-size: 2.4rem; letter-spacing: -1px; }
+  .hero-tags { gap: 6px; }
+  .stats { grid-template-columns: repeat(2,1fr); gap: 8px; }
+  .stat { padding: 14px 14px; gap: 10px; }
+  .stat-val { font-size: 1.2rem; }
+  .tiles { grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .tile { padding: 18px 8px 14px; gap: 8px; min-height: 88px; }
+  .tile-ico { width: 38px; height: 38px; font-size: 1.35rem; }
+  .tile-label { font-size: .72rem; }
+  .bottom-row { gap: 10px; }
+  .footer { grid-template-columns: 1fr; gap: 24px; }
+  .foot-col:last-child { grid-column: span 1; }
+  .foot-bottom { flex-direction: column; align-items: flex-start; }
+}
+
+/* ══════════════════════════════════════════
+   SMARTBOARD LANDSCAPE (≥1366px wide, ≤900px tall)
+   Keeps all tiles visible above fold
+══════════════════════════════════════════ */
+@media (min-width: 1366px) and (max-height: 900px) {
+  .hero { padding: 28px 40px; }
+  .hero h1 { font-size: 2rem; }
+  .stats { gap: 10px; }
+  .stat { padding: 14px 16px; }
+  .tiles { gap: 10px; }
+  .tile { padding: 18px 10px 14px; }
+  .sec-title { margin: 16px 0 8px; }
+}
+
+/* Page entry animation */
+.page { animation: pgIn .4s var(--ease) both; }
+@keyframes pgIn { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:translateY(0) } }
+</style>
 </head>
 <body>
 
-    <button class="audio-btn" id="audioControl" onclick="toggleAudio()">
-        <span class="audio-icon" id="speakerIcon">🔊</span> 
-        <span id="btnText">Listen Intro</span>
-    </button>
+<!-- ── LOADER ──────────────────────────────────── -->
+<div id="loader">
+  <div class="ld-dots">
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+  </div>
+  <div class="ld-label">Portal IX-E · St. Paul Indore</div>
+</div>
 
-    <audio id="introSpeech" src="about.mp3"></audio>
+<!-- ── DRAWER (mobile / smartboard) ───────────── -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<nav class="drawer" id="drawer" aria-label="Navigation">
+  <div class="drawer-head">
+    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#4285F4,#1557b0);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#fff;">IX</div>
+    <div>
+      <div style="font-size:.85rem;font-weight:700;color:var(--text);">Portal IX-E</div>
+      <div style="font-size:.65rem;color:var(--text-3);">St. Paul Indore</div>
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()" aria-label="Close">✕</button>
+  </div>
+  <ul class="drawer-links">
+    <li><a href="#"              class="drawer-link active"><span class="drawer-link-ico">🏠</span>Dashboard</a></li>
+    <li><a href="timetable"     class="drawer-link"><span class="drawer-link-ico">🕒</span>Time Table</a></li>
+    <li><a href="calendar"      class="drawer-link"><span class="drawer-link-ico">📅</span>Calendar</a></li>
+    <li><a href="https://mohakdev1220.github.io/formulas/" class="drawer-link"><span class="drawer-link-ico">📐</span>Formulas</a></li>
+    <li><a href="https://mohakdev1220.github.io/notify_me/" class="drawer-link"><span class="drawer-link-ico">🔔</span>Notifications</a></li>
+    <li><a href="Smartboard-questions-answer-saver-on-browser-(made_by_mohak)" class="drawer-link"><span class="drawer-link-ico">📝</span>Text Tool</a></li>
+    <div class="drawer-divider"></div>
+    <div class="drawer-section">School Life</div>
+    <li><a href="uniform"       class="drawer-link"><span class="drawer-link-ico">👔</span>Uniform</a></li>
+    <li><a href="fees"          class="drawer-link"><span class="drawer-link-ico">💳</span>Fees</a></li>
+    <li><a href="prayer"        class="drawer-link"><span class="drawer-link-ico">🙏</span>Prayers</a></li>
+    <li><a href="timing"        class="drawer-link"><span class="drawer-link-ico">⏰</span>Timings</a></li>
+    <li><a href="tagboard"      class="drawer-link"><span class="drawer-link-ico">📌</span>Tag Board</a></li>
+    <li><a href="students"      class="drawer-link"><span class="drawer-link-ico">👥</span>Students</a></li>
+    <li><a href="sports"        class="drawer-link"><span class="drawer-link-ico">🏅</span>Sports</a></li>
+    <li><a href="cultural"      class="drawer-link"><span class="drawer-link-ico">🎭</span>Cultural</a></li>
+    <li><a href="coscholasticassesment" class="drawer-link"><span class="drawer-link-ico">🎨</span>Activities</a></li>
+    <li><a href="pta"           class="drawer-link"><span class="drawer-link-ico">🤝</span>PTA Prizes</a></li>
+  </ul>
+</nav>
 
-    <header>
-        <div style="font-weight: 700; font-size: 1.25rem; letter-spacing: -0.3px;">
-            <span style="color: #4285F4;">P</span><span style="color: #EA4335;">o</span><span style="color: #FBBC05;">r</span><span style="color: #4285F4;">t</span><span style="color: #34A853;">a</span><span style="color: #EA4335;">l</span> IX-E
-        </div> 
-        <div id="current-time">Loading...</div>
-    </header>
+<!-- ── TOPBAR ──────────────────────────────────── -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="tb-menu-btn" onclick="openDrawer()" aria-label="Open menu">☰</button>
 
-    <a class="weatherwidget-io" href="https://forecast7.com/en/22d7275d86/indore/" data-label_1="INDORE" data-label_2="WEATHER" data-theme="clear" >INDORE WEATHER</a>
+    <a href="#" class="logo">
+      <div class="logo-badge">IX</div>
+      <div class="logo-text">
+        <div class="logo-title">Portal IX-E</div>
+        <div class="logo-sub">St. Paul Higher Secondary · Indore</div>
+      </div>
+    </a>
 
-    <section class="hero">
-        <img src="IX.png" alt="Class IX-E Logo" class="class-logo">
-        <h1>Welcome to Class <span class="color-i">I</span><span class="color-x">X</span> <span class="color-dash">-</span> <span class="color-e">E</span></h1>
-        <p>St. Paul Higher Secondary School, Indore</p>
-    </section>
+    <div class="topbar-spacer"></div>
 
-    <div class="search-container">
-        <input type="text" id="categorySearch" placeholder="Search handbook sections..." onkeyup="searchCategories()">
+    <div class="tb-clock" id="tbClock">00:00:00</div>
+
+    <div class="topbar-actions">
+      <a href="https://mohakdev1220.github.io/notify_me/" class="tb-btn tb-btn-ghost">🔔 Notify</a>
+      <a href="https://mohakdev1220.github.io/formulas/" class="tb-btn tb-btn-ghost">📐 Formulas</a>
+      <a href="timetable" class="tb-btn tb-btn-primary">🕒 Timetable</a>
+    </div>
+  </div>
+</header>
+
+<!-- ── MAIN ────────────────────────────────────── -->
+<main>
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero" aria-label="Welcome">
+    <div class="hero-left">
+      <div class="hero-eyebrow">St. Paul Higher Secondary School · Indore</div>
+      <h1>Class IX-E Digital Handbook</h1>
+      <p class="hero-sub">Academic Year 2025 – 26 &nbsp;·&nbsp; Everything your class needs, in one place.</p>
+      <div class="hero-tags">
+        <span class="hero-tag solid">📚 2025–26</span>
+        <a href="timetable"  class="hero-tag">🕒 Timetable</a>
+        <a href="calendar"   class="hero-tag">📅 Calendar</a>
+        <a href="students"   class="hero-tag">👥 Class Roll</a>
+        <a href="prayer"     class="hero-tag">🙏 Prayers</a>
+      </div>
+    </div>
+    <div class="hero-clock" aria-live="polite">
+      <div class="hero-time" id="heroTime">00:00:00</div>
+      <div class="hero-date-line" id="heroDate">Loading…</div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats" role="list" aria-label="Class overview">
+    <a href="students" class="stat" role="listitem">
+      <div class="stat-ico ico-blue">👥</div>
+      <div class="stat-body"><div class="stat-label">Students</div><div class="stat-val">40</div></div>
+    </a>
+    <a href="sports" class="stat" role="listitem">
+      <div class="stat-ico ico-green">🏅</div>
+      <div class="stat-body"><div class="stat-label">Sports Events</div><div class="stat-val">12</div></div>
+    </a>
+    <a href="coscholasticassesment" class="stat" role="listitem">
+      <div class="stat-ico ico-amber">🎨</div>
+      <div class="stat-body"><div class="stat-label">Activities</div><div class="stat-val">8</div></div>
+    </a>
+    <a href="pta" class="stat" role="listitem">
+      <div class="stat-ico ico-red">🏆</div>
+      <div class="stat-body"><div class="stat-label">PTA Prizes</div><div class="stat-val">6</div></div>
+    </a>
+  </div>
+
+  <!-- TILES SECTION -->
+  <div class="sec-title">Quick Access</div>
+  <div class="tiles" role="list" aria-label="Quick access tiles">
+
+    <a href="timetable" class="tile" role="listitem">
+      <div class="tile-ico t-blue">🕒</div>
+      <span class="tile-label">Time Table</span>
+    </a>
+
+    <a href="calendar" class="tile" role="listitem">
+      <div class="tile-ico t-indigo">📅</div>
+      <span class="tile-label">Calendar</span>
+    </a>
+
+    <a href="students" class="tile" role="listitem">
+      <div class="tile-ico t-green">👥</div>
+      <span class="tile-label">Students</span>
+    </a>
+
+    <a href="https://mohakdev1220.github.io/formulas/" class="tile" role="listitem">
+      <div class="tile-ico t-purple">📐</div>
+      <span class="tile-label">Formulas</span>
+      <span class="tile-badge">New</span>
+    </a>
+
+    <a href="https://mohakdev1220.github.io/notify_me/" class="tile" role="listitem">
+      <div class="tile-ico t-amber">🔔</div>
+      <span class="tile-label">Notifications</span>
+    </a>
+
+    <a href="Smartboard-questions-answer-saver-on-browser-(made_by_mohak)" class="tile" role="listitem">
+      <div class="tile-ico t-teal">📝</div>
+      <span class="tile-label">Text Tool</span>
+    </a>
+
+    <a href="uniform" class="tile" role="listitem">
+      <div class="tile-ico t-slate">👔</div>
+      <span class="tile-label">Uniform</span>
+    </a>
+
+    <a href="fees" class="tile" role="listitem">
+      <div class="tile-ico t-lime">💳</div>
+      <span class="tile-label">Fees</span>
+    </a>
+
+    <a href="prayer" class="tile" role="listitem">
+      <div class="tile-ico t-orange">🙏</div>
+      <span class="tile-label">Prayers</span>
+    </a>
+
+    <a href="timing" class="tile" role="listitem">
+      <div class="tile-ico t-cyan">⏰</div>
+      <span class="tile-label">Timings</span>
+    </a>
+
+    <a href="tagboard" class="tile" role="listitem">
+      <div class="tile-ico t-pink">📌</div>
+      <span class="tile-label">Tag Board</span>
+    </a>
+
+    <a href="sports" class="tile" role="listitem">
+      <div class="tile-ico t-green">🏅</div>
+      <span class="tile-label">Sports</span>
+    </a>
+
+    <a href="cultural" class="tile" role="listitem">
+      <div class="tile-ico t-purple">🎭</div>
+      <span class="tile-label">Cultural</span>
+    </a>
+
+    <a href="coscholasticassesment" class="tile" role="listitem">
+      <div class="tile-ico t-amber">🎨</div>
+      <span class="tile-label">Activities</span>
+    </a>
+
+    <a href="pta" class="tile" role="listitem">
+      <div class="tile-ico t-red">🤝</div>
+      <span class="tile-label">PTA Prizes</span>
+    </a>
+
+    <a href="about.html" class="tile" role="listitem">
+      <div class="tile-ico t-teal">ℹ️</div>
+      <span class="tile-label">About</span>
+    </a>
+
+  </div>
+
+  <!-- AUDIO + WEATHER -->
+  <div class="sec-title">Live Info</div>
+  <div class="bottom-row">
+
+    <!-- Audio -->
+    <div class="audio-card">
+      <button class="play-btn" id="audioBtn" onclick="toggleAudio()" aria-label="Play class intro">▶</button>
+      <div class="audio-meta">
+        <div class="audio-title">Class Intro</div>
+        <div class="audio-status" id="audioStatus">Tap to listen</div>
+        <div class="prog"><div class="prog-fill" id="progFill"></div></div>
+      </div>
+      <audio id="introAudio" src="about.mp3" preload="none"></audio>
     </div>
 
-    <div class="categories-container" id="categoryGrid">
-        <a href="Smartboard-questions-answer-saver-on-browser-(made_by_mohak)" class="category-card"><h3> 🙈 Text Tool </h3></a>
-           <a href="https://mohakdev1220.github.io/notify_me/" class="category-card"><h3>🔔 Notify</h3></a>
-           <a href="https://mohakdev1220.github.io/formulas/" class="category-card"><h3> 📐e = ∑∞ⁿ⁼⁰ ¹ₙ🤓 174 Formulas</h3></a>
-        <a href="calendar" class="category-card"><h3>📅 View Calendar</h3></a>
-        <a href="uniform" class="category-card"><h3>👔 School Uniform</h3></a>
-        <a href="tagboard" class="category-card"><h3> Tag board 📌 </h3></a>
-        <a href="timetable" class="category-card"><h3>🕒 Time Table</h3></a>
-        <a href="fees" class="category-card"><h3>💸 School Fees</h3></a>
-        <a href="prayer" class="category-card"><h3>🙏 Prayers & Bhajans</h3></a>
-        <a href="timing" class="category-card"><h3>⌛ School Timings</h3></a>
-        <a href="coscholasticassesment" class="category-card"><h3> Activities (IX) </h3></a>
-        <a href="sports" class="category-card"><h3>🏅 Sports Prizes</h3></a>
-        <a href="pta" class="category-card"><h3>🤝 PTA Prizes</h3></a>
-        <a href="students" class="category-card"><h3>🔒 View Students</h3></a>
-        <a href="cultural" class="category-card"><h3>🎭 Cultural Prizes</h3></a>
+    <!-- Weather -->
+    <div class="weather-card">
+      <div class="weather-card-label">⛅ Indore Weather</div>
+      <a class="weatherwidget-io"
+         href="https://forecast7.com/en/22d7275d86/indore/"
+         data-label_1="INDORE"
+         data-label_2="WEATHER"
+         data-theme="clear"
+         style="display:block;width:100%;">INDORE WEATHER</a>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <div class="contact-info">
-                <h4><img src="logo.png" alt="" class="school-logo-small"> Contact School</h4>
-                <p><b>Address:</b> 7, Boundary Road, Near Agriculture College, Indore, (MP) 452001</p>
-                <p><b>Email:</b> stpaulhssindore@gmail.com</p>
-                <p><b>Phone:</b> 0731-2492292, 2972920</p>
-                <p><b>Primary Wing:</b> 0731-2492325, 2973325</p>
-                <p><b>Fax:</b> 0731-2492325</p>
-            </div>
-            
-            <div class="footer-links">
-                <h4>Quick Links</h4>
-                <a href="feedback.html">Feedback My Site</a>
-                <a href="about.html">About Us</a>
-                <a href="https://mohakdev1220.github.io/websites_link/" target="_blank" rel="noopener">Our Other Sites</a>
-            </div>
+  </div>
 
-            <div class="map-area">
-                <h4>Location</h4>
-                <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2928.012585733553!2d75.88962099999999!3d22.714022699999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd6d5c629411%3A0xb6c4d3f81d6308be!2sSt.%20Paul%20Higher%20Secondary%20School%2C%20Indore!5e1!3m2!1sen!2sin!4v1776524828444!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-            </div>
-        </div>
-        <center style="color: #70757a; font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 24px; font-weight: 400;">
-            Handcrafted for Class IX-E 2026
-        </center>
-    </footer>
+  <!-- FOOTER -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="foot-col">
+      <h4>Contact School</h4>
+      <address>
+        <p><b>Address</b><br>7, Boundary Road, Near Agriculture College, Indore</p>
+        <p style="margin-top:10px"><b>Email</b><br>stpaulhssindore@gmail.com</p>
+        <p style="margin-top:10px"><b>Phone</b><br>0731-2492292</p>
+      </address>
+    </div>
 
-    <script>
-        // 1. Clock Update Logic
-        function updateClock() {
-            const now = new Date();
-            const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
-            const timeElement = document.getElementById('current-time');
-            if (timeElement) {
-                timeElement.innerText = now.toLocaleDateString('en-IN', options);
-            }
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+    <div class="foot-col">
+      <h4>Links</h4>
+      <ul class="foot-links">
+        <li><a href="feedback.html">Feedback</a></li>
+        <li><a href="about.html">About this portal</a></li>
+        <li><a href="https://mohakdev1220.github.io/websites_link/" target="_blank" rel="noopener">Our other sites</a></li>
+        <li><a href="https://mohakdev1220.github.io/formulas/" target="_blank" rel="noopener">NCERT Formulas</a></li>
+        <li><a href="students">Class Roll</a></li>
+      </ul>
+    </div>
 
-        // 2. Scroll Animation (Intersection Observer)
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) { 
-                    entry.target.classList.add('visible'); 
-                }
-            });
-        }, { threshold: 0.05 });
+    <div class="foot-col">
+      <h4>Location</h4>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2928.012585733553!2d75.88962099999999!3d22.714022699999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd6d5c629411%3A0xb6c4d3f81d6308be!2sSt.%20Paul%20Higher%20Secondary%20School%2C%20Indore!5e1!3m2!1sen!2sin!4v1776524828444!5m2!1sen!2sin"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="St. Paul Higher Secondary School, Indore">
+        </iframe>
+      </div>
+    </div>
+  </footer>
 
-        const grid = document.getElementById('categoryGrid');
-        if (grid) { observer.observe(grid); }
+  <div class="foot-bottom">
+    <div class="foot-brand">
+      <div class="g-dots">
+        <div class="g-dot"></div><div class="g-dot"></div>
+        <div class="g-dot"></div><div class="g-dot"></div>
+      </div>
+      Handcrafted for Class IX-E · 2025–26
+    </div>
+    <nav class="foot-nav" aria-label="Footer navigation">
+      <a href="feedback.html">Feedback</a>
+      <a href="about.html">About</a>
+      <a href="https://mohakdev1220.github.io/websites_link/" target="_blank" rel="noopener">More Sites</a>
+    </nav>
+  </div>
 
-        // 3. Search Functionality
-        function searchCategories() {
-            let input = document.getElementById('categorySearch').value.toLowerCase();
-            let cards = document.getElementsByClassName('category-card');
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].innerText.toLowerCase();
-                cards[i].style.display = title.includes(input) ? "" : "none";
-            }
-        }
+</div>
+</main>
 
-        // 4. Audio Control Logic
-        const audio = document.getElementById('introSpeech');
-        const btn = document.getElementById('audioControl');
-        const icon = document.getElementById('speakerIcon');
-        const txt = document.getElementById('btnText');
+<script>
+/* ── LOADER ──────────────────────────────────── */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const l = document.getElementById('loader');
+    l.style.opacity = '0';
+    l.style.visibility = 'hidden';
+    setTimeout(() => l.remove(), 350);
+  }, 500);
+});
 
-        function toggleAudio() {
-            if (!audio) return; // Safety check
-            if (audio.paused) {
-                audio.play().catch(e => console.log("Audio play blocked by browser. Click again!"));
-                btn.classList.add('playing');
-                icon.innerText = "⏸️";
-                txt.innerText = "Playing...";
-            } else {
-                audio.pause();
-                stopStyling();
-            }
-        }
+/* ── DRAWER ──────────────────────────────────── */
+function openDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  const ov = document.getElementById('drawerOverlay');
+  ov.style.display = 'block';
+  requestAnimationFrame(() => ov.classList.add('open'));
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  const ov = document.getElementById('drawerOverlay');
+  ov.classList.remove('open');
+  setTimeout(() => { ov.style.display = ''; }, 260);
+  document.body.style.overflow = '';
+}
 
-        if (audio) {
-            audio.onended = function() {
-                stopStyling();
-            };
-        }
+/* ── CLOCK ───────────────────────────────────── */
+function tick() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const h = pad(now.getHours()), m = pad(now.getMinutes()), s = pad(now.getSeconds());
+  const timeStr = `${h}:${m}:${s}`;
+  document.getElementById('heroTime').textContent = timeStr;
+  document.getElementById('tbClock').textContent = timeStr;
 
-        function stopStyling() {
-            if (btn) btn.classList.remove('playing');
-            if (icon) icon.innerText = "🔊";
-            if (txt) txt.innerText = "Listen Intro";
-        }
+  const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('heroDate').textContent =
+    `${DAYS[now.getDay()]}, ${MONTHS[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+}
+setInterval(tick, 1000);
+tick();
 
-        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-    </script>
+/* ── AUDIO ───────────────────────────────────── */
+const audio = document.getElementById('introAudio');
+const btn   = document.getElementById('audioBtn');
+const stat  = document.getElementById('audioStatus');
+const pf    = document.getElementById('progFill');
+
+function toggleAudio() {
+  if (!audio) return;
+  if (audio.paused) {
+    audio.play().catch(() => {});
+    btn.textContent  = '⏸';
+    stat.textContent = 'Playing…';
+  } else {
+    audio.pause();
+    resetAudio();
+  }
+}
+audio.addEventListener('timeupdate', () => {
+  if (audio.duration) pf.style.width = (audio.currentTime / audio.duration * 100) + '%';
+});
+audio.addEventListener('ended', resetAudio);
+function resetAudio() {
+  btn.textContent  = '▶';
+  stat.textContent = 'Tap to listen';
+  pf.style.width   = '0%';
+}
+
+/* ── WEATHER ─────────────────────────────────── */
+!function(d,s,id){
+  var js,fjs=d.getElementsByTagName(s)[0];
+  if(!d.getElementById(id)){
+    js=d.createElement(s);js.id=id;
+    js.src='https://weatherwidget.io/js/widget.min.js';
+    fjs.parentNode.insertBefore(js,fjs);
+  }
+}(document,'script','weatherwidget-io-js');
+</script>
 </body>
 </html>
