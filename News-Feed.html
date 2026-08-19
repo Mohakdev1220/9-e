@@ -1,4377 +1,1350 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
->
-
-<meta
-    name="description"
-    content="9-E Smartboard — live news, weather, school timetable and daily progress."
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>9-E Smartboard</title>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
+*{margin:0;padding:0;box-sizing:border-box}
 
-/* =========================================================
-   RESET
-========================================================= */
+:root{
+  --ink:       #0D0D0D;
+  --ink-2:     #1A1A1A;
+  --ink-3:     #2A2A2A;
+  --line:      rgba(255,255,255,0.08);
+  --line-med:  rgba(255,255,255,0.14);
+  --amber:     #F5A623;
+  --amber-dim: rgba(245,166,35,0.12);
+  --white:     #FFFFFF;
+  --muted:     rgba(255,255,255,0.45);
+  --muted-2:   rgba(255,255,255,0.22);
+  --green:     #3DFF8F;
+  --red:       #FF4D4D;
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+  --f-display: 'Space Grotesk', sans-serif;
+  --f-mono:    'Space Mono', monospace;
 }
 
-html{
-    scroll-behavior:smooth;
+html,body{
+  width:100vw; height:100vh;
+  overflow:hidden;
+  background:var(--ink);
+  color:var(--white);
+  font-family:var(--f-display);
+  -webkit-font-smoothing:antialiased;
+  font-size:clamp(10px, 1.1vw, 16px);
 }
 
-body{
-    font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-    background:#f5f5f3;
-    color:#111;
-
-    min-height:100vh;
-    overflow-x:hidden;
+/* ─── LAYOUT ────────────────────────────────── */
+.board{
+  display:grid;
+  grid-template-columns: 1fr 30vw;
+  grid-template-rows: 7vh 1fr;
+  height:100vh;
+  width:100vw;
+  gap:0;
 }
 
-button,
-a{
-    font:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-a{
-    color:inherit;
-}
-
-
-/* =========================================================
-   PAGE
-========================================================= */
-
-.page{
-    width:min(1500px,calc(100% - 32px));
-    margin:0 auto;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
+/* ─── TOPBAR ─────────────────────────────────── */
 .topbar{
-    height:78px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    border-bottom:1px solid #deded9;
+  grid-column: 1 / -1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 2.5vw;
+  border-bottom:1px solid var(--line);
+  background:var(--ink);
+  position:relative;
+  z-index:10;
 }
 
-.brand{
-    display:flex;
-    align-items:center;
-    gap:13px;
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap:20px;
 }
 
-.brand-mark{
-    width:42px;
-    height:42px;
-
-    border-radius:12px;
-
-    background:#111;
-    color:#fff;
-
-    display:grid;
-    place-items:center;
-
-    font-size:18px;
-    font-weight:800;
+.brand-pill{
+  background:var(--amber);
+  color:var(--ink);
+  font-weight:700;
+  font-size:clamp(11px,1.1vw,18px);
+  letter-spacing:-0.3px;
+  padding:0.4em 0.9em;
+  border-radius:6px;
 }
 
-.brand-text{
-    display:flex;
-    flex-direction:column;
-    gap:2px;
+.brand-name{
+  font-size:clamp(13px,1.4vw,22px);
+  font-weight:700;
+  letter-spacing:-0.5px;
 }
 
-.brand-title{
-    font-size:18px;
-    font-weight:800;
-    letter-spacing:-.03em;
+.brand-sub{
+  font-size:clamp(9px,0.8vw,13px);
+  color:var(--muted);
+  font-weight:500;
+  margin-top:1px;
 }
 
-.brand-subtitle{
-    color:#777;
+.divider-v{
+  width:1px;
+  height:28px;
+  background:var(--line-med);
+}
 
-    font-size:11px;
-    font-weight:600;
+.live-badge{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:clamp(9px,0.8vw,13px);
+  color:var(--muted);
+  font-weight:600;
+  letter-spacing:0.3px;
+  text-transform:uppercase;
+}
 
-    text-transform:uppercase;
-    letter-spacing:.12em;
+.pulse{
+  width:8px; height:8px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 0 3px rgba(61,255,143,0.2);
+  animation:heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat{
+  0%,100%{box-shadow:0 0 0 3px rgba(61,255,143,0.2)}
+  50%{box-shadow:0 0 0 6px rgba(61,255,143,0.05)}
 }
 
 .topbar-right{
-    display:flex;
-    align-items:center;
-    gap:20px;
+  display:flex;
+  align-items:center;
+  gap:28px;
 }
 
-.live-status{
-    display:flex;
-    align-items:center;
-    gap:7px;
-
-    color:#666;
-
-    font-size:12px;
-    font-weight:600;
-}
-
-.live-dot{
-    width:7px;
-    height:7px;
-
-    border-radius:50%;
-
-    background:#20a463;
-
-    box-shadow:
-        0 0 0 4px rgba(32,164,99,.10);
+.date-display{
+  font-size:13px;
+  color:var(--muted);
+  font-weight:500;
+  text-align:right;
 }
 
 .clock{
-    font-size:14px;
-    font-weight:700;
-    letter-spacing:-.02em;
+  font-family:var(--f-mono);
+  font-size:clamp(16px,2vw,30px);
+  font-weight:700;
+  letter-spacing:-1px;
+  color:var(--amber);
+  line-height:1;
 }
 
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main{
-    padding:26px 0 50px;
-
-    display:grid;
-
-    grid-template-columns:
-        minmax(0,1.7fr)
-        minmax(320px,.8fr);
-
-    gap:24px;
+/* ─── LEFT: NEWS ──────────────────────────────── */
+.news-col{
+  border-right:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  position:relative;
 }
 
-
-/* =========================================================
-   NEWS
-========================================================= */
-
-.news-section{
-    min-width:0;
+.news-bg{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:0;
+  transition:opacity 0.7s ease, transform 10s ease;
+  transform:scale(1.04);
+  will-change:opacity,transform;
 }
 
-.section-heading{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-
-    margin-bottom:14px;
+.news-bg.loaded{
+  opacity:1;
+  transform:scale(1);
 }
 
-.eyebrow{
-    color:#777;
-
-    font-size:11px;
-    font-weight:800;
-
-    text-transform:uppercase;
-    letter-spacing:.14em;
-
-    margin-bottom:5px;
+.news-scrim{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,0.96) 0%,
+    rgba(0,0,0,0.7) 40%,
+    rgba(0,0,0,0.1) 100%
+  );
+  z-index:2;
 }
 
-.section-title{
-    font-size:28px;
-    line-height:1;
-
-    letter-spacing:-.05em;
-    font-weight:850;
+.news-body{
+  position:relative;
+  z-index:3;
+  margin-top:auto;
+  padding:3vh 3vw;
+  display:flex;
+  flex-direction:column;
 }
 
-.news-controls{
-    display:flex;
-    gap:8px;
+.news-kicker{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:1.5vh;
 }
 
-.icon-btn{
-    width:38px;
-    height:38px;
-
-    border:1px solid #d7d7d2;
-    border-radius:50%;
-
-    background:#fff;
-    color:#111;
-
-    display:grid;
-    place-items:center;
-
-    transition:
-        background .2s ease,
-        transform .2s ease;
+.news-cat{
+  background:var(--amber);
+  color:var(--ink);
+  font-size:clamp(9px,0.75vw,12px);
+  font-weight:700;
+  letter-spacing:0.8px;
+  text-transform:uppercase;
+  padding:4px 10px;
+  border-radius:4px;
 }
 
-.icon-btn:hover{
-    background:#eeeeeb;
-    transform:translateY(-1px);
+.news-src{
+  font-size:clamp(9px,0.75vw,12px);
+  color:var(--muted);
+  font-weight:600;
+  letter-spacing:0.3px;
 }
 
-
-/* =========================================================
-   NEWS CARD
-========================================================= */
-
-.news-card{
-    position:relative;
-
-    min-height:530px;
-
-    overflow:hidden;
-
-    border-radius:28px;
-
-    background:#dcdcd7;
-
-    box-shadow:
-        0 14px 40px rgba(0,0,0,.07);
+.news-dot{
+  width:3px; height:3px;
+  border-radius:50%;
+  background:var(--muted-2);
 }
 
-.news-image{
-    position:absolute;
-    inset:0;
-
-    z-index:0;
-
-    background-position:center;
-    background-size:cover;
-    background-repeat:no-repeat;
-
-    opacity:0;
-
-    transform:scale(1.025);
-
-    transition:
-        opacity .45s ease,
-        transform .8s ease;
+.news-headline{
+  font-size:clamp(18px, 2.8vw, 52px);
+  font-weight:700;
+  line-height:1.1;
+  letter-spacing:-0.5px;
+  max-width:90%;
+  margin-bottom:1.2vh;
 }
 
-.news-image.loaded{
-    opacity:1;
-    transform:scale(1);
+.news-desc{
+  font-size:clamp(11px,1vw,15px);
+  color:rgba(255,255,255,0.65);
+  line-height:1.6;
+  max-width:90%;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  margin-bottom:2vh;
 }
 
-
-/* =========================================================
-   NEWS GRADIENT
-========================================================= */
-
-.news-gradient{
-    position:absolute;
-    inset:0;
-
-    z-index:1;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(0,0,0,0) 0%,
-            rgba(0,0,0,0) 35%,
-            rgba(0,0,0,.08) 52%,
-            rgba(0,0,0,.65) 100%
-        );
-
-    pointer-events:none;
+.news-actions{
+  display:flex;
+  align-items:center;
+  gap:20px;
 }
 
-
-/* =========================================================
-   NEWS CONTENT
-========================================================= */
-
-.news-content{
-    position:absolute;
-
-    z-index:3;
-
-    left:0;
-    right:0;
-    bottom:0;
-
-    padding:34px;
-
-    color:#fff;
+.read-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:11px 20px;
+  background:var(--amber);
+  color:var(--ink);
+  border-radius:6px;
+  font-size:13px;
+  font-weight:700;
+  text-decoration:none;
+  transition:transform 0.15s ease, opacity 0.15s ease;
 }
 
-.news-meta{
-    display:flex;
-    align-items:center;
-    gap:8px;
-
-    margin-bottom:13px;
+.read-btn:hover{
+  transform:translateY(-2px);
+  opacity:0.9;
 }
 
-.news-category{
-    display:inline-flex;
-    align-items:center;
-
-    padding:7px 11px;
-
-    border-radius:999px;
-
-    background:rgba(255,255,255,.94);
-    color:#111;
-
-    font-size:11px;
-    font-weight:800;
-
-    text-transform:uppercase;
-    letter-spacing:.08em;
+.news-counter{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
-.news-source{
-    padding:7px 11px;
-
-    border-radius:999px;
-
-    background:rgba(0,0,0,.38);
-
-    backdrop-filter:blur(10px);
-
-    font-size:11px;
-    font-weight:700;
+.dot-track{
+  display:flex;
+  gap:5px;
+  align-items:center;
 }
 
-.headline{
-    max-width:850px;
-
-    font-size:clamp(30px,4vw,58px);
-
-    line-height:.98;
-
-    letter-spacing:-.055em;
-
-    font-weight:850;
-
-    text-wrap:balance;
-
-    text-shadow:
-        0 2px 16px rgba(0,0,0,.25);
+.dot-item{
+  width:5px; height:5px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  transition:all 0.3s ease;
 }
 
-.description{
-    max-width:760px;
-
-    margin-top:15px;
-
-    color:rgba(255,255,255,.87);
-
-    font-size:14px;
-    line-height:1.55;
-
-    display:-webkit-box;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
-
-    overflow:hidden;
-}
-
-.news-footer{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    gap:20px;
-
-    margin-top:22px;
-}
-
-.read-button{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-
-    padding:12px 17px;
-
-    background:#fff;
-    color:#111;
-
-    border-radius:999px;
-
-    text-decoration:none;
-
-    font-size:12px;
-    font-weight:800;
-
-    transition:
-        transform .2s ease,
-        background .2s ease;
-}
-
-.read-button:hover{
-    transform:translateY(-2px);
-    background:#f0f0ed;
-}
-
-.source-link{
-    color:rgba(255,255,255,.85);
-
-    font-size:12px;
-    font-weight:700;
-
-    text-decoration:none;
-
-    border-bottom:1px solid rgba(255,255,255,.45);
-}
-
-
-/* =========================================================
-   NEWS CONTENT ANIMATION
-========================================================= */
-
-.news-content-animate{
-    animation:
-        newsContentIn .45s ease both;
-}
-
-@keyframes newsContentIn{
-
-    from{
-        opacity:0;
-        transform:translateY(15px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-
-}
-
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-.sidebar{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-}
-
-
-/* =========================================================
-   GENERIC PANEL
-========================================================= */
-
-.panel{
-    background:#fff;
-
-    border:1px solid #deded9;
-
-    border-radius:24px;
-
-    padding:22px;
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.035);
-}
-
-.panel-header{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-
-    margin-bottom:18px;
-}
-
-.panel-title{
-    font-size:17px;
-    font-weight:850;
-
-    letter-spacing:-.035em;
-}
-
-.panel-label{
-    color:#888;
-
-    font-size:10px;
-    font-weight:800;
-
-    text-transform:uppercase;
-    letter-spacing:.12em;
-}
-
-
-/* =========================================================
-   WEATHER
-========================================================= */
-
-.weather-main{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    gap:20px;
-}
-
-.weather-temp{
-    font-size:54px;
-    line-height:1;
-
-    font-weight:850;
-
-    letter-spacing:-.07em;
-}
-
-.weather-condition{
-    margin-top:7px;
-
-    color:#777;
-
-    font-size:13px;
-    font-weight:600;
-}
-
-.weather-icon{
-    width:65px;
-    height:65px;
-
-    display:grid;
-    place-items:center;
-
-    border-radius:20px;
-
-    background:#f3f3f0;
-
-    font-size:32px;
-}
-
-.weather-details{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-
-    gap:8px;
-
-    margin-top:20px;
-}
-
-.weather-detail{
-    padding:12px;
-
-    background:#f6f6f3;
-
-    border-radius:14px;
-}
-
-.weather-detail-label{
-    color:#888;
-
-    font-size:9px;
-    font-weight:800;
-
-    text-transform:uppercase;
-    letter-spacing:.08em;
-}
-
-.weather-detail-value{
-    margin-top:5px;
-
-    font-size:13px;
-    font-weight:800;
-}
-
-
-/* =========================================================
-   SCHOOL STATUS
-========================================================= */
-
-.status-card{
-    position:relative;
-
-    overflow:hidden;
-
-    background:#111;
-    color:#fff;
-
-    border-radius:24px;
-
-    padding:23px;
-}
-
-.status-card::after{
-    content:"";
-
-    position:absolute;
-
-    width:150px;
-    height:150px;
-
-    right:-60px;
-    bottom:-70px;
-
-    border-radius:50%;
-
-    border:1px solid rgba(255,255,255,.12);
-}
-
-.status-label{
-    color:#aaa;
-
-    font-size:10px;
-    font-weight:800;
-
-    text-transform:uppercase;
-    letter-spacing:.12em;
-}
-
-.current-period{
-    margin-top:9px;
-
-    font-size:28px;
-    font-weight:850;
-
-    letter-spacing:-.05em;
-}
-
-.current-subject{
-    margin-top:4px;
-
-    color:#d2d2d2;
-
-    font-size:14px;
-}
-
-.next-box{
-    margin-top:22px;
-    padding-top:17px;
-
-    border-top:1px solid rgba(255,255,255,.13);
+.dot-item.active{
+  width:18px;
+  border-radius:3px;
+  background:var(--amber);
 }
 
 .next-label{
-    color:#999;
-
-    font-size:9px;
-    font-weight:800;
-
-    text-transform:uppercase;
-    letter-spacing:.1em;
+  font-size:12px;
+  color:var(--muted);
+  font-weight:600;
 }
 
-.next-period{
-    margin-top:6px;
-
-    font-size:13px;
-    font-weight:750;
+/* Timer arc */
+.timer-ring{
+  width:36px; height:36px;
+  flex-shrink:0;
 }
 
-.next-start{
-    margin-top:3px;
-
-    color:#aaa;
-
-    font-size:11px;
+.timer-ring circle{
+  fill:none;
+  stroke-width:3;
 }
 
-.countdown{
-    margin-top:12px;
-
-    font-size:24px;
-    font-weight:850;
-
-    letter-spacing:-.04em;
+.timer-track{
+  stroke:rgba(255,255,255,0.1);
 }
 
-
-/* =========================================================
-   PROGRESS
-========================================================= */
-
-.progress-section{
-    margin-top:24px;
+.timer-fill{
+  stroke:var(--amber);
+  stroke-linecap:round;
+  stroke-dasharray:88;
+  stroke-dashoffset:0;
+  transition:stroke-dashoffset 0.9s linear;
+  transform:rotate(-90deg);
+  transform-origin:50% 50%;
 }
 
-.progress-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    margin-bottom:9px;
+/* ─── RIGHT SIDEBAR ──────────────────────────── */
+.sidebar{
+  display:flex;
+  flex-direction:column;
+  background:var(--ink-2);
+  overflow:hidden;
 }
 
-.progress-label{
-    color:#666;
-
-    font-size:11px;
-    font-weight:700;
+/* ─── PANEL BASE ─────────────────────────────── */
+.panel{
+  padding:1.6vh 1.8vw;
+  border-bottom:1px solid var(--line);
+  flex-shrink:0;
 }
 
-.progress-percent{
-    font-size:12px;
-    font-weight:850;
+.p-eyebrow{
+  font-size:clamp(8px,0.7vw,11px);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  color:var(--muted);
+  margin-bottom:1vh;
 }
 
-.progress-track{
-    height:7px;
+/* ─── WEATHER PANEL ──────────────────────────── */
+.weather-panel{}
 
-    overflow:hidden;
-
-    background:#2c2c2c;
-
-    border-radius:999px;
+.weather-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:18px;
 }
 
-.progress-bar{
-    width:0;
-    height:100%;
-
-    background:#fff;
-
-    border-radius:999px;
-
-    transition:width .5s ease;
+.weather-temp{
+  font-size:clamp(32px,4.5vw,72px);
+  font-weight:700;
+  letter-spacing:-3px;
+  line-height:1;
+  color:var(--white);
 }
 
-.progress-times{
-    display:flex;
-    justify-content:space-between;
-
-    margin-top:7px;
-
-    color:#888;
-
-    font-size:9px;
-    font-weight:700;
+.weather-right{
+  text-align:right;
 }
 
-
-/* =========================================================
-   TIMETABLE
-========================================================= */
-
-.schedule-section{
-    grid-column:1 / -1;
-
-    margin-top:3px;
+.weather-icon-big{
+  font-size:clamp(24px,3vw,46px);
+  line-height:1;
+  display:block;
+  margin-bottom:4px;
 }
 
-.schedule-heading{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-
-    margin-bottom:14px;
+.weather-cond{
+  font-size:clamp(10px,0.85vw,14px);
+  color:var(--muted);
+  font-weight:500;
 }
 
-.schedule-day{
-    color:#777;
-
-    font-size:12px;
-    font-weight:700;
+.weather-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
 }
 
-.table-wrap{
-    overflow-x:auto;
-
-    border:1px solid #deded9;
-    border-radius:24px;
-
-    background:#fff;
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.035);
+.wstat{
+  background:var(--ink-3);
+  border-radius:8px;
+  padding:10px 12px;
+  text-align:center;
 }
 
-.schedule-table{
-    width:100%;
-
-    min-width:900px;
-
-    border-collapse:collapse;
+.wstat-val{
+  font-size:15px;
+  font-weight:700;
+  color:var(--amber);
+  font-family:var(--f-mono);
 }
 
-.schedule-table th{
-    background:#f0f0ed;
-
-    color:#555;
-
-    font-size:10px;
-    font-weight:850;
-
-    text-transform:uppercase;
-    letter-spacing:.08em;
-
-    padding:16px 12px;
-
-    border-bottom:1px solid #deded9;
+.wstat-lbl{
+  font-size:9px;
+  color:var(--muted);
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.6px;
+  margin-top:3px;
 }
 
-.schedule-table th:first-child{
-    text-align:left;
-    padding-left:20px;
+/* ─── SCHOOL STATUS ──────────────────────────── */
+.status-panel{
+  background:var(--ink);
 }
 
-.schedule-table td{
-    padding:16px 12px;
-
-    text-align:center;
-
-    border-bottom:1px solid #e8e8e4;
-
-    font-size:12px;
-    font-weight:700;
+.period-big{
+  font-size:15px;
+  font-weight:600;
+  color:var(--muted);
+  margin-bottom:6px;
 }
 
-.schedule-table tr:last-child td{
-    border-bottom:0;
+.subject-big{
+  font-size:34px;
+  font-weight:700;
+  letter-spacing:-1px;
+  line-height:1.1;
+  margin-bottom:16px;
 }
 
-.schedule-table td:first-child{
-    text-align:left;
-    padding-left:20px;
-
-    font-weight:850;
+.time-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:var(--amber-dim);
+  border:1px solid rgba(245,166,35,0.25);
+  border-radius:6px;
+  padding:6px 12px;
+  font-size:12px;
+  font-weight:600;
+  color:var(--amber);
+  font-family:var(--f-mono);
+  margin-bottom:16px;
 }
 
-.subject-cell{
-    transition:
-        background .2s ease,
-        color .2s ease;
+.next-up{
+  background:var(--ink-3);
+  border-radius:8px;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
 }
 
-.subject-cell.current{
-    background:#111;
-    color:#fff;
+.next-up-info{}
+
+.next-up-lbl{
+  font-size:10px;
+  color:var(--muted);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.8px;
+  margin-bottom:3px;
 }
 
-.subject-cell.completed{
-    background:#f4f4f1;
-    color:#777;
+.next-up-subject{
+  font-size:15px;
+  font-weight:700;
 }
 
-
-/* =========================================================
-   PERIOD LIST
-========================================================= */
-
-.period-list{
-    margin-top:15px;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,minmax(0,1fr));
-
-    gap:8px;
+.next-up-time{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:2px;
 }
 
-.period-row{
-    min-width:0;
-
-    display:flex;
-    flex-direction:column;
-    gap:5px;
-
-    padding:13px 14px;
-
-    border:1px solid #e2e2de;
-    border-radius:15px;
-
-    background:#fff;
+.countdown-pill{
+  background:var(--ink);
+  border:1px solid var(--line-med);
+  border-radius:8px;
+  padding:8px 12px;
+  text-align:center;
+  flex-shrink:0;
 }
 
-.period-row span:first-child{
-    font-size:11px;
-    font-weight:800;
-
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+.countdown-val{
+  font-family:var(--f-mono);
+  font-size:18px;
+  font-weight:700;
+  color:var(--amber);
+  line-height:1;
 }
 
-.period-row span:last-child{
-    color:#888;
-
-    font-size:10px;
-    font-weight:600;
+.countdown-lbl{
+  font-size:9px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  margin-top:3px;
+  font-weight:600;
 }
 
-.period-row.current-period{
-    background:#111;
-    color:#fff;
+/* ─── PROGRESS ─────────────────────────────── */
+.progress-panel{}
 
-    border-color:#111;
+.prog-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
 }
 
-.period-row.current-period span:last-child{
-    color:#aaa;
+.prog-lbl{
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
 }
 
-.period-row.completed{
-    background:#f0f0ed;
+.prog-pct{
+  font-size:13px;
+  font-weight:700;
+  color:var(--amber);
+  font-family:var(--f-mono);
 }
 
-
-/* =========================================================
-   SCHOOL OVER MODAL
-========================================================= */
-
-.school-overlay{
-    position:fixed;
-    inset:0;
-
-    z-index:1000;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    padding:20px;
-
-    background:rgba(245,245,243,.88);
-
-    backdrop-filter:blur(12px);
-
-    opacity:0;
-    visibility:hidden;
-
-    pointer-events:none;
-
-    transition:
-        opacity .25s ease,
-        visibility .25s ease;
+.prog-track{
+  height:5px;
+  background:var(--ink-3);
+  border-radius:999px;
+  overflow:hidden;
 }
 
-.school-overlay.show{
-    opacity:1;
-    visibility:visible;
-
-    pointer-events:auto;
+.prog-fill{
+  height:100%;
+  background:linear-gradient(90deg, var(--amber) 0%, #FFD180 100%);
+  border-radius:999px;
+  width:0%;
+  transition:width 0.8s cubic-bezier(0.4,0,0.2,1);
 }
 
-.school-modal{
-    width:min(500px,100%);
-
-    background:#fff;
-
-    border:1px solid #ddd;
-
-    border-radius:28px;
-
-    padding:35px;
-
-    text-align:center;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.15);
-
-    transform:
-        translateY(12px)
-        scale(.98);
-
-    transition:
-        transform .3s ease;
+.prog-times{
+  display:flex;
+  justify-content:space-between;
+  margin-top:7px;
+  font-size:10px;
+  color:var(--muted-2);
+  font-family:var(--f-mono);
 }
 
-.school-overlay.show .school-modal{
-    transform:
-        translateY(0)
-        scale(1);
+/* ─── TIMETABLE ─────────────────────────────── */
+.timetable-panel{
+  flex:1;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  padding:20px 28px;
+  border-bottom:none;
 }
 
-.school-icon{
-    width:65px;
-    height:65px;
-
-    margin:0 auto 18px;
-
-    border-radius:20px;
-
-    background:#111;
-    color:#fff;
-
-    display:grid;
-    place-items:center;
-
-    font-size:27px;
+.tt-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
 }
 
-.school-modal h2{
-    font-size:30px;
-
-    letter-spacing:-.055em;
+.tt-day{
+  font-size:12px;
+  color:var(--amber);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.8px;
 }
 
-.school-modal p{
-    margin-top:9px;
-
-    color:#777;
-
-    font-size:13px;
-    line-height:1.5;
+.tt-list{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  overflow:hidden;
 }
 
-.school-close{
-    margin-top:22px;
-
-    padding:11px 18px;
-
-    border:0;
-    border-radius:999px;
-
-    background:#111;
-    color:#fff;
-
-    font-size:12px;
-    font-weight:800;
-
-    cursor:pointer;
-
-    transition:
-        transform .2s ease,
-        background .2s ease;
+.tt-row{
+  display:grid;
+  grid-template-columns:28px 1fr auto;
+  align-items:center;
+  gap:12px;
+  padding:9px 12px;
+  border-radius:8px;
+  background:var(--ink-3);
+  transition:background 0.2s ease, opacity 0.2s ease;
+  min-height:0;
 }
 
-.school-close:hover{
-    transform:translateY(-2px);
-    background:#292929;
+.tt-row.is-current{
+  background:var(--amber-dim);
+  border:1px solid rgba(245,166,35,0.3);
 }
 
-
-/* =========================================================
-   9-E WELCOME ANIMATION
-========================================================= */
-
-.nine-e{
-    position:fixed;
-    inset:0;
-
-    z-index:900;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    padding:20px;
-
-    pointer-events:none;
-
-    opacity:0;
-    visibility:hidden;
-
-    background:rgba(245,245,243,.35);
-
-    backdrop-filter:blur(3px);
+.tt-row.is-done{
+  opacity:0.35;
 }
 
-.nine-e.show{
-    visibility:visible;
-
-    animation:
-        nineEFade 6s ease both;
+.tt-num{
+  font-size:10px;
+  font-weight:700;
+  color:var(--muted-2);
+  font-family:var(--f-mono);
+  text-align:center;
 }
 
-.nine-e-card{
-    width:min(650px,calc(100% - 40px));
-
-    padding:50px;
-
-    border-radius:30px;
-
-    background:#111;
-    color:#fff;
-
-    text-align:center;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.25);
-
-    opacity:0;
-
-    transform:
-        translateY(30px)
-        scale(.82);
+.tt-row.is-current .tt-num{
+  color:var(--amber);
 }
 
-.nine-e.show .nine-e-card{
-    animation:
-        nineECardIn .7s cubic-bezier(.16,1,.3,1) .05s both;
+.tt-subj{
+  font-size:13px;
+  font-weight:600;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.nine-e-small{
-    color:#999;
-
-    font-size:10px;
-    font-weight:800;
-
-    text-transform:uppercase;
-    letter-spacing:.2em;
+.tt-row.is-current .tt-subj{
+  color:var(--amber);
 }
 
-.nine-e-title{
-    margin-top:10px;
-
-    font-size:clamp(60px,10vw,110px);
-
-    line-height:.9;
-
-    font-weight:900;
-
-    letter-spacing:-.08em;
+.tt-time{
+  font-size:10px;
+  color:var(--muted-2);
+  font-family:var(--f-mono);
+  text-align:right;
+  white-space:nowrap;
 }
 
-.nine-e-text{
-    margin-top:15px;
-
-    color:#bbb;
-
-    font-size:13px;
+/* ─── WELCOME ANIMATION ──────────────────────── */
+.welcome{
+  position:fixed;
+  inset:0;
+  z-index:999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--ink);
+  animation:welcomeFade 3s ease 1.5s forwards;
+  pointer-events:none;
 }
 
-@keyframes nineEFade{
-
-    0%{
-        opacity:0;
-    }
-
-    10%{
-        opacity:1;
-    }
-
-    84%{
-        opacity:1;
-    }
-
-    100%{
-        opacity:0;
-    }
-
+@keyframes welcomeFade{
+  0%{opacity:1}
+  100%{opacity:0;visibility:hidden}
 }
 
-@keyframes nineECardIn{
-
-    0%{
-        opacity:0;
-
-        transform:
-            translateY(30px)
-            scale(.82);
-    }
-
-    65%{
-        opacity:1;
-    }
-
-    100%{
-        opacity:1;
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-
+.welcome-inner{
+  text-align:center;
+  animation:welcomeIn 0.6s cubic-bezier(0.16,1,0.3,1) both;
 }
 
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.footer{
-    padding:22px 0 35px;
-
-    border-top:1px solid #deded9;
-
-    display:flex;
-    justify-content:space-between;
-
-    color:#888;
-
-    font-size:10px;
-    font-weight:600;
+@keyframes welcomeIn{
+  from{opacity:0;transform:translateY(30px) scale(0.9)}
+  to{opacity:1;transform:translateY(0) scale(1)}
 }
 
-.footer strong{
-    color:#333;
+.welcome-class{
+  font-size:clamp(80px,14vw,180px);
+  font-weight:700;
+  letter-spacing:-8px;
+  line-height:0.9;
+  color:var(--white);
 }
 
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:1000px){
-
-    .main{
-        grid-template-columns:1fr;
-    }
-
-    .sidebar{
-        display:grid;
-        grid-template-columns:1fr 1fr;
-    }
-
-    .schedule-section{
-        grid-column:auto;
-    }
-
-    .period-list{
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
-    }
-
+.welcome-class span{
+  color:var(--amber);
 }
 
-
-@media(max-width:680px){
-
-    .page{
-        width:calc(100% - 20px);
-    }
-
-    .topbar{
-        height:70px;
-    }
-
-    .brand-mark{
-        width:38px;
-        height:38px;
-    }
-
-    .brand-title{
-        font-size:16px;
-    }
-
-    .brand-subtitle{
-        font-size:9px;
-    }
-
-    .live-status{
-        display:none;
-    }
-
-    .main{
-        padding-top:18px;
-    }
-
-    .section-title{
-        font-size:24px;
-    }
-
-    .news-card{
-        min-height:500px;
-
-        border-radius:22px;
-    }
-
-    .news-content{
-        padding:22px;
-    }
-
-    .headline{
-        font-size:32px;
-    }
-
-    .description{
-        font-size:12px;
-    }
-
-    .news-footer{
-        align-items:flex-start;
-        flex-direction:column;
-        gap:12px;
-    }
-
-    .sidebar{
-        display:flex;
-    }
-
-    .weather-details{
-        grid-template-columns:
-            repeat(3,1fr);
-    }
-
-    .panel,
-    .status-card{
-        border-radius:20px;
-    }
-
-    .period-list{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .footer{
-        flex-direction:column;
-        gap:7px;
-    }
-
-    .nine-e-card{
-        padding:40px 25px;
-        border-radius:25px;
-    }
-
+.welcome-tagline{
+  font-size:18px;
+  color:var(--muted);
+  font-weight:500;
+  margin-top:20px;
+  letter-spacing:0.5px;
 }
 
+/* ─── CONTENT ANIMATION ──────────────────────── */
+.news-animate{
+  animation:newsIn 0.4s cubic-bezier(0.16,1,0.3,1) both;
+}
 
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
+@keyframes newsIn{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
+/* ─── OFFLINE BANNER ─────────────────────────── */
+.offline-banner{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:var(--red);
+  color:white;
+  padding:10px 20px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:600;
+  z-index:100;
+  transition:transform 0.3s ease;
+}
+
+.offline-banner.show{
+  transform:translateX(-50%) translateY(0);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────── */
+@media(max-width:1400px){
+  .board{grid-template-columns:1fr 380px}
+  .news-headline{font-size:clamp(28px,3.2vw,52px)}
+}
+@media(max-width:1100px){
+  .board{grid-template-columns:1fr 320px}
+  .weather-temp{font-size:56px;letter-spacing:-3px}
+  .subject-big{font-size:26px}
+}
+@media(max-width:860px){
+  .board{
+    grid-template-columns:1fr;
+    grid-template-rows:72px 1fr auto;
+    overflow-y:auto;
+  }
+  html,body{overflow:auto;height:auto}
+  .news-col{height:60vw;min-height:300px}
+  .sidebar{max-height:none}
+  .news-headline{font-size:clamp(22px,5vw,42px)}
+}
+@media(max-width:600px){
+  .topbar{padding:0 16px}
+  .brand-name{font-size:18px}
+  .clock{font-size:22px}
+  .news-body{padding:24px}
+}
 @media(prefers-reduced-motion:reduce){
-
-    *,
-    *::before,
-    *::after{
-        scroll-behavior:auto !important;
-
-        animation-duration:.01ms !important;
-        animation-iteration-count:1 !important;
-
-        transition-duration:.01ms !important;
-    }
-
+  *,*::before,*::after{
+    animation-duration:0.01ms!important;
+    transition-duration:0.01ms!important;
+  }
 }
-
 </style>
 </head>
-
-
 <body>
 
-<div class="page">
-
-    <!-- =================================================
-         HEADER
-    ================================================= -->
-
-    <header class="topbar">
-
-        <div class="brand">
-
-            <div class="brand-mark">
-                9E
-            </div>
-
-            <div class="brand-text">
-
-                <div class="brand-title">
-                    Smartboard
-                </div>
-
-                <div class="brand-subtitle">
-                    Class 9-E · Daily Dashboard
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="topbar-right">
-
-            <div class="live-status">
-                <span class="live-dot"></span>
-                Live dashboard
-            </div>
-
-            <div
-                id="clock"
-                class="clock"
-            >
-                --:--:--
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <!-- =================================================
-         MAIN
-    ================================================= -->
-
-    <main class="main">
-
-
-        <!-- =================================================
-             NEWS
-        ================================================= -->
-
-        <section class="news-section">
-
-            <div class="section-heading">
-
-                <div>
-
-                    <div class="eyebrow">
-                        Latest
-                    </div>
-
-                    <h1 class="section-title">
-                        News
-                    </h1>
-
-                </div>
-
-
-                <div class="news-controls">
-
-                    <button
-                        type="button"
-                        id="nextBtn"
-                        class="icon-btn"
-                        aria-label="Next news"
-                        title="Next news"
-                    >
-                        →
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <article class="news-card">
-
-                <div
-                    id="newsBg"
-                    class="news-image"
-                ></div>
-
-                <div class="news-gradient"></div>
-
-
-                <div
-                    id="newsBody"
-                    class="news-content"
-                >
-
-                    <div class="news-meta">
-
-                        <span
-                            id="category"
-                            class="news-category"
-                        >
-                            News
-                        </span>
-
-                        <span
-                            id="sourceBadge"
-                            class="news-source"
-                        >
-                            Loading
-                        </span>
-
-                    </div>
-
-
-                    <h2
-                        id="headline"
-                        class="headline"
-                    >
-                        Loading latest headlines...
-                    </h2>
-
-
-                    <p
-                        id="description"
-                        class="description"
-                    >
-                        Fetching the latest stories.
-                    </p>
-
-
-                    <div class="news-footer">
-
-                        <a
-                            id="readBtn"
-                            class="read-button"
-                            href="#"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Read story
-                            <span>↗</span>
-                        </a>
-
-
-                        <a
-                            id="sourceLink"
-                            class="source-link"
-                            href="#"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            News source
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-        </section>
-
-
-        <!-- =================================================
-             SIDEBAR
-        ================================================= -->
-
-        <aside class="sidebar">
-
-
-            <!-- WEATHER -->
-
-            <section class="panel">
-
-                <div class="panel-header">
-
-                    <div>
-
-                        <div class="panel-label">
-                            Indore
-                        </div>
-
-                        <div class="panel-title">
-                            Weather
-                        </div>
-
-                    </div>
-
-                    <div class="panel-label">
-                        Live
-                    </div>
-
-                </div>
-
-
-                <div class="weather-main">
-
-                    <div>
-
-                        <div
-                            id="weatherTemp"
-                            class="weather-temp"
-                        >
-                            --°
-                        </div>
-
-                        <div
-                            id="weatherCondition"
-                            class="weather-condition"
-                        >
-                            Loading weather...
-                        </div>
-
-                    </div>
-
-
-                    <div
-                        id="weatherIcon"
-                        class="weather-icon"
-                    >
-                        🌤️
-                    </div>
-
-                </div>
-
-
-                <div class="weather-details">
-
-                    <div class="weather-detail">
-
-                        <div class="weather-detail-label">
-                            Feels
-                        </div>
-
-                        <div
-                            id="weatherFeels"
-                            class="weather-detail-value"
-                        >
-                            --°
-                        </div>
-
-                    </div>
-
-
-                    <div class="weather-detail">
-
-                        <div class="weather-detail-label">
-                            Humidity
-                        </div>
-
-                        <div
-                            id="weatherHumidity"
-                            class="weather-detail-value"
-                        >
-                            --%
-                        </div>
-
-                    </div>
-
-
-                    <div class="weather-detail">
-
-                        <div class="weather-detail-label">
-                            Wind
-                        </div>
-
-                        <div
-                            id="weatherWind"
-                            class="weather-detail-value"
-                        >
-                            -- km/h
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- SCHOOL STATUS -->
-
-            <section class="status-card">
-
-                <div class="status-label">
-                    School status
-                </div>
-
-
-                <div
-                    id="currentPeriod"
-                    class="current-period"
-                >
-                    Loading...
-                </div>
-
-
-                <div
-                    id="currentSubject"
-                    class="current-subject"
-                >
-                    Checking timetable
-                </div>
-
-
-                <div class="next-box">
-
-                    <div class="next-label">
-                        Up next
-                    </div>
-
-
-                    <div
-                        id="nextPeriod"
-                        class="next-period"
-                    >
-                        —
-                    </div>
-
-
-                    <div
-                        id="nextStart"
-                        class="next-start"
-                    >
-                        —
-                    </div>
-
-
-                 
-
-                </div>
-
-
-                <div class="progress-section">
-
-                    <div class="progress-header">
-
-                        <span
-                            id="progressLabel"
-                            class="progress-label"
-                        >
-                            School day progress
-                        </span>
-
-                        <span
-                            id="progressPercent"
-                            class="progress-percent"
-                        >
-                            0%
-                        </span>
-
-                    </div>
-
-
-                    <div class="progress-track">
-
-                        <div
-                            id="progressBar"
-                            class="progress-bar"
-                        ></div>
-
-                    </div>
-
-
-                    <div class="progress-times">
-
-                        <span id="progressStart">
-                            7:50 AM
-                        </span>
-
-                        <span id="progressEnd">
-                            1:45 PM
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </aside>
-
-
-        <!-- =================================================
-             TIMETABLE
-        ================================================= -->
-
-        <section class="schedule-section">
-
-            <div class="schedule-heading">
-
-                <div>
-
-                    <div class="eyebrow">
-                        Class schedule
-                    </div>
-
-                    <h2 class="section-title">
-                        Timetable
-                    </h2>
-
-                </div>
-
-
-                <div
-                    id="scheduleDay"
-                    class="schedule-day"
-                >
-                    Today
-                </div>
-
-            </div>
-
-
-            <div class="table-wrap">
-
-                <table class="schedule-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Day
-                            </th>
-
-                            <th>
-                                1<sup>st</sup> Period
-                            </th>
-
-                            <th>
-                                2<sup>nd</sup> Period
-                            </th>
-
-                            <th>
-                                3<sup>rd</sup> Period
-                            </th>
-
-                            <th>
-                                4<sup>th</sup> Period
-                            </th>
-
-                            <th>
-                                5<sup>th</sup> Period
-                            </th>
-
-                            <th>
-                                6<sup>th</sup> Period
-                            </th>
-
-                            <th>
-                                7<sup>th</sup> Period
-                            </th>
-
-                            <th>
-                                8<sup>th</sup> Period
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody id="scheduleTableBody">
-                    </tbody>
-
-                </table>
-
-            </div>
-
-
-            <div
-                id="periodList"
-                class="period-list"
-            ></div>
-
-        </section>
-
-    </main>
-
-
-    <!-- =================================================
-         FOOTER
-    ================================================= -->
-
-    <footer class="footer">
-
-        <span>
-            9-E Smartboard
-        </span>
-
-        <span>
-            Live news · Weather · Timetable ·
-            <strong>Daily progress</strong>
-        </span>
-
-    </footer>
-
+<!-- WELCOME SCREEN -->
+<div class="welcome" id="welcome" aria-hidden="true">
+  <div class="welcome-inner">
+    <div class="welcome-class">9<span>-E</span></div>
+    <div class="welcome-tagline">Class Smartboard · Live Now</div>
+  </div>
 </div>
 
+<!-- OFFLINE BANNER -->
+<div class="offline-banner" id="offlineBanner">⚡ No internet — showing cached data</div>
 
-<!-- =====================================================
-     SCHOOL OVER MODAL
-====================================================== -->
+<!-- BOARD -->
+<div class="board">
 
-<div
-    id="schoolOver"
-    class="school-overlay"
-    aria-hidden="true"
->
+  <!-- ── TOPBAR ── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="brand-pill">9-E</div>
+      <div>
+        <div class="brand-name">Smartboard</div>
+        <div class="brand-sub">Class Dashboard · Indore</div>
+      </div>
+      <div class="divider-v"></div>
+      <div class="live-badge">
+        <span class="pulse"></span>
+        Live
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="date-display" id="dateDisplay">—</div>
+      <div class="divider-v"></div>
+      <div class="clock" id="clock">--:--:--</div>
+    </div>
+  </header>
 
-    <div class="school-modal">
-
-        <div class="school-icon">
-            ✓
+  <!-- ── LEFT: NEWS ── -->
+  <section class="news-col" aria-label="Today's news">
+    <div class="news-bg" id="newsBg"></div>
+    <div class="news-scrim"></div>
+    <div class="news-body" id="newsBody">
+      <div class="news-kicker">
+        <span class="news-cat" id="newsCat">News</span>
+        <span class="news-dot"></span>
+        <span class="news-src" id="newsSrc">Loading</span>
+      </div>
+      <h2 class="news-headline" id="newsHeadline">Fetching today's top stories...</h2>
+      <p class="news-desc" id="newsDesc">The smartboard pulls live headlines every 10 minutes.</p>
+      <div class="news-actions">
+        <a class="read-btn" id="newsLink" href="#" target="_blank" rel="noopener noreferrer">
+          Read full story <span aria-hidden="true">↗</span>
+        </a>
+        <div class="news-counter">
+          <svg class="timer-ring" viewBox="0 0 36 36">
+            <circle class="timer-track" cx="18" cy="18" r="14"/>
+            <circle class="timer-fill" id="timerFill" cx="18" cy="18" r="14"/>
+          </svg>
+          <div class="dot-track" id="dotTrack"></div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <h2>
-            School day complete
-        </h2>
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" aria-label="School info">
 
-        <p>
-            All scheduled periods for today are finished.
-        </p>
-
-        <button
-            id="schoolClose"
-            type="button"
-            class="school-close"
-        >
-            Close
-        </button>
-
+    <!-- WEATHER -->
+    <div class="panel weather-panel">
+      <div class="p-eyebrow">Indore · Live Weather</div>
+      <div class="weather-row">
+        <div class="weather-temp" id="wTemp">--°</div>
+        <div class="weather-right">
+          <span class="weather-icon-big" id="wIcon">🌤️</span>
+          <div class="weather-cond" id="wCond">Loading...</div>
+        </div>
+      </div>
+      <div class="weather-stats">
+        <div class="wstat">
+          <div class="wstat-val" id="wFeels">--°</div>
+          <div class="wstat-lbl">Feels</div>
+        </div>
+        <div class="wstat">
+          <div class="wstat-val" id="wHumid">--%</div>
+          <div class="wstat-lbl">Humidity</div>
+        </div>
+        <div class="wstat">
+          <div class="wstat-val" id="wWind">-- km/h</div>
+          <div class="wstat-lbl">Wind</div>
+        </div>
+      </div>
     </div>
 
-</div>
-
-
-<!-- =====================================================
-     9-E ANIMATION
-====================================================== -->
-
-<div
-    id="nineE"
-    class="nine-e"
-    aria-hidden="true"
->
-
-    <div class="nine-e-card">
-
-        <div class="nine-e-small">
-            Smartboard
+    <!-- SCHOOL STATUS -->
+    <div class="panel status-panel">
+      <div class="p-eyebrow">Now in class</div>
+      <div class="period-big" id="periodLabel">—</div>
+      <div class="subject-big" id="subjectBig">—</div>
+      <div class="time-chip" id="timeChip">
+        <span>⏱</span><span id="timeChipVal">—</span>
+      </div>
+      <div class="next-up">
+        <div class="next-up-info">
+          <div class="next-up-lbl">Up next</div>
+          <div class="next-up-subject" id="nextSubject">—</div>
+          <div class="next-up-time" id="nextTime">—</div>
         </div>
-
-        <div class="nine-e-title">
-            9-E
+        <div class="countdown-pill">
+          <div class="countdown-val" id="cdVal">—</div>
+          <div class="countdown-lbl">in</div>
         </div>
-
-        <div class="nine-e-text">
-            Class dashboard is active.
-        </div>
-
+      </div>
     </div>
 
-</div>
+    <!-- PROGRESS -->
+    <div class="panel progress-panel">
+      <div class="prog-header">
+        <span class="prog-lbl" id="progLbl">School day</span>
+        <span class="prog-pct" id="progPct">0%</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" id="progFill"></div>
+      </div>
+      <div class="prog-times">
+        <span>7:50 AM</span>
+        <span id="progEnd">1:45 PM</span>
+      </div>
+    </div>
 
+    <!-- TIMETABLE -->
+    <div class="timetable-panel">
+      <div class="tt-header">
+        <div class="p-eyebrow" style="margin:0">Today's Schedule</div>
+        <div class="tt-day" id="ttDay">—</div>
+      </div>
+      <div class="tt-list" id="ttList"></div>
+    </div>
+
+  </aside>
+
+</div>
 
 <script>
-
-document.addEventListener("DOMContentLoaded",()=>{
-
+(function(){
 "use strict";
 
+/* ─── DATA ─────────────────────────────────── */
+const SCHEDULE = {
+  monday:    ["Physics","Games","AI","Maths","Hindi","Biology","English","SST"],
+  tuesday:   ["Physics","Life Skills","SST","English","Biology","English","Maths","Hindi"],
+  wednesday: ["SST","Sanskrit","Maths","English","SST","Chemistry","Maths","Hindi"],
+  thursday:  ["Maths","Arts","Moral Science","SST","Hindi","English","CC","CC"],
+  friday:    ["Maths","AI","SST","Maths","Physics","Music/Dance","Chemistry","Hindi"],
+  saturday:  ["Chemistry","SST","English","Biology","AI","Games","Maths"]
+};
 
-/* =========================================================
-   HELPERS
-========================================================= */
+const PERIODS = [
+  ["07:50","08:30"],["08:30","09:10"],["09:10","09:50"],["09:50","10:30"],
+  ["11:05","11:45"],["11:45","12:25"],["12:25","13:05"],["13:05","13:45"]
+];
 
-const $ = id =>
-    document.getElementById(id);
+const DAYS = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+const DAY_LABELS = {
+  monday:"Monday",tuesday:"Tuesday",wednesday:"Wednesday",
+  thursday:"Thursday",friday:"Friday",saturday:"Saturday"
+};
 
+// Category → contextually-correct Unsplash images
+const CAT_IMAGES = {
+  India: [
+    "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80",
+    "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1920&q=80"
+  ],
+  World: [
+    "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1920&q=80",
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80"
+  ],
+  Technology: [
+    "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1920&q=80",
+    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1920&q=80"
+  ],
+  Science: [
+    "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=1920&q=80",
+    "https://images.unsplash.com/photo-1628595351029-c2bf17511435?w=1920&q=80"
+  ],
+  Sports: [
+    "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=1920&q=80",
+    "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=1920&q=80"
+  ],
+  Business: [
+    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1920&q=80",
+    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80"
+  ],
+  Health: [
+    "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=1920&q=80",
+    "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1920&q=80"
+  ],
+  Politics: [
+    "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=1920&q=80",
+    "https://images.unsplash.com/photo-1555848962-6e79363ec58f?w=1920&q=80"
+  ]
+};
 
-function escapeHTML(text){
+/* ─── STATE ─────────────────────────────────── */
+let stories = [];
+let storyIdx = 0;
+let newsTimer = 10;
+let newsInterval = null;
+let cachedNews = null;
 
-    return String(text ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+/* ─── UTILS ─────────────────────────────────── */
+const $  = id => document.getElementById(id);
+const tm = t  => { const [h,m]=t.split(":").map(Number); return h*60+m; };
 
+function fmtTime(t){
+  const [h,m] = typeof t==="number"
+    ? [Math.floor(t/60), t%60]
+    : t.split(":").map(Number);
+  const s = h>=12?"PM":"AM";
+  return `${h%12||12}:${String(Math.round(m)).padStart(2,"0")} ${s}`;
 }
 
-
-function cleanText(value=""){
-
-    const div =
-        document.createElement("div");
-
-    div.innerHTML = value;
-
-    return (
-        div.textContent ||
-        div.innerText ||
-        ""
-    )
-    .replace(/\s+/g," ")
-    .trim();
-
+function fmtCountdown(mins){
+  if(mins<=0) return "Now";
+  const m = Math.floor(mins);
+  const s = Math.floor((mins%1)*60);
+  return `${m}:${String(s).padStart(2,"0")}`;
 }
 
+function clean(html){
+  const d = document.createElement("div");
+  d.innerHTML = html;
+  return (d.textContent||"").replace(/\s+/g," ").trim().slice(0,280);
+}
 
 function host(url){
-
-    try{
-
-        return new URL(url)
-            .hostname
-            .replace(/^www\./,"");
-
-    }catch{
-
-        return "News";
-
-    }
-
+  try{ return new URL(url).hostname.replace(/^www\./,""); }
+  catch{ return "News"; }
 }
 
-
-function mins(time){
-
-    const parts =
-        String(time)
-            .split(":")
-            .map(Number);
-
-    return (
-        parts[0] * 60 +
-        parts[1]
-    );
-
+/* ─── OFFLINE HANDLING ──────────────────────── */
+function setOffline(state){
+  $("offlineBanner").classList.toggle("show", state);
 }
 
+window.addEventListener("online",  ()=>{ setOffline(false); fetchNews(); fetchWeather(); });
+window.addEventListener("offline", ()=>setOffline(true));
 
-function formatTime(time){
-
-    let value;
-
-    if(typeof time === "number"){
-
-        const h =
-            Math.floor(time / 60);
-
-        const m =
-            Math.floor(time % 60);
-
-        value =
-            String(h).padStart(2,"0") +
-            ":" +
-            String(m).padStart(2,"0");
-
-    }else{
-
-        value =
-            String(time);
-
-    }
-
-    const [h,m] =
-        value
-            .split(":")
-            .map(Number);
-
-    const suffix =
-        h >= 12
-            ? "PM"
-            : "AM";
-
-    const hour =
-        h % 12 || 12;
-
-    return (
-        hour +
-        ":" +
-        String(m).padStart(2,"0") +
-        " " +
-        suffix
-    );
-
+/* ─── CLOCK & DATE ──────────────────────────── */
+function updateClock(){
+  const now = new Date();
+  $("clock").textContent = now.toLocaleTimeString("en-IN",{
+    hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:false
+  });
+  $("dateDisplay").textContent = now.toLocaleDateString("en-IN",{
+    weekday:"long", day:"numeric", month:"short"
+  });
 }
 
-
-function formatCountdown(minutes){
-
-    if(minutes <= 0)
-        return "Now";
-
-    const totalSeconds =
-        Math.max(
-            0,
-            Math.floor(minutes * 60)
-        );
-
-    const min =
-        Math.floor(
-            totalSeconds / 60
-        );
-
-    const sec =
-        totalSeconds % 60;
-
-    return (
-        min +
-        ":" +
-        String(sec).padStart(2,"0")
-    );
-
-}
-
-
-/* =========================================================
-   NEWS
-========================================================= */
-
+/* ─── NEWS ──────────────────────────────────── */
 const FEEDS = [
-
-    [
-        "India",
-        "https://news.google.com/rss/search?q=India&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-
-    [
-        "World",
-        "https://news.google.com/rss/search?q=world%20news&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-
-    [
-        "Technology",
-        "https://news.google.com/rss/search?q=technology%20AI&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-
-    [
-        "Science",
-        "https://news.google.com/rss/search?q=science&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-
-    [
-        "Sports",
-        "https://news.google.com/rss/search?q=sports&hl=en-IN&gl=IN&ceid=IN:en"
-    ],
-
-    [
-        "Business",
-        "https://news.google.com/rss/search?q=business&hl=en-IN&gl=IN&ceid=IN:en"
-    ]
-
+  ["India",      "https://news.google.com/rss/search?q=India+news&hl=en-IN&gl=IN&ceid=IN:en"],
+  ["World",      "https://news.google.com/rss/search?q=world+news&hl=en-IN&gl=IN&ceid=IN:en"],
+  ["Technology", "https://news.google.com/rss/search?q=technology+AI&hl=en-IN&gl=IN&ceid=IN:en"],
+  ["Science",    "https://news.google.com/rss/search?q=science+discovery&hl=en-IN&gl=IN&ceid=IN:en"],
+  ["Sports",     "https://news.google.com/rss/search?q=cricket+sports+India&hl=en-IN&gl=IN&ceid=IN:en"],
+  ["Business",   "https://news.google.com/rss/search?q=business+economy+India&hl=en-IN&gl=IN&ceid=IN:en"]
 ];
 
+async function fetchNews(){
+  try{
+    const groups = await Promise.all(FEEDS.map(([cat,url])=>
+      fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`,{cache:"no-store"})
+        .then(r=>r.json())
+        .then(d=>{
+          if(!d||!d.items) return [];
+          return d.items.slice(0,4).map((item,i)=>{
+            // keyword detection for better image matching
+            const title = (item.title||"").toLowerCase();
+            let cat2 = cat;
+            if(/cricket|ipl|hockey|football|badminton|tennis/.test(title)) cat2="Sports";
+            if(/ai|artificial|tech|software|app|robot/.test(title)) cat2="Technology";
+            if(/health|covid|vaccine|doctor|hospital/.test(title)) cat2="Health";
+            if(/modi|government|parliament|election|minister/.test(title)) cat2="Politics";
 
-const NEWS_IMAGES = {
+            const imgs = CAT_IMAGES[cat2] || CAT_IMAGES.India;
+            return {
+              title: item.title || "Untitled",
+              desc:  clean(item.description||""),
+              link:  item.link||"#",
+              src:   host(item.link||""),
+              cat:   cat2,
+              img:   imgs[i % imgs.length]
+            };
+          });
+        })
+        .catch(()=>[])
+    ));
 
-    India:[
-        "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1800&q=85",
-        "https://images.unsplash.com/photo-1532375810709-75b1da00537c?auto=format&fit=crop&w=1800&q=85"
-    ],
+    const seen = new Set();
+    const all = groups.flat().filter(s=>{
+      const k = s.title.toLowerCase().slice(0,40);
+      if(seen.has(k)) return false;
+      seen.add(k); return true;
+    });
 
-    World:[
-        "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1800&q=85",
-        "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1800&q=85"
-    ],
+    if(all.length){
+      stories = all;
+      cachedNews = all;
+      storyIdx = 0;
+      buildDots();
+      renderStory();
+      startTimer();
+    } else if(cachedNews){
+      stories = cachedNews;
+      buildDots();
+      renderStory();
+      startTimer();
+    }
+  } catch(e){
+    console.warn("News fetch error:", e);
+    if(cachedNews){ stories=cachedNews; buildDots(); renderStory(); startTimer(); }
+  }
+}
 
-    Technology:[
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=85",
-        "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=1800&q=85"
-    ],
+function buildDots(){
+  const track = $("dotTrack");
+  track.innerHTML="";
+  const count = Math.min(stories.length, 12);
+  for(let i=0;i<count;i++){
+    const d = document.createElement("div");
+    d.className="dot-item"+(i===0?" active":"");
+    d.setAttribute("data-i",i);
+    track.appendChild(d);
+  }
+}
 
-    Science:[
-        "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1800&q=85",
-        "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?auto=format&fit=crop&w=1800&q=85"
-    ],
+function updateDots(){
+  document.querySelectorAll(".dot-item").forEach(d=>{
+    d.classList.toggle("active", +d.dataset.i === storyIdx%Math.min(stories.length,12));
+  });
+}
 
-    Sports:[
-        "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1800&q=85",
-        "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1800&q=85"
-    ],
+function renderStory(){
+  if(!stories.length) return;
+  const s = stories[storyIdx % stories.length];
 
-    Business:[
-        "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1800&q=85",
-        "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=85"
-    ]
+  const bg = $("newsBg");
+  const body = $("newsBody");
 
+  bg.classList.remove("loaded");
+
+  const img = new Image();
+  img.onload  = ()=>{ bg.style.backgroundImage=`url("${s.img}")`; bg.classList.add("loaded"); };
+  img.onerror = ()=>{ bg.style.backgroundImage=`url("${(CAT_IMAGES[s.cat]||CAT_IMAGES.India)[0]}")`; bg.classList.add("loaded"); };
+  img.src = s.img;
+
+  $("newsCat").textContent    = s.cat;
+  $("newsSrc").textContent    = s.src;
+  $("newsHeadline").textContent = s.title;
+  $("newsDesc").textContent   = s.desc || "Tap to read the full story.";
+  const link = /^https?:\/\//.test(s.link) ? s.link : "#";
+  $("newsLink").href = link;
+
+  body.classList.remove("news-animate");
+  void body.offsetWidth;
+  body.classList.add("news-animate");
+  updateDots();
+}
+
+function startTimer(){
+  clearInterval(newsInterval);
+  newsTimer = 10;
+  updateTimerRing(10);
+
+  newsInterval = setInterval(()=>{
+    newsTimer--;
+    updateTimerRing(newsTimer);
+    if(newsTimer<=0){
+      storyIdx = (storyIdx+1) % stories.length;
+      renderStory();
+      newsTimer = 10;
+    }
+  }, 1000);
+}
+
+function updateTimerRing(seconds){
+  const circ = 2*Math.PI*14; // r=14 → ~88
+  const pct = seconds/10;
+  const offset = circ*(1-pct);
+  $("timerFill").style.strokeDasharray = circ;
+  $("timerFill").style.strokeDashoffset = offset;
+}
+
+/* ─── WEATHER ───────────────────────────────── */
+const WEATHER_CODES = {
+  0:["Clear Sky","☀️"], 1:["Mainly Clear","🌤️"], 2:["Partly Cloudy","⛅"], 3:["Overcast","☁️"],
+  45:["Foggy","🌫️"], 48:["Icy Fog","🌫️"], 51:["Light Drizzle","🌦️"], 53:["Drizzle","🌦️"],
+  55:["Heavy Drizzle","🌧️"], 61:["Light Rain","🌦️"], 63:["Rain","🌧️"], 65:["Heavy Rain","🌧️"],
+  71:["Light Snow","🌨️"], 73:["Snow","❄️"], 75:["Heavy Snow","❄️"],
+  80:["Showers","🌦️"], 81:["Rain Showers","🌧️"], 82:["Heavy Showers","⛈️"],
+  95:["Thunderstorm","⛈️"], 96:["Thunderstorm","⛈️"], 99:["Thunderstorm","⛈️"]
 };
 
-
-let stories = [];
-let newsIndex = 0;
-
-
-function getRSSImage(item,category,index){
-
-    const possible = [
-
-        item.thumbnail,
-
-        item.enclosure?.link,
-
-        item.enclosure?.url,
-
-        item["media:content"]?.url,
-
-        item["media:thumbnail"]?.url
-
-    ];
-
-
-    for(const image of possible){
-
-        if(
-            typeof image === "string" &&
-            /^https?:\/\//i.test(image)
-        ){
-
-            return image;
-
-        }
-
-    }
-
-
-    const fallback =
-        NEWS_IMAGES[category] ||
-        NEWS_IMAGES.World;
-
-
-    return fallback[
-        index % fallback.length
-    ];
-
+async function fetchWeather(){
+  try{
+    const r = await fetch(
+      "https://api.open-meteo.com/v1/forecast?latitude=22.7196&longitude=75.8577"
+      +"&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code"
+      +"&timezone=Asia%2FKolkata",
+      {cache:"no-store"}
+    );
+    const d = await r.json();
+    const c = d.current;
+    const [cond,icon] = WEATHER_CODES[c.weather_code] || ["Clear","☀️"];
+    $("wTemp").textContent   = Math.round(c.temperature_2m)+"°";
+    $("wFeels").textContent  = Math.round(c.apparent_temperature)+"°";
+    $("wHumid").textContent  = c.relative_humidity_2m+"%";
+    $("wWind").textContent   = Math.round(c.wind_speed_10m)+" km/h";
+    $("wCond").textContent   = cond;
+    $("wIcon").textContent   = icon;
+  } catch(e){
+    $("wCond").textContent = "Unavailable";
+    console.warn("Weather error:", e);
+  }
 }
 
-
-async function fetchFeed(category,url){
-
-    try{
-
-        const endpoint =
-            "https://api.rss2json.com/v1/api.json?rss_url=" +
-            encodeURIComponent(url);
-
-
-        const response =
-            await fetch(
-                endpoint,
-                {
-                    cache:"no-store"
-                }
-            );
-
-
-        if(!response.ok)
-            throw new Error(
-                "RSS request failed"
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if(
-            !data ||
-            !Array.isArray(data.items)
-        ){
-
-            return [];
-
-        }
-
-
-        return data.items
-            .slice(0,8)
-            .map((item,index)=>({
-
-                title:
-                    cleanText(item.title) ||
-                    "Untitled headline",
-
-                link:
-                    item.link ||
-                    "#",
-
-                source:
-                    host(item.link),
-
-                category,
-
-                description:
-                    cleanText(
-                        item.description
-                    ).slice(0,280),
-
-                image:
-                    getRSSImage(
-                        item,
-                        category,
-                        index
-                    )
-
-            }));
-
-
-    }catch(error){
-
-        console.warn(
-            "News feed unavailable:",
-            category,
-            error
-        );
-
-        return [];
-
-    }
-
-}
-
-
-async function loadNews(){
-
-    try{
-
-        const groups =
-            await Promise.all(
-                FEEDS.map(
-                    feed =>
-                        fetchFeed(
-                            feed[0],
-                            feed[1]
-                        )
-                )
-            );
-
-
-        const seen =
-            new Set();
-
-
-        stories =
-            groups
-                .flat()
-                .filter(item=>{
-
-                    const key =
-                        item.title
-                            .toLowerCase()
-                            .trim();
-
-
-                    if(seen.has(key))
-                        return false;
-
-
-                    seen.add(key);
-
-                    return true;
-
-                });
-
-
-        if(!stories.length){
-
-            stories = [
-
-                {
-                    title:
-                        "Latest news is loading",
-
-                    link:"#",
-
-                    source:
-                        "News service",
-
-                    category:
-                        "News",
-
-                    description:
-                        "The news service is temporarily unavailable. The dashboard will retry automatically.",
-
-                    image:
-                        NEWS_IMAGES.World[0]
-
-                },
-
-                {
-                    title:
-                        "India and world headlines will appear here",
-
-                    link:"#",
-
-                    source:
-                        "Smartboard",
-
-                    category:
-                        "India",
-
-                    description:
-                        "Live stories are automatically fetched from news feeds.",
-
-                    image:
-                        NEWS_IMAGES.India[0]
-
-                }
-
-            ];
-
-        }
-
-
-        newsIndex = 0;
-
-        renderMainNews();
-
-
-    }catch(error){
-
-        console.error(
-            "News loading error:",
-            error
-        );
-
-    }
-
-}
-
-
-function renderMainNews(){
-
-    if(!stories.length)
-        return;
-
-
-    const item =
-        stories[
-            newsIndex % stories.length
-        ];
-
-
-    const bg =
-        $("newsBg");
-
-    const body =
-        $("newsBody");
-
-
-    if(!bg || !body)
-        return;
-
-
-    bg.classList.remove(
-        "loaded"
-    );
-
-
-    const fallback =
-        NEWS_IMAGES[item.category] ||
-        NEWS_IMAGES.World;
-
-
-    const image =
-        item.image ||
-        fallback[0];
-
-
-    const preload =
-        new Image();
-
-
-    preload.onload = ()=>{
-
-        bg.style.backgroundImage =
-            `url("${image.replaceAll('"',"")}")`;
-
-
-        requestAnimationFrame(()=>{
-
-            bg.classList.add(
-                "loaded"
-            );
-
-        });
-
-    };
-
-
-    preload.onerror = ()=>{
-
-        const backup =
-            fallback[0];
-
-
-        bg.style.backgroundImage =
-            `url("${backup}")`;
-
-
-        bg.classList.add(
-            "loaded"
-        );
-
-    };
-
-
-    preload.src = image;
-
-
-    $("category").textContent =
-        item.category || "News";
-
-
-    $("sourceBadge").textContent =
-        item.source || "News";
-
-
-    $("headline").textContent =
-        item.title;
-
-
-    $("description").textContent =
-        item.description ||
-        "Latest headline from the selected news feed.";
-
-
-    const validLink =
-        /^https?:\/\//i.test(
-            item.link || ""
-        )
-            ? item.link
-            : "#";
-
-
-    $("readBtn").href =
-        validLink;
-
-
-    $("sourceLink").href =
-        validLink;
-
-
-    $("sourceLink").textContent =
-        item.source ||
-        "News source";
-
-
-    body.classList.remove(
-        "news-content-animate"
-    );
-
-
-    void body.offsetWidth;
-
-
-    body.classList.add(
-        "news-content-animate"
-    );
-
-}
-
-
-$("nextBtn").addEventListener(
-    "click",
-    ()=>{
-
-        if(!stories.length)
-            return;
-
-
-        newsIndex =
-            (
-                newsIndex + 1
-            ) %
-            stories.length;
-
-
-        renderMainNews();
-
-    }
-);
-
-
-setInterval(
-    ()=>{
-
-        if(!stories.length)
-            return;
-
-
-        newsIndex =
-            (
-                newsIndex + 1
-            ) %
-            stories.length;
-
-
-        renderMainNews();
-
-    },
-    15000
-);
-
-
-setInterval(
-    loadNews,
-    600000
-);
-
-
-/* =========================================================
-   WEATHER
-========================================================= */
-
-const WEATHER_URL =
-    "https://api.open-meteo.com/v1/forecast" +
-    "?latitude=22.7196" +
-    "&longitude=75.8577" +
-    "&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code" +
-    "&timezone=Asia%2FKolkata";
-
-
-function weatherDescription(code){
-
-    const map = {
-
-        0:["Clear sky","☀️"],
-
-        1:["Mainly clear","🌤️"],
-        2:["Partly cloudy","⛅"],
-        3:["Overcast","☁️"],
-
-        45:["Fog","🌫️"],
-        48:["Fog","🌫️"],
-
-        51:["Light drizzle","🌦️"],
-        53:["Drizzle","🌦️"],
-        55:["Heavy drizzle","🌧️"],
-
-        61:["Light rain","🌦️"],
-        63:["Rain","🌧️"],
-        65:["Heavy rain","🌧️"],
-
-        71:["Light snow","🌨️"],
-        73:["Snow","❄️"],
-        75:["Heavy snow","❄️"],
-
-        80:["Rain showers","🌦️"],
-        81:["Rain showers","🌧️"],
-        82:["Heavy showers","⛈️"],
-
-        95:["Thunderstorm","⛈️"],
-        96:["Thunderstorm","⛈️"],
-        99:["Thunderstorm","⛈️"]
-
-    };
-
-
-    return (
-        map[code] ||
-        ["Current conditions","🌤️"]
-    );
-
-}
-
-
-async function loadWeather(){
-
-    try{
-
-        const response =
-            await fetch(
-                WEATHER_URL,
-                {
-                    cache:"no-store"
-                }
-            );
-
-
-        if(!response.ok)
-            throw new Error(
-                "Weather request failed"
-            );
-
-
-        const data =
-            await response.json();
-
-
-        const current =
-            data.current;
-
-
-        if(!current)
-            throw new Error(
-                "Current weather missing"
-            );
-
-
-        const condition =
-            weatherDescription(
-                current.weather_code
-            );
-
-
-        $("weatherTemp").textContent =
-            Math.round(
-                current.temperature_2m
-            ) + "°";
-
-
-        $("weatherFeels").textContent =
-            Math.round(
-                current.apparent_temperature
-            ) + "°";
-
-
-        $("weatherHumidity").textContent =
-            current.relative_humidity_2m +
-            "%";
-
-
-        $("weatherWind").textContent =
-            Math.round(
-                current.wind_speed_10m
-            ) +
-            " km/h";
-
-
-        $("weatherCondition").textContent =
-            condition[0];
-
-
-        $("weatherIcon").textContent =
-            condition[1];
-
-
-    }catch(error){
-
-        console.warn(
-            "Weather unavailable:",
-            error
-        );
-
-
-        $("weatherCondition").textContent =
-            "Weather unavailable";
-
-    }
-
-}
-
-
-/* =========================================================
-   TIMETABLE
-========================================================= */
-
-const schoolSchedule = {
-
-    monday:[
-        "Physics",
-        "Games",
-        "AI",
-        "Maths",
-        "Hindi",
-        "Biology",
-        "English",
-        "SST"
-    ],
-
-    tuesday:[
-        "Physics",
-        "Life Skills",
-        "SST",
-        "English",
-        "Biology",
-        "English",
-        "Maths",
-        "Hindi"
-    ],
-
-    wednesday:[
-        "SST",
-        "Sanskrit",
-        "Maths",
-        "English",
-        "SST",
-        "Chemistry",
-        "Maths",
-        "Hindi"
-    ],
-
-    thursday:[
-        "Maths",
-        "Arts",
-        "Moral Science",
-        "SST",
-        "Hindi",
-        "English",
-        "CC",
-        "CC"
-    ],
-
-    friday:[
-        "Maths",
-        "AI",
-        "SST",
-        "Maths",
-        "Physics",
-        "Music/Dance",
-        "Chemistry",
-        "Hindi"
-    ],
-
-    saturday:[
-        "Chemistry",
-        "SST",
-        "English",
-        "Biology",
-        "AI",
-        "Games",
-        "Maths"
-    ]
-
-};
-
-
-/*
-    Period timings.
-
-    1  07:50 - 08:30
-    2  08:30 - 09:10
-    3  09:10 - 09:50
-    4  09:50 - 10:30
-
-    Lunch
-    10:30 - 11:05
-
-    5  11:05 - 11:45
-    6  11:45 - 12:25
-    7  12:25 - 13:05
-    8  13:05 - 13:45
-
-    Saturday uses only periods 1-7.
-*/
-
-const times = [
-
-    ["07:50","08:30"],
-
-    ["08:30","09:10"],
-
-    ["09:10","09:50"],
-
-    ["09:50","10:30"],
-
-    ["11:05","11:45"],
-
-    ["11:45","12:25"],
-
-    ["12:25","13:05"],
-
-    ["13:05","13:45"]
-
-];
-
-
-const dayNames = [
-
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday"
-
-];
-
-
-const dayLabels = {
-
-    monday:"Monday",
-    tuesday:"Tuesday",
-    wednesday:"Wednesday",
-    thursday:"Thursday",
-    friday:"Friday",
-    saturday:"Saturday"
-
-};
-
-
-/* =========================================================
-   TEST MODE
-========================================================= */
-
-window.TEST_MODE = false;
-window.TEST_PERIOD = 0;
-window.TEST_DAY = null;
-
-
-window.setTestPeriod = function(period){
-
-    const value =
-        Number(period);
-
-
-    if(
-        !Number.isInteger(value) ||
-        value < 1 ||
-        value > 8
-    ){
-
-        console.warn(
-            "Period must be between 1 and 8."
-        );
-
-        return;
-
-    }
-
-
-    window.TEST_MODE = true;
-
-    window.TEST_PERIOD =
-        value - 1;
-
-
-    updateSchedule();
-
-
-    console.log(
-        `TEST MODE: Period ${value}`
-    );
-
-};
-
-
-window.setTestDay = function(day){
-
-    const value =
-        String(day)
-            .toLowerCase()
-            .trim();
-
-
-    if(!schoolSchedule[value]){
-
-        console.warn(
-            "Invalid day. Use monday, tuesday, wednesday, thursday, friday or saturday."
-        );
-
-        return;
-
-    }
-
-
-    window.TEST_DAY =
-        value;
-
-    window.TEST_MODE =
-        true;
-
-
-    if(
-        window.TEST_PERIOD >=
-        schoolSchedule[value].length
-    ){
-
-        window.TEST_PERIOD =
-            schoolSchedule[value].length - 1;
-
-    }
-
-
-    updateSchedule();
-
-
-    console.log(
-        "TEST DAY:",
-        value
-    );
-
-};
-
-
-window.testFriday = function(period=8){
-
-    const value =
-        Math.max(
-            1,
-            Math.min(
-                8,
-                Number(period)
-            )
-        );
-
-
-    window.TEST_DAY =
-        "friday";
-
-    window.TEST_MODE =
-        true;
-
-    window.TEST_PERIOD =
-        value - 1;
-
-
-    updateSchedule();
-
-
-    console.log(
-        `TEST FRIDAY: Period ${value}`
-    );
-
-};
-
-
-window.disableTestMode = function(){
-
-    window.TEST_MODE =
-        false;
-
-    window.TEST_DAY =
-        null;
-
-    window.TEST_PERIOD =
-        0;
-
-
-    updateSchedule();
-
-
-    console.log(
-        "TEST MODE disabled."
-    );
-
-};
-
-
-/* =========================================================
-   DAY
-========================================================= */
-
-function getToday(){
-
-    return dayNames[
-        new Date().getDay()
-    ];
-
-}
-
-
-function getTodaySchedule(){
-
-    const day =
-        getToday();
-
-
-    return {
-
-        day,
-
-        schedule:
-            schoolSchedule[day] || null
-
-    };
-
-}
-
-
-/* =========================================================
-   TABLE RENDERING
-========================================================= */
+/* ─── TIMETABLE ─────────────────────────────── */
+function getToday(){ return DAYS[new Date().getDay()]; }
 
 function renderTimetable(){
+  const day = getToday();
+  const sched = SCHEDULE[day];
+  const list = $("ttList");
+  $("ttDay").textContent = DAY_LABELS[day] || "Today";
 
-    const tbody =
-        $("scheduleTableBody");
+  if(!sched){ list.innerHTML="<div style='color:var(--muted);font-size:13px;padding:8px 0'>No school today</div>"; return; }
 
-
-    if(!tbody)
-        return;
-
-
-    tbody.innerHTML = "";
-
-
-    Object.entries(
-        schoolSchedule
-    ).forEach(
-        ([day,subjects])=>{
-
-            const tr =
-                document.createElement("tr");
-
-
-            const dayCell =
-                document.createElement("td");
-
-
-            dayCell.textContent =
-                dayLabels[day];
-
-
-            tr.appendChild(
-                dayCell
-            );
-
-
-            for(
-                let i = 0;
-                i < 8;
-                i++
-            ){
-
-                const td =
-                    document.createElement("td");
-
-
-                td.className =
-                    "subject-cell";
-
-
-                td.dataset.day =
-                    day;
-
-
-                td.dataset.period =
-                    String(i);
-
-
-                if(
-                    subjects[i] !== undefined
-                ){
-
-                    td.textContent =
-                        subjects[i];
-
-                }else{
-
-                    td.textContent =
-                        "—";
-
-                    td.style.color =
-                        "#aaa";
-
-                }
-
-
-                tr.appendChild(
-                    td
-                );
-
-            }
-
-
-            tbody.appendChild(
-                tr
-            );
-
-        }
-    );
-
+  list.innerHTML="";
+  sched.forEach((subj,i)=>{
+    const row = document.createElement("div");
+    row.className="tt-row";
+    row.dataset.period=i;
+    row.innerHTML=`
+      <span class="tt-num">${i+1}</span>
+      <span class="tt-subj">${subj}</span>
+      <span class="tt-time">${fmtTime(PERIODS[i][0]).replace(" AM","").replace(" PM","")}</span>
+    `;
+    list.appendChild(row);
+  });
 }
 
+/* ─── SCHOOL STATUS & PROGRESS ──────────────── */
+function updateStatus(){
+  const day = getToday();
+  const sched = SCHEDULE[day];
 
-/* =========================================================
-   HIGHLIGHT TIMETABLE
-========================================================= */
+  if(!sched){
+    $("periodLabel").textContent  = "Weekend";
+    $("subjectBig").textContent   = "No School";
+    $("timeChipVal").textContent  = "—";
+    $("nextSubject").textContent  = "—";
+    $("nextTime").textContent     = "Enjoy your day!";
+    $("cdVal").textContent        = "—";
+    $("progFill").style.width     = "0%";
+    $("progPct").textContent      = "0%";
+    $("progLbl").textContent      = "Weekend";
+    $("ttDay").textContent        = "No school today";
+    return;
+  }
 
-function highlightTimetable(
-    day,
-    currentIndex,
-    currentMinutes
-){
+  const now = new Date();
+  const nowM = now.getHours()*60 + now.getMinutes() + now.getSeconds()/60;
 
-    document
-        .querySelectorAll(
-            ".subject-cell"
-        )
-        .forEach(
-            cell=>{
+  const schoolStart = tm("07:50");
+  const lunchStart  = tm("10:30");
+  const lunchEnd    = tm("11:05");
+  const schoolEnd   = tm(PERIODS[sched.length-1][1]);
 
-                cell.classList.remove(
-                    "current",
-                    "completed"
-                );
+  // ── Current Period ──
+  let curIdx = -1;
+  for(let i=0;i<sched.length;i++){
+    if(nowM >= tm(PERIODS[i][0]) && nowM < tm(PERIODS[i][1])){ curIdx=i; break; }
+  }
 
-            }
-        );
+  // ── Next Period ──
+  let nxtIdx = -1;
+  if(nowM >= lunchStart && nowM < lunchEnd){
+    nxtIdx = 4;
+  } else {
+    for(let i=0;i<sched.length;i++){
+      if(nowM < tm(PERIODS[i][0])){ nxtIdx=i; break; }
+    }
+  }
 
+  // ── Status text ──
+  if(nowM >= schoolEnd){
+    $("periodLabel").textContent = "School's over";
+    $("subjectBig").textContent  = "See you tomorrow!";
+    $("timeChipVal").textContent = "Done for today";
+  } else if(nowM >= lunchStart && nowM < lunchEnd){
+    $("periodLabel").textContent = "Break time";
+    $("subjectBig").textContent  = "Lunch";
+    $("timeChipVal").textContent = "Ends "+fmtTime("11:05");
+  } else if(curIdx >= 0){
+    $("periodLabel").textContent = "Period "+(curIdx+1)+" of "+sched.length;
+    $("subjectBig").textContent  = sched[curIdx];
+    $("timeChipVal").textContent = fmtTime(PERIODS[curIdx][0])+" – "+fmtTime(PERIODS[curIdx][1]);
+  } else if(nowM < schoolStart){
+    $("periodLabel").textContent = "School starts soon";
+    $("subjectBig").textContent  = "Get Ready";
+    $("timeChipVal").textContent = "First period at "+fmtTime("07:50");
+  }
 
-    const subjects =
-        schoolSchedule[day];
+  // ── Next up ──
+  if(nxtIdx >= 0 && nxtIdx < sched.length){
+    $("nextSubject").textContent = "Period "+(nxtIdx+1)+" · "+sched[nxtIdx];
+    $("nextTime").textContent    = "Starts "+fmtTime(PERIODS[nxtIdx][0]);
+    const remaining = tm(PERIODS[nxtIdx][0]) - nowM;
+    $("cdVal").textContent = fmtCountdown(remaining);
+  } else if(nowM < schoolStart){
+    $("nextSubject").textContent = "Period 1 · "+sched[0];
+    $("nextTime").textContent    = "Starts "+fmtTime("07:50");
+    $("cdVal").textContent       = fmtCountdown(schoolStart - nowM);
+  } else {
+    $("nextSubject").textContent = "No more periods";
+    $("nextTime").textContent    = "—";
+    $("cdVal").textContent       = "—";
+  }
 
+  // ── Progress (accounts for lunch gap correctly) ──
+  let pct = 0;
+  const totalMinutes = schoolEnd - schoolStart - 35; // 35 min lunch gap
+  if(nowM <= schoolStart){
+    pct = 0;
+  } else if(nowM >= schoolEnd){
+    pct = 100;
+  } else {
+    let elapsed = nowM - schoolStart;
+    // subtract lunch if we're past it
+    if(nowM > lunchEnd) elapsed -= 35;
+    else if(nowM > lunchStart) elapsed -= (nowM - lunchStart);
+    pct = Math.max(0, Math.min(100, (elapsed/totalMinutes)*100));
+  }
 
-    if(!subjects)
-        return;
+  $("progFill").style.width  = pct+"%";
+  $("progPct").textContent   = Math.round(pct)+"%";
+  $("progEnd").textContent   = fmtTime(PERIODS[sched.length-1][1]);
 
+  // completed periods
+  const done = PERIODS.slice(0,sched.length).filter((_,i)=> nowM >= tm(PERIODS[i][1])).length;
+  $("progLbl").textContent = done > 0 ? `${done} of ${sched.length} periods done` : "School day progress";
 
-    subjects.forEach(
-        (_,index)=>{
-
-            const cell =
-                document.querySelector(
-                    `.subject-cell[data-day="${day}"][data-period="${index}"]`
-                );
-
-
-            if(!cell)
-                return;
-
-
-            if(
-                currentMinutes >=
-                mins(times[index][1])
-            ){
-
-                cell.classList.add(
-                    "completed"
-                );
-
-            }
-
-
-            if(
-                index === currentIndex
-            ){
-
-                cell.classList.remove(
-                    "completed"
-                );
-
-                cell.classList.add(
-                    "current"
-                );
-
-            }
-
-        }
-    );
-
+  // ── Highlight timetable ──
+  document.querySelectorAll(".tt-row").forEach(row=>{
+    const i = +row.dataset.period;
+    row.classList.remove("is-current","is-done");
+    if(i === curIdx) row.classList.add("is-current");
+    else if(nowM >= tm(PERIODS[i][1])) row.classList.add("is-done");
+  });
 }
 
-
-/* =========================================================
-   PROGRESS
-========================================================= */
-
-function updateProgress(
-    currentIndex,
-    currentMinutes,
-    todaySchedule
-){
-
-    const totalPeriods =
-        todaySchedule.length;
-
-
-    if(!totalPeriods)
-        return;
-
-
-    const schoolStart =
-        mins("07:50");
-
-
-    const lunchStart =
-        mins("10:30");
-
-
-    const lunchEnd =
-        mins("11:05");
-
-
-    const schoolEnd =
-        mins(
-            times[
-                totalPeriods - 1
-            ][1]
-        );
-
-
-    let percentage = 0;
-    let completedPeriods = 0;
-
-
-    if(
-        currentMinutes <
-        schoolStart
-    ){
-
-        percentage = 0;
-
-    }
-
-
-    else if(
-        currentMinutes >= lunchStart &&
-        currentMinutes < lunchEnd
-    ){
-
-        completedPeriods = 4;
-
-        percentage =
-            (
-                completedPeriods /
-                totalPeriods
-            ) * 100;
-
-    }
-
-
-    else if(
-        currentMinutes >= schoolEnd
-    ){
-
-        completedPeriods =
-            totalPeriods;
-
-        percentage = 100;
-
-    }
-
-
-    else{
-
-        for(
-            let i = 0;
-            i < totalPeriods;
-            i++
-        ){
-
-            const start =
-                mins(times[i][0]);
-
-
-            const end =
-                mins(times[i][1]);
-
-
-            if(
-                currentMinutes >= end
-            ){
-
-                completedPeriods++;
-
-                continue;
-
-            }
-
-
-            if(
-                currentMinutes >= start &&
-                currentMinutes < end
-            ){
-
-                const fraction =
-                    (
-                        currentMinutes - start
-                    ) /
-                    (
-                        end - start
-                    );
-
-
-                percentage =
-                    (
-                        (
-                            completedPeriods +
-                            fraction
-                        ) /
-                        totalPeriods
-                    ) * 100;
-
-
-                break;
-
-            }
-
-        }
-
-    }
-
-
-    percentage =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                percentage
-            )
-        );
-
-
-    $("progressBar").style.width =
-        percentage + "%";
-
-
-    $("progressPercent").textContent =
-        Math.round(percentage) + "%";
-
-
-    if(
-        currentMinutes >= lunchStart &&
-        currentMinutes < lunchEnd
-    ){
-
-        $("progressLabel").textContent =
-            `Lunch · 4/${totalPeriods}`;
-
-    }
-
-    else if(
-        completedPeriods >= totalPeriods
-    ){
-
-        $("progressLabel").textContent =
-            `School day complete · ${totalPeriods}/${totalPeriods}`;
-
-    }
-
-    else if(
-        currentIndex >= 0
-    ){
-
-        $("progressLabel").textContent =
-            `Period ${currentIndex + 1}/${totalPeriods}`;
-
-    }
-
-    else{
-
-        $("progressLabel").textContent =
-            `School day progress · 0/${totalPeriods}`;
-
-    }
-
-
-    $("progressStart").textContent =
-        formatTime(
-            times[0][0]
-        );
-
-
-    $("progressEnd").textContent =
-        formatTime(
-            times[
-                totalPeriods - 1
-            ][1]
-        );
-
+/* ─── MAIN TICK ─────────────────────────────── */
+function tick(){
+  updateClock();
+  updateStatus();
 }
 
-
-/* =========================================================
-   PERIOD LIST
-========================================================= */
-
-function renderPeriodList(
-    currentIndex,
-    todaySchedule,
-    currentMinutes
-){
-
-    const list =
-        $("periodList");
-
-
-    if(!list)
-        return;
-
-
-    list.innerHTML = "";
-
-
-    todaySchedule.forEach(
-        (subject,index)=>{
-
-            const row =
-                document.createElement("div");
-
-
-            row.className =
-                "period-row";
-
-
-            if(
-                index === currentIndex
-            ){
-
-                row.classList.add(
-                    "current-period"
-                );
-
-            }
-
-
-            if(
-                currentMinutes >=
-                mins(times[index][1])
-            ){
-
-                row.classList.add(
-                    "completed"
-                );
-
-            }
-
-
-            row.innerHTML = `
-
-                <span>
-                    Period ${index + 1}
-                    · ${escapeHTML(subject)}
-                </span>
-
-                <span>
-                    ${formatTime(times[index][0])}
-                    –
-                    ${formatTime(times[index][1])}
-                </span>
-
-            `;
-
-
-            list.appendChild(
-                row
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   SCHOOL OVER
-========================================================= */
-
-function showSchoolOver(){
-
-    const overlay =
-        $("schoolOver");
-
-
-    overlay.classList.add(
-        "show"
-    );
-
-
-    overlay.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-}
-
-
-function hideSchoolOver(){
-
-    const overlay =
-        $("schoolOver");
-
-
-    overlay.classList.remove(
-        "show"
-    );
-
-
-    overlay.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-}
-
-
-$("schoolClose").addEventListener(
-    "click",
-    hideSchoolOver
-);
-
-
-$("schoolOver").addEventListener(
-    "click",
-    event=>{
-
-        if(
-            event.target ===
-            $("schoolOver")
-        ){
-
-            hideSchoolOver();
-
-        }
-
-    }
-);
-
-
-window.testSchoolOver =
-    showSchoolOver;
-
-
-window.closeSchoolOver =
-    hideSchoolOver;
-
-
-/* =========================================================
-   NO SCHOOL
-========================================================= */
-
-function showNoSchool(){
-
-    $("currentPeriod").textContent =
-        "No school";
-
-
-    $("currentSubject").textContent =
-        "Weekend";
-
-
-    $("nextPeriod").textContent =
-        "No classes";
-
-
-    $("nextStart").textContent =
-        "Enjoy your weekend";
-
-
-    $("countdown").textContent =
-        "—";
-
-
-    $("periodList").innerHTML =
-        "";
-
-
-    $("progressBar").style.width =
-        "0%";
-
-
-    $("progressPercent").textContent =
-        "0%";
-
-
-    $("progressLabel").textContent =
-        "0/0 · No school";
-
-
-    $("progressStart").textContent =
-        "—";
-
-
-    $("progressEnd").textContent =
-        "—";
-
-
-    $("scheduleDay").textContent =
-        "No school";
-
-
-    hideSchoolOver();
-
-
-    highlightTimetable(
-        getToday(),
-        -1,
-        0
-    );
-
-}
-
-
-/* =========================================================
-   REAL SCHEDULE
-========================================================= */
-
-function updateRealSchedule(){
-
-    const {
-        day,
-        schedule:todaySchedule
-    } =
-        getTodaySchedule();
-
-
-    if(!todaySchedule){
-
-        showNoSchool();
-
-        return;
-
-    }
-
-
-    const now =
-        new Date();
-
-
-    const currentMinutes =
-        now.getHours() * 60 +
-        now.getMinutes() +
-        now.getSeconds() / 60;
-
-
-    const schoolStart =
-        mins("07:50");
-
-
-    const lunchStart =
-        mins("10:30");
-
-
-    const lunchEnd =
-        mins("11:05");
-
-
-    const departure =
-        day === "saturday"
-            ? mins("13:05")
-            : mins("13:45");
-
-
-    $("scheduleDay").textContent =
-        `${dayLabels[day]} · Today`;
-
-
-    let currentIndex = -1;
-    let nextIndex = -1;
-
-
-    /* BEFORE SCHOOL */
-
-    if(
-        currentMinutes <
-        schoolStart
-    ){
-
-        nextIndex = 0;
-
-    }
-
-
-    /* LUNCH */
-
-    else if(
-        currentMinutes >= lunchStart &&
-        currentMinutes < lunchEnd
-    ){
-
-        currentIndex = -1;
-
-        nextIndex =
-            todaySchedule.length > 4
-                ? 4
-                : -1;
-
-    }
-
-
-    /* DURING SCHOOL */
-
-    else if(
-        currentMinutes >= schoolStart &&
-        currentMinutes < departure
-    ){
-
-        for(
-            let i = 0;
-            i < todaySchedule.length;
-            i++
-        ){
-
-            const start =
-                mins(times[i][0]);
-
-
-            const end =
-                mins(times[i][1]);
-
-
-            if(
-                currentMinutes >= start &&
-                currentMinutes < end
-            ){
-
-                currentIndex = i;
-
-                break;
-
-            }
-
-        }
-
-
-        for(
-            let i = 0;
-            i < todaySchedule.length;
-            i++
-        ){
-
-            if(
-                currentMinutes <
-                mins(times[i][0])
-            ){
-
-                nextIndex = i;
-
-                break;
-
-            }
-
-        }
-
-    }
-
-
-    /* SCHOOL OVER */
-
-    if(
-        currentMinutes >= departure
-    ){
-
-        $("currentPeriod").textContent =
-            "School over";
-
-
-        $("currentSubject").textContent =
-            "All periods completed";
-
-
-        $("nextPeriod").textContent =
-            "No next period";
-
-
-        $("nextStart").textContent =
-            "See you tomorrow";
-
-
-        $("countdown").textContent =
-            "—";
-
-
-        updateProgress(
-            -1,
-            currentMinutes,
-            todaySchedule
-        );
-
-
-        renderPeriodList(
-            -1,
-            todaySchedule,
-            currentMinutes
-        );
-
-
-        highlightTimetable(
-            day,
-            -1,
-            currentMinutes
-        );
-
-
-        showSchoolOver();
-
-        return;
-
-    }
-
-
-    hideSchoolOver();
-
-
-    /* CURRENT PERIOD */
-
-    if(currentIndex >= 0){
-
-        $("currentPeriod").textContent =
-            `Period ${currentIndex + 1}`;
-
-
-        $("currentSubject").textContent =
-            todaySchedule[currentIndex];
-
-    }
-
-    else if(
-        currentMinutes >= lunchStart &&
-        currentMinutes < lunchEnd
-    ){
-
-        $("currentPeriod").textContent =
-            "Lunch break";
-
-
-        $("currentSubject").textContent =
-            "10:30 – 11:05 AM";
-
-    }
-
-    else{
-
-        $("currentPeriod").textContent =
-            "School starts soon";
-
-
-        $("currentSubject").textContent =
-            "First period · 7:50 AM";
-
-    }
-
-
-    /* NEXT PERIOD */
-
-    if(
-        nextIndex >= 0 &&
-        nextIndex < todaySchedule.length
-    ){
-
-        $("nextPeriod").textContent =
-            `Period ${nextIndex + 1} · ${todaySchedule[nextIndex]}`;
-
-
-        $("nextStart").textContent =
-            `Starts ${formatTime(times[nextIndex][0])}`;
-
-
-        const remaining =
-            mins(times[nextIndex][0]) -
-            currentMinutes;
-
-
-        $("countdown").textContent =
-            formatCountdown(
-                remaining
-            );
-
-    }
-
-    else{
-
-        $("nextPeriod").textContent =
-            "No next period";
-
-
-        $("nextStart").textContent =
-            `School ends at ${formatTime(departure)}`;
-
-
-        $("countdown").textContent =
-            "—";
-
-    }
-
-
-    updateProgress(
-        currentIndex,
-        currentMinutes,
-        todaySchedule
-    );
-
-
-    renderPeriodList(
-        currentIndex,
-        todaySchedule,
-        currentMinutes
-    );
-
-
-    highlightTimetable(
-        day,
-        currentIndex,
-        currentMinutes
-    );
-
-}
-
-
-/* =========================================================
-   TEST SCHEDULE
-========================================================= */
-
-function updateTestSchedule(){
-
-    let day =
-        window.TEST_DAY ||
-        getToday();
-
-
-    if(!schoolSchedule[day]){
-
-        day = "monday";
-
-    }
-
-
-    const todaySchedule =
-        schoolSchedule[day];
-
-
-    const totalPeriods =
-        todaySchedule.length;
-
-
-    let index =
-        Math.max(
-            0,
-            Math.min(
-                Number(window.TEST_PERIOD),
-                totalPeriods - 1
-            )
-        );
-
-
-    const start =
-        mins(
-            times[index][0]
-        );
-
-
-    const end =
-        mins(
-            times[index][1]
-        );
-
-
-    const simulated =
-        start +
-        (
-            end - start
-        ) * .30;
-
-
-    $("scheduleDay").textContent =
-        `${dayLabels[day]} · Test mode`;
-
-
-    $("currentPeriod").textContent =
-        `Period ${index + 1}`;
-
-
-    $("currentSubject").textContent =
-        todaySchedule[index];
-
-
-    const nextIndex =
-        index + 1;
-
-
-    if(
-        nextIndex < totalPeriods
-    ){
-
-        $("nextPeriod").textContent =
-            `Period ${nextIndex + 1} · ${todaySchedule[nextIndex]}`;
-
-
-        $("nextStart").textContent =
-            `Starts ${formatTime(times[nextIndex][0])}`;
-
-
-        $("countdown").textContent =
-            formatCountdown(
-                mins(times[nextIndex][0]) -
-                simulated
-            );
-
-    }
-
-    else{
-
-        $("nextPeriod").textContent =
-            "School day complete";
-
-
-        $("nextStart").textContent =
-            "Last period";
-
-
-        $("countdown").textContent =
-            "—";
-
-    }
-
-
-    updateProgress(
-        index,
-        simulated,
-        todaySchedule
-    );
-
-
-    renderPeriodList(
-        index,
-        todaySchedule,
-        simulated
-    );
-
-
-    highlightTimetable(
-        day,
-        index,
-        simulated
-    );
-
-
-    hideSchoolOver();
-
-}
-
-
-/* =========================================================
-   MAIN SCHEDULE UPDATE
-========================================================= */
-
-function updateSchedule(){
-
-    if(window.TEST_MODE){
-
-        updateTestSchedule();
-
-        return;
-
-    }
-
-
-    updateRealSchedule();
-
-}
-
-
-/* =========================================================
-   CLOCK
-========================================================= */
-
-function updateClock(){
-
-    const now =
-        new Date();
-
-
-    $("clock").textContent =
-        now.toLocaleTimeString(
-            "en-IN",
-            {
-                hour:"numeric",
-                minute:"2-digit",
-                second:"2-digit"
-            }
-        );
-
-
-    updateSchedule();
-
-}
-
-
-setInterval(
-    updateClock,
-    1000
-);
-
-
-/* =========================================================
-   9-E ANIMATION
-========================================================= */
-
-let nineETimer = null;
-
-
-function show9E(){
-
-    const element =
-        $("nineE");
-
-
-    if(!element)
-        return;
-
-
-    if(
-        $("schoolOver").classList.contains(
-            "show"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    clearTimeout(
-        nineETimer
-    );
-
-
-    element.classList.remove(
-        "show"
-    );
-
-
-    void element.offsetWidth;
-
-
-    element.classList.add(
-        "show"
-    );
-
-
-    element.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    nineETimer =
-        setTimeout(
-            ()=>{
-
-                element.classList.remove(
-                    "show"
-                );
-
-
-                element.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-
-            },
-            6000
-        );
-
-}
-
-
-window.test9E =
-    show9E;
-
-
-/*
-    Show the 9-E animation once
-    when the dashboard loads.
-*/
-
-setTimeout(
-    show9E,
-    800
-);
-
-
-/*
-    Repeat every five minutes.
-*/
-
-setInterval(
-    show9E,
-    300000
-);
-
-
-/* =========================================================
-   INITIALIZATION
-========================================================= */
-
-renderTimetable();
-
-loadNews();
-
-loadWeather();
-
-updateClock();
-
-
-/* =========================================================
-   DEBUG COMMANDS
-========================================================= */
-
-console.log(
-    "%c9-E Smartboard loaded successfully.",
-    "font-weight:bold;font-size:16px"
-);
-
-console.log(
-    "--------------------------------"
-);
-
-console.log(
-    "TEST COMMANDS:"
-);
-
-console.log(
-    "setTestDay('friday')"
-);
-
-console.log(
-    "setTestPeriod(1)"
-);
-
-console.log(
-    "setTestPeriod(4)"
-);
-
-console.log(
-    "setTestPeriod(8)"
-);
-
-console.log(
-    "setTestDay('saturday')"
-);
-
-console.log(
-    "setTestPeriod(7)"
-);
-
-console.log(
-    "testFriday(8)"
-);
-
-console.log(
-    "testSchoolOver()"
-);
-
-console.log(
-    "closeSchoolOver()"
-);
-
-console.log(
-    "test9E()"
-);
-
-console.log(
-    "disableTestMode()"
-);
-
-console.log(
-    "--------------------------------"
-);
-
-
-/* =========================================================
-   EXTRA DEBUG HELPERS
-========================================================= */
-
-window.smartboardDebug = {
-
-    news(){
-        console.log(
-            "Stories:",
-            stories
-        );
-    },
-
-    weather(){
-        loadWeather();
-    },
-
-    refreshNews(){
-        loadNews();
-    },
-
-    refreshSchedule(){
-        updateSchedule();
-    },
-
-    show9E(){
-        show9E();
-    },
-
-    showSchoolOver(){
-        showSchoolOver();
-    },
-
-    hideSchoolOver(){
-        hideSchoolOver();
-    }
-
-};
-
+/* ─── INIT ──────────────────────────────────── */
+document.addEventListener("DOMContentLoaded",()=>{
+  renderTimetable();
+  tick();
+  setInterval(tick, 1000);
+  fetchWeather();
+  setInterval(fetchWeather, 10*60*1000);
+  fetchNews();
+  setInterval(fetchNews, 10*60*1000);
+
+  // hide welcome after animation
+  setTimeout(()=>{
+    $("welcome").style.visibility="hidden";
+    $("welcome").style.pointerEvents="none";
+  }, 4800);
+
+  // check offline on load
+  if(!navigator.onLine) setOffline(true);
 });
 
-</script>
+/* ─── DEBUG ─────────────────────────────────── */
+window.sb = {
+  nextNews:()=>{ storyIdx=(storyIdx+1)%stories.length; renderStory(); startTimer(); },
+  refreshNews:()=>fetchNews(),
+  refreshWeather:()=>fetchWeather(),
+  testDay:(d)=>{ console.warn("set your OS clock to test days"); }
+};
 
+})();
+</script>
 </body>
 </html>
