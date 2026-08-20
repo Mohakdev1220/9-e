@@ -615,6 +615,15 @@ body {
   .foot-bottom { flex-direction: column; align-items: flex-start; }
 }
 
+   /* webp images adding css */
+   
+   .tile-ico img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
 /* ══════════════════════════════════════════
    SMARTBOARD LANDSCAPE (≥1366px wide, ≤900px tall)
    Keeps all tiles visible above fold
@@ -753,10 +762,17 @@ body {
   <div class="sec-title">Quick Access</div>
   <div class="tiles" role="list" aria-label="Quick access tiles">
 
-    <a href="timetable" class="tile" role="listitem">
+   <a href="Digital-voting-site-class-9th-e-st-paul-indore-unofficialsite" class="tile" role="listitem">
+    <div class="tile-ico t-green">
+        <img src="Vote.webp" alt="Voting System">
+    </div>
+    <span class="tile-label">Voting System (DVS)</span>
+</a>
+     <a href="timetable" class="tile" role="listitem">
       <div class="tile-ico t-blue">🕒</div>
       <span class="tile-label">Time Table</span>
     </a>
+
 
     <a href="calendar" class="tile" role="listitem">
       <div class="tile-ico t-indigo">📅</div>
