@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DVS — Class Election</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090f;
+      --surface: #101018;
+      --surface-2: #16161f;
+      --border: rgba(255,255,255,0.07);
+      --border-bright: rgba(255,255,255,0.14);
+      --accent: #7c6af7;
+      --accent-glow: rgba(124,106,247,0.25);
+      --accent-2: #e67af0;
+      --gold: #f5c842;
+      --silver: #b0bec5;
+      --bronze: #e07040;
+      --success: #3de0a0;
+      --danger: #f25f5c;
+      --warning: #f5a623;
+      --text: #f0eeff;
+      --text-2: #8b85b3;
+      --text-3: #4e4a72;
+      --mono: 'DM Mono', monospace;
+      --serif: 'Instrument Serif', serif;
+      --sans: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      padding: 3rem 1rem 5rem;
+      background-image:
+        radial-gradient(ellipse 80% 40% at 50% -10%, rgba(124,106,247,0.12) 0%, transparent 70%);
+    }
+
+    .wrap { max-width: 680px; margin: 0 auto; }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .header-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    header h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      font-style: italic;
+      line-height: 1.1;
+      background: linear-gradient(135deg, var(--text) 40%, var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header .sub {
+      margin-top: 0.6rem;
+      color: var(--text-2);
+      font-size: 0.9rem;
+    }
+
+    /* ── STEP INDICATOR ── */
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 2.5rem;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-3);
+    }
+    .step-item.active { color: var(--text-2); }
+    .step-item.done .step-num { background: var(--success); color: #09090f; border-color: var(--success); }
+    .step-num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid var(--text-3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      transition: all 0.3s;
+    }
+    .step-item.active .step-num {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+      color: var(--accent);
+    }
+    .step-connector {
+      width: 40px; height: 1px;
+      background: var(--border-bright);
+      margin: 0 0.5rem;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+    }
+    .card-title {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── FORM ELEMENTS ── */
+    .form-group { margin-bottom: 1.25rem; }
+    label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--text-2);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.02em;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-bright);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: var(--sans);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+    .cand-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+    }
+    .cand-number {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-3);
+      min-width: 1.5rem;
+    }
+
+    .error-msg { color: var(--danger); font-size: 0.8rem; margin-top: 0.4rem; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      padding: 0.75rem 1.25rem;
+      border: none; border-radius: 10px;
+      font-size: 0.9rem; font-weight: 600;
+      font-family: var(--sans);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border-bright);
+      color: var(--text-2);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+    .btn-primary:hover { background: #9480f9; box-shadow: 0 4px 28px rgba(124,106,247,0.4); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .btn-full { width: 100%; }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .stat-item {
+      background: var(--surface-2);
+      padding: 1rem;
+      text-align: center;
+    }
+    .stat-val {
+      font-family: var(--mono);
+      font-size: 1.6rem;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-3);
+      margin-top: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── PERMIT ZONE ── */
+    .permit-zone {
+      margin-bottom: 1.5rem;
+    }
+    .permit-msg {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-2);
+      margin-top: 0.75rem;
+      padding: 0.6rem 1rem;
+      background: var(--surface-2);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .permit-msg.active { color: var(--success); border-color: rgba(61,224,160,0.25); background: rgba(61,224,160,0.05); }
+
+    /* ── VOTE BUTTONS ── */
+    .voting-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+    }
+    .vote-btn {
+      position: relative;
+      background: var(--surface-2);
+      border: 1.5px solid var(--border-bright);
+      color: var(--text);
+      padding: 1.25rem 1rem;
+      border-radius: 12px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      overflow: hidden;
+    }
+    .vote-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, var(--accent-glow), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .vote-btn:hover:not(:disabled)::after { opacity: 1; }
+    .vote-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--accent-glow);
+    }
+    .vote-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+    .vote-btn:active:not(:disabled) { transform: scale(0.97); }
+    .vote-btn-label { font-size: 0.65rem; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+    .vote-btn-name { font-size: 1rem; font-weight: 600; }
+
+    /* ── VOTE PROGRESS ── */
+    .progress-track {
+      height: 4px;
+      background: var(--surface-2);
+      border-radius: 2px;
+      margin-top: 1.25rem;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 2px;
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ── RESULTS ── */
+    .results-podium {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 1rem;
+      margin: 0 auto 2rem;
+      max-width: 480px;
+      padding-top: 1rem;
+    }
+    .podium-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .podium-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      color: var(--text-2);
+      line-height: 1.3;
+    }
+    .podium-votes {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+    .podium-block {
+      width: 100%;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 1.4rem;
+      font-weight: 500;
+      transition: height 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+    .podium-1st .podium-block { height: 110px; background: linear-gradient(180deg, #f5c84233, #f5c84211); border: 1px solid #f5c84244; color: var(--gold); }
+    .podium-2nd .podium-block { height: 75px; background: linear-gradient(180deg, #b0bec533, #b0bec511); border: 1px solid #b0bec544; color: var(--silver); }
+    .podium-3rd .podium-block { height: 50px; background: linear-gradient(180deg, #e0704033, #e0704011); border: 1px solid #e0704044; color: var(--bronze); }
+    .podium-other .podium-block { height: 36px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text-3); font-size: 1rem; }
+
+    .results-table-wrap {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .results-table { width: 100%; border-collapse: collapse; }
+    .results-table thead tr { background: var(--surface-2); }
+    .results-table th {
+      padding: 0.9rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-align: left;
+    }
+    .results-table td {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .rank-cell { font-family: var(--mono); font-size: 0.85rem; color: var(--text-3); }
+    .name-cell { font-weight: 600; font-size: 0.95rem; }
+    .votes-cell { font-family: var(--mono); font-size: 0.95rem; }
+    .role-pill {
+      display: inline-block;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .pill-gold { background: rgba(245,200,66,0.12); color: var(--gold); border: 1px solid rgba(245,200,66,0.3); }
+    .pill-silver { background: rgba(176,190,197,0.12); color: var(--silver); border: 1px solid rgba(176,190,197,0.3); }
+
+    /* bar chart in results */
+    .bar-track {
+      height: 6px;
+      background: var(--bg);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* winner announcement */
+    .winner-banner {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      background: linear-gradient(135deg, rgba(245,200,66,0.06), rgba(124,106,247,0.06));
+      border-radius: 12px;
+      border: 1px solid rgba(245,200,66,0.15);
+      margin-bottom: 1.5rem;
+    }
+    .winner-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .winner-name {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--gold), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .winner-votes {
+      color: var(--text-2);
+      font-size: 0.85rem;
+      margin-top: 0.35rem;
+    }
+
+    .majority-flag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      color: var(--success);
+      margin-top: 0.4rem;
+    }
+    .majority-flag svg { width: 12px; height: 12px; }
+
+    /* ── HIDDEN ── */
+    .hidden { display: none !important; }
+
+    /* ── DIVIDERS / SPACING ── */
+    .row-btns { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+
+    /* ── PERMIT BUTTON STYLED PROMINENTLY ── */
+    .btn-permit {
+      background: rgba(245,166,35,0.1);
+      border: 1.5px solid rgba(245,166,35,0.35);
+      color: var(--warning);
+      width: 100%;
+      padding: 0.9rem;
+      font-size: 1rem;
+    }
+    .btn-permit:hover:not(:disabled) {
+      background: rgba(245,166,35,0.18);
+      border-color: var(--warning);
+    }
+    .btn-permit:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    .btn-results-cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      width: 100%;
+      padding: 0.9rem;
+      font-size: 1rem;
+      box-shadow: 0 4px 24px rgba(124,106,247,0.35);
+    }
+    .btn-results-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="header-eyebrow"><span class="dot"></span> Digital Voting System</div>
+    <h1>Class Election</h1>
+    <p class="sub">Transparent • Anonymous • Instant Results</p>
+  </header>
+
+  <!-- Step Indicator -->
+  <div class="steps" id="step-indicator">
+    <div class="step-item active" id="si-1">
+      <div class="step-num">1</div>
+      <span>Setup</span>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item" id="si-2">
+      <div class="step-num">2</div>
+      <span>Voting</span>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step-item" id="si-3">
+      <div class="step-num">3</div>
+      <span>Results</span>
+    </div>
+  </div>
+
+  <!-- ──── STEP 1: SETUP ──── -->
+  <div class="card" id="setup-card">
+    <div class="card-title">Election Configuration</div>
+
+    <div class="form-group">
+      <label for="voter-count">Total voters present <span style="color:var(--text-3)">(min. 30)</span></label>
+      <input type="number" id="voter-count" min="30" placeholder="e.g. 32">
+      <div class="error-msg hidden" id="voter-error"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Candidates <span style="color:var(--text-3)">(2–4 names)</span></label>
+      <div id="candidate-fields">
+        <div class="cand-row"><span class="cand-number">01</span><input type="text" class="cand-name" placeholder="First candidate"></div>
+        <div class="cand-row"><span class="cand-number">02</span><input type="text" class="cand-name" placeholder="Second candidate"></div>
+      </div>
+      <div class="error-msg hidden" id="candidate-error"></div>
+      <div class="row-btns">
+        <button type="button" class="btn btn-ghost" id="add-cand-btn">+ Add candidate</button>
+        <button type="button" class="btn btn-ghost" id="remove-cand-btn">− Remove</button>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-full" id="start-election-btn" style="margin-top:0.5rem;">
+      Begin Election →
+    </button>
+  </div>
+
+  <!-- ──── STEP 2: VOTING ──── -->
+  <div class="card hidden" id="voting-card">
+    <div class="card-title">Voting Console</div>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-val" id="stat-total">0</div>
+        <div class="stat-label">Total Voters</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="stat-cast">0</div>
+        <div class="stat-label">Votes Cast</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="stat-majority">0</div>
+        <div class="stat-label">Majority Needed</div>
+      </div>
+    </div>
+
+    <div class="permit-zone">
+      <button class="btn btn-permit" id="permit-btn">
+        ↓ Permit Next Voter
+      </button>
+      <div class="permit-msg" id="permit-status">
+        Click "Permit Next Voter" to unlock the ballot for each student.
+      </div>
+    </div>
+
+    <div class="voting-grid" id="voting-buttons"></div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="vote-progress" style="width:0%"></div>
+    </div>
+
+    <button class="btn btn-results-cta hidden" id="view-results-btn" style="margin-top:1.25rem;">
+      ✦ View Final Results
+    </button>
+  </div>
+
+  <!-- ──── STEP 3: RESULTS ──── -->
+  <div class="card hidden" id="results-card">
+    <div class="card-title">Election Results</div>
+
+    <div class="winner-banner" id="winner-banner">
+      <div class="winner-label">✦ Class Captain</div>
+      <div class="winner-name" id="winner-name">—</div>
+      <div class="winner-votes" id="winner-votes"></div>
+      <div class="majority-flag hidden" id="majority-flag">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+        Won with clear majority
+      </div>
+    </div>
+
+    <!-- Podium -->
+    <div class="results-podium" id="podium"></div>
+
+    <!-- Table -->
+    <div class="results-table-wrap">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Candidate</th>
+            <th>Votes</th>
+            <th>Share</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody id="results-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+  let totalVoters = 0;
+  let majorityToWin = 0;
+  let votesCast = 0;
+  let candidates = [];
+  let isPermitted = false;
+
+  /* ── STEP HELPERS ── */
+  function setStep(n) {
+    [1,2,3].forEach(i => {
+      const el = document.getElementById('si-' + i);
+      el.classList.remove('active','done');
+      if (i < n) el.classList.add('done');
+      if (i === n) el.classList.add('active');
+    });
+  }
+
+  /* ── CANDIDATE FIELDS ── */
+  document.getElementById('add-cand-btn').addEventListener('click', () => {
+    const rows = document.querySelectorAll('#candidate-fields .cand-row');
+    if (rows.length >= 4) return;
+    const n = rows.length + 1;
+    const div = document.createElement('div');
+    div.className = 'cand-row';
+    div.innerHTML = `<span class="cand-number">${String(n).padStart(2,'0')}</span><input type="text" class="cand-name" placeholder="Candidate ${n}">`;
+    document.getElementById('candidate-fields').appendChild(div);
+  });
+
+  document.getElementById('remove-cand-btn').addEventListener('click', () => {
+    const rows = document.querySelectorAll('#candidate-fields .cand-row');
+    if (rows.length <= 2) return;
+    rows[rows.length - 1].remove();
+  });
+
+  /* ── START ELECTION ── */
+  document.getElementById('start-election-btn').addEventListener('click', () => {
+    const voterError = document.getElementById('voter-error');
+    const candError  = document.getElementById('candidate-error');
+    voterError.classList.add('hidden');
+    candError.classList.add('hidden');
+
+    const numVoters = parseInt(document.getElementById('voter-count').value, 10);
+    if (isNaN(numVoters) || numVoters < 30) {
+      voterError.textContent = 'At least 30 students must be present to hold an election.';
+      voterError.classList.remove('hidden');
+      return;
+    }
+
+    const names = Array.from(document.querySelectorAll('.cand-name'))
+      .map(i => i.value.trim())
+      .filter(v => v !== '');
+
+    if (names.length < 2) {
+      candError.textContent = 'Please enter names for at least 2 candidates.';
+      candError.classList.remove('hidden');
+      return;
+    }
+
+    totalVoters  = numVoters;
+    majorityToWin = Math.floor(totalVoters / 2) + 1;
+    votesCast     = 0;
+    candidates    = names.map((name, i) => ({ id: i, name, votes: 0 }));
+
+    document.getElementById('stat-total').textContent    = totalVoters;
+    document.getElementById('stat-majority').textContent = majorityToWin;
+    document.getElementById('stat-cast').textContent     = 0;
+
+    renderVotingButtons();
+
+    document.getElementById('setup-card').classList.add('hidden');
+    document.getElementById('voting-card').classList.remove('hidden');
+    setStep(2);
+  });
+
+  /* ── RENDER VOTE BUTTONS ── */
+  function renderVotingButtons() {
+    document.getElementById('voting-buttons').innerHTML = candidates.map(c => `
+      <button class="vote-btn" onclick="castVote(${c.id})" disabled>
+        <div class="vote-btn-label">Vote</div>
+        <div class="vote-btn-name">${c.name}</div>
+      </button>
+    `).join('');
+  }
+
+  /* ── PERMIT ── */
+  document.getElementById('permit-btn').addEventListener('click', () => {
+    if (votesCast >= totalVoters) return;
+    isPermitted = true;
+    document.getElementById('permit-btn').disabled = true;
+    const msg = document.getElementById('permit-status');
+    msg.textContent = '✓ Ballot unlocked — please vote now.';
+    msg.classList.add('active');
+    document.querySelectorAll('.vote-btn').forEach(b => b.disabled = false);
+  });
+
+  /* ── CAST VOTE ── */
+  function castVote(id) {
+    if (!isPermitted) return;
+    candidates.find(c => c.id === id).votes++;
+    votesCast++;
+
+    document.getElementById('stat-cast').textContent = votesCast;
+    const pct = (votesCast / totalVoters) * 100;
+    document.getElementById('vote-progress').style.width = pct + '%';
+
+    isPermitted = false;
+    document.querySelectorAll('.vote-btn').forEach(b => b.disabled = true);
+
+    const msg = document.getElementById('permit-status');
+
+    if (votesCast < totalVoters) {
+      document.getElementById('permit-btn').disabled = false;
+      msg.textContent = `Vote recorded. (${votesCast}/${totalVoters}) — Permit next voter.`;
+      msg.classList.remove('active');
+    } else {
+      document.getElementById('permit-btn').disabled = true;
+      msg.textContent = `All ${totalVoters} votes recorded!`;
+      msg.classList.add('active');
+      document.getElementById('view-results-btn').classList.remove('hidden');
+    }
+  }
+
+  /* ── RESULTS ── */
+  document.getElementById('view-results-btn').addEventListener('click', () => {
+    document.getElementById('voting-card').classList.add('hidden');
+    document.getElementById('results-card').classList.remove('hidden');
+    setStep(3);
+    renderResults();
+  });
+
+  function renderResults() {
+    const sorted = [...candidates].sort((a, b) => b.votes - a.votes);
+    const top    = sorted[0];
+
+    // Winner banner
+    document.getElementById('winner-name').textContent  = top.name;
+    document.getElementById('winner-votes').textContent =
+      `${top.votes} vote${top.votes !== 1 ? 's' : ''} out of ${totalVoters}`;
+    if (top.votes >= majorityToWin) {
+      document.getElementById('majority-flag').classList.remove('hidden');
+    }
+
+    // Podium (top 3 only, rest hidden)
+    const podiumEl = document.getElementById('podium');
+    const podiumOrder = [sorted[1], sorted[0], sorted[2]]; // 2nd | 1st | 3rd
+    const podiumClasses = ['podium-2nd','podium-1st','podium-3rd'];
+    const podiumIcons   = ['🥈','🥇','🥉'];
+
+    podiumEl.innerHTML = '';
+    podiumOrder.forEach((c, i) => {
+      if (!c) return;
+      const rank = sorted.indexOf(c);
+      const col  = document.createElement('div');
+      col.className = 'podium-col ' + podiumClasses[i];
+      col.innerHTML = `
+        <div class="podium-name">${c.name}</div>
+        <div class="podium-votes">${c.votes}v</div>
+        <div class="podium-block">${podiumIcons[i]}</div>
+      `;
+      podiumEl.appendChild(col);
+    });
+
+    // Table
+    const tbody = document.getElementById('results-body');
+    tbody.innerHTML = sorted.map((c, i) => {
+      const pct  = totalVoters ? Math.round((c.votes / totalVoters) * 100) : 0;
+      const bar  = totalVoters ? (c.votes / sorted[0].votes) * 100 : 0;
+
+      const barColors = [
+        'linear-gradient(90deg,#f5c842,#f5a623)',
+        'linear-gradient(90deg,#b0bec5,#90a4ae)',
+        'linear-gradient(90deg,#e07040,#c85a28)',
+        'linear-gradient(90deg,#4e4a72,#3a3652)'
+      ];
+
+      const roleHtml = i === 0
+        ? '<span class="role-pill pill-gold">Captain</span>'
+        : i === 1
+        ? '<span class="role-pill pill-silver">Vice Captain</span>'
+        : '—';
+
+      const rankLabels = ['#1','#2','#3','#4'];
+
+      return `
+        <tr>
+          <td class="rank-cell">${rankLabels[i] || '#' + (i+1)}</td>
+          <td class="name-cell">${c.name}</td>
+          <td class="votes-cell">
+            <span>${c.votes}</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:${bar}%; background:${barColors[i]}"></div>
+            </div>
+          </td>
+          <td class="votes-cell">${pct}%</td>
+          <td>${roleHtml}</td>
+        </tr>`;
+    }).join('');
+
+    // Trigger bar animation after paint
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.bar-fill').forEach(el => {
+        const w = el.style.width;
+        el.style.width = '0';
+        requestAnimationFrame(() => { el.style.width = w; });
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
