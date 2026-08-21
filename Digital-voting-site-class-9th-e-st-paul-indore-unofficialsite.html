@@ -469,6 +469,104 @@
       box-shadow: 0 4px 24px rgba(124,106,247,0.35);
     }
     .btn-results-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ── HOW THIS WORKS IMAGE SLIDER ── */
+.how-it-works {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.how-title {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.image-slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.slides {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateX(30px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+  pointer-events: none;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.slider-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  padding: 7px 10px;
+  border-radius: 20px;
+  background: rgba(9, 9, 15, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.slider-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+  width: 20px;
+  border-radius: 10px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+@media (max-width: 600px) {
+  .how-it-works {
+    margin-top: 1.5rem;
+  }
+
+  .slides {
+    aspect-ratio: 4 / 3;
+  }
+}
+    
   </style>
 </head>
 <body>
@@ -599,7 +697,32 @@
       </table>
     </div>
   </div>
+<!-- ──── HOW THIS WORKS ──── -->
+<div class="how-it-works">
+  <div class="how-title">How this works ? see the images</div>
 
+  <div class="image-slider">
+    <div class="slides">
+      <div class="slide active">
+        <img src="assets/images/voting-1st-image.webp" alt="How voting works - Step 1">
+      </div>
+
+      <div class="slide">
+        <img src="assets/images/voting-2nd-image.webp" alt="How voting works - Step 2">
+      </div>
+
+      <div class="slide">
+        <img src="assets/images/voting-3rd-image.webp" alt="How voting works - Step 3">
+      </div>
+    </div>
+
+    <div class="slider-dots">
+      <button class="slider-dot active" aria-label="Show image 1"></button>
+      <button class="slider-dot" aria-label="Show image 2"></button>
+      <button class="slider-dot" aria-label="Show image 3"></button>
+    </div>
+  </div>
+</div>
 </div><!-- /wrap -->
 
 <script>
@@ -799,6 +922,44 @@
           <td>${roleHtml}</td>
         </tr>`;
     }).join('');
+
+    /* ── AUTOMATIC IMAGE SLIDER ── */
+const slides = document.querySelectorAll('.slide');
+const sliderDots = document.querySelectorAll('.slider-dot');
+
+let currentSlide = 0;
+let sliderTimer;
+
+function showSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === index);
+  });
+
+  sliderDots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+
+  currentSlide = index;
+}
+
+function nextSlide() {
+  showSlide((currentSlide + 1) % slides.length);
+}
+
+function startSlider() {
+  clearInterval(sliderTimer);
+  sliderTimer = setInterval(nextSlide, 3500);
+}
+
+sliderDots.forEach((dot, index) => {
+  dot.addEventListener('click', () => {
+    showSlide(index);
+    startSlider();
+  });
+});
+
+showSlide(0);
+startSlider();
 
     // Trigger bar animation after paint
     requestAnimationFrame(() => {
