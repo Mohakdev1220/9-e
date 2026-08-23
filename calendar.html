@@ -1,400 +1,665 @@
-=<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>St. Paul Year Planner 2026-27</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@1&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:italic&family=Poppins:wght@300;400;600;700&display=swap');
-
         :root {
-            --school-red: #f44336; /* Logo Red */
-            --school-yellow: #ffeb3b; /* Logo Yellow */
-            --school-dark-red: #b71c1c;
-            --sunday-bg: #ffebee;
-            --holiday-yellow: #fffde7;
+            --red: #f44336;
+            --dark-red: #b71c1c;
+            --yellow: #ffeb3b;
+            --yellow-soft: #fff9c4;
+            --holiday-clr: #d32f2f;
+            --holiday-bg: #ffebee;
+            --exam-clr: #1565c0;
+            --exam-bg: #e3f2fd;
+            --imp-clr: #e65100;
+            --imp-bg: #fff3e0;
+            --sunday-bg: #fce4ec;
+            --sunday-clr: #880e4f;
+            --today-ring: #f44336;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Poppins', sans-serif;
             background: #f5f5f5;
-            margin: 0;
             color: #333;
+            min-height: 100vh;
         }
 
-        /* Top Nav Logos */
+        /* ── TOP BAR ── */
         .top-bar {
             background: white;
-            padding: 10px 20px;
+            padding: 8px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
             position: sticky;
             top: 0;
-            z-index: 1000;
-            border-bottom: 4px solid var(--school-red);
+            z-index: 100;
+            border-bottom: 4px solid var(--red);
         }
 
-        .logo { height: 60px; }
+        .logo { height: 50px; object-fit: contain; }
 
-        /* Improved Home Page Button */
         .back-btn {
             text-decoration: none;
             color: white;
-            background: var(--school-red);
-            font-weight: bold;
-            padding: 8px 20px;
-            border-radius: 5px;
-            transition: 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            border: 2px solid var(--school-dark-red);
+            background: var(--red);
+            font-weight: 600;
+            font-size: 0.8rem;
+            padding: 7px 16px;
+            border-radius: 6px;
+            transition: 0.25s;
+            border: 2px solid var(--dark-red);
+            cursor: pointer;
         }
-        .back-btn:hover { 
-            background: var(--school-yellow); 
-            color: var(--school-dark-red);
-            border-color: var(--school-yellow);
-        }
-
-        /* Planner Container */
-        .planner-page {
-            max-width: 850px;
-            margin: 20px auto;
-            background: white;
-            padding: 30px;
-            min-height: 100vh;
-            box-shadow: 0 0 25px rgba(0,0,0,0.1);
-            border-radius: 10px;
-            border-top: 10px solid var(--school-yellow);
+        .back-btn:hover {
+            background: var(--yellow);
+            color: var(--dark-red);
+            border-color: #f9a825;
         }
 
-        .school-header {
+        /* ── MAIN WRAPPER ── */
+        .wrapper {
+            max-width: 960px;
+            margin: 18px auto;
+            padding: 0 12px 40px;
+        }
+
+        /* ── SCHOOL TITLE ── */
+        .school-title {
             text-align: center;
-            border-bottom: 2px solid var(--school-red);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            padding: 14px 0 10px;
         }
-
-        .school-header h1 { 
-            margin: 0; 
-            font-size: 1.8rem; 
-            color: var(--school-dark-red);
+        .school-title h1 {
+            font-size: clamp(1rem, 3.5vw, 1.5rem);
+            font-weight: 700;
+            color: var(--dark-red);
             text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
-        /* Controls */
-        .controls {
+        /* ── LEGEND ── */
+        .legend {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            background: #fff9c4; /* Soft Yellow */
-            padding: 10px;
-            border-radius: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            padding: 10px 0 16px;
         }
+        .leg-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1.5px solid;
+        }
+        .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+        .leg-holiday { background: var(--holiday-bg); color: var(--holiday-clr); border-color: #ef9a9a; }
+        .leg-exam    { background: var(--exam-bg);    color: var(--exam-clr);    border-color: #90caf9; }
+        .leg-imp     { background: var(--imp-bg);     color: var(--imp-clr);     border-color: #ffcc80; }
+        .leg-sunday  { background: var(--sunday-bg);  color: var(--sunday-clr);  border-color: #f48fb1; }
+        .leg-normal  { background: #f1f8e9;            color: #2e7d32;            border-color: #a5d6a7; }
 
-        .btn-nav {
-            background: var(--school-red);
+        /* ── MONTH NAVIGATOR ── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--yellow-soft);
+            border: 1.5px solid var(--yellow);
+            border-radius: 10px;
+            padding: 10px 16px;
+            margin-bottom: 14px;
+        }
+        .nav-btn {
+            background: var(--red);
             color: white;
             border: none;
-            padding: 10px 25px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            font-size: 1.1rem;
             cursor: pointer;
-            border-radius: 4px;
-            font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
             transition: 0.2s;
+            flex-shrink: 0;
         }
-        .btn-nav:hover { background: var(--school-dark-red); }
-
-        .month-title {
-            font-size: 1.6rem;
+        .nav-btn:hover { background: var(--dark-red); }
+        .month-display {
+            text-align: center;
+            flex: 1;
+        }
+        .month-display h2 {
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
             font-weight: 700;
-            color: var(--school-dark-red);
+            color: var(--dark-red);
+            line-height: 1.1;
+        }
+        .month-display small {
+            font-size: 0.72rem;
+            color: #888;
+            font-style: italic;
         }
 
-        /* Table Style - School Theme */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        
-        th { 
-            background: var(--school-red); 
+        /* ── CALENDAR GRID ── */
+        .calendar-wrap {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+            overflow: hidden;
+        }
+
+        .cal-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: var(--red);
+        }
+        .cal-header span {
+            text-align: center;
             color: white;
-            padding: 15px; 
-            text-align: left; 
-            font-size: 1rem;
+            font-weight: 700;
+            font-size: clamp(0.62rem, 1.8vw, 0.8rem);
+            padding: 10px 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .cal-header span:first-child { color: #ffcdd2; } /* SUN */
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #e0e0e0;
+        }
+
+        .cal-day {
+            background: white;
+            min-height: 80px;
+            padding: 6px 5px 5px;
+            position: relative;
+            cursor: default;
+            transition: background 0.15s;
+        }
+        .cal-day:hover { background: #fafafa; }
+
+        .cal-day.empty { background: #fafafa; min-height: 80px; }
+
+        /* Sunday */
+        .cal-day.is-sunday { background: var(--sunday-bg); }
+        .cal-day.is-sunday .day-num { color: var(--sunday-clr); }
+
+        /* Holiday */
+        .cal-day.is-holiday { background: var(--holiday-bg); }
+        .cal-day.is-holiday .day-num { color: var(--holiday-clr); }
+
+        /* Exam */
+        .cal-day.is-exam { background: var(--exam-bg); }
+        .cal-day.is-exam .day-num { color: var(--exam-clr); }
+
+        /* Important */
+        .cal-day.is-imp { background: var(--imp-bg); }
+        .cal-day.is-imp .day-num { color: var(--imp-clr); }
+
+        /* Today */
+        .cal-day.is-today .day-num {
+            background: var(--red);
+            color: white;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+        }
+
+        .day-num {
+            font-size: clamp(0.72rem, 2.2vw, 0.9rem);
+            font-weight: 600;
+            line-height: 1;
+            margin-bottom: 4px;
+            width: 24px; height: 24px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .event-pills { display: flex; flex-direction: column; gap: 2px; }
+
+        .e-pill {
+            font-size: clamp(0.52rem, 1.5vw, 0.68rem);
+            font-weight: 500;
+            padding: 2px 5px;
+            border-radius: 4px;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+        .e-pill.holiday { background: #ef9a9a; color: #6a0000; }
+        .e-pill.exam    { background: #90caf9; color: #0d3c6e; }
+        .e-pill.imp     { background: #ffcc80; color: #7a3c00; }
+        .e-pill.normal  { background: #c8e6c9; color: #1b5e20; }
+        .e-pill.sunday  { background: #f48fb1; color: #4a0020; font-style: italic; }
+
+        /* ── EVENT LIST (below calendar) ── */
+        .event-list-wrap {
+            margin-top: 14px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            overflow: hidden;
+        }
+        .event-list-title {
+            background: var(--dark-red);
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 10px 16px;
+        }
+        .event-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 16px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.15s;
+        }
+        .event-row:last-child { border-bottom: none; }
+        .event-row:hover { background: #fafafa; }
+        .er-date {
+            min-width: 42px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            line-height: 1;
+            color: var(--dark-red);
+        }
+        .er-date small {
+            display: block;
+            font-size: 0.62rem;
+            font-weight: 500;
+            color: #888;
             text-transform: uppercase;
         }
-        
-        td { 
-            padding: 12px; 
-            border-bottom: 1px solid #ddd; 
-            font-size: 0.95rem; 
+        .er-divider { width: 3px; border-radius: 3px; min-height: 30px; align-self: stretch; flex-shrink: 0; }
+        .er-text { font-size: 0.82rem; font-weight: 500; padding-top: 3px; }
+
+        .er-holiday .er-divider { background: var(--holiday-clr); }
+        .er-holiday .er-text { color: var(--holiday-clr); }
+        .er-exam .er-divider    { background: var(--exam-clr); }
+        .er-exam .er-text       { color: var(--exam-clr); }
+        .er-imp .er-divider     { background: var(--imp-clr); }
+        .er-imp .er-text        { color: var(--imp-clr); }
+        .er-normal .er-divider  { background: #43a047; }
+        .er-normal .er-text     { color: #2e7d32; }
+
+        .no-events {
+            padding: 20px 16px;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.85rem;
+            font-style: italic;
         }
 
-        .date-col { width: 60px; font-weight: bold; color: var(--school-dark-red); }
-        .day-col { width: 120px; font-weight: 600; }
-
-        /* Highlights */
-        .is-sunday { 
-            background: var(--sunday-bg) !important; 
-            color: var(--school-red); 
-        }
-        
-        .is-holiday { 
-            background: var(--holiday-yellow) !important; 
-            color: #d32f2f;
-            font-weight: bold;
-        }
-
-        .event-text { color: #222; }
-
-        /* Quote Box */
+        /* ── QUOTE ── */
         .quote-wrap {
             text-align: center;
-            margin-top: 40px;
-            padding: 25px;
-            background: #f9f9f9;
-            border: 2px solid var(--school-yellow);
-            border-radius: 10px;
-            position: relative;
+            margin-top: 20px;
+            padding: 20px 24px;
+            background: white;
+            border: 2px solid var(--yellow);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
         }
-
+        .quote-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--red);
+            margin-bottom: 8px;
+        }
         .quote-text {
             font-family: 'Crimson Text', serif;
             font-style: italic;
-            font-size: 1.4rem;
+            font-size: clamp(1.1rem, 3.5vw, 1.4rem);
             color: #444;
-            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 520px) {
+            .cal-day { min-height: 56px; padding: 4px 3px 3px; }
+            .e-pill { font-size: 0.5rem; padding: 1px 3px; }
+            .event-row { padding: 8px 12px; }
         }
     </style>
 </head>
 <body>
 
 <div class="top-bar">
-    <img src="IX.png" alt="IX" class="logo">
-    <a href="index.html" class="back-btn">HOME PAGE</a>
-    <img src="logo.png" alt="Logo" class="logo">
+    <img src="IX.png" alt="IX" class="logo" onerror="this.style.display='none'">
+    <button class="back-btn" onclick="history.back()">← BACK</button>
+    <img src="logo.png" alt="Logo" class="logo" onerror="this.style.display='none'">
 </div>
 
-<div class="planner-page">
-    <div class="school-header">
-        <h1>ST. PAUL H.S. SCHOOL YEAR PLANNER 2026-27</h1>
+<div class="wrapper">
+    <div class="school-title">
+        <h1>St. Paul H.S. School &mdash; Year Planner 2026–27</h1>
     </div>
 
-    <div class="controls">
-        <button class="btn-nav" onclick="changeMonth(-1)">❮ PREV</button>
-        <div id="month-name" class="month-title">APRIL 2026</div>
-        <button class="btn-nav" onclick="changeMonth(1)">NEXT ❯</button>
+    <!-- Legend -->
+    <div class="legend">
+        <div class="leg-chip leg-holiday"><div class="leg-dot" style="background:var(--holiday-clr)"></div>Holiday</div>
+        <div class="leg-chip leg-exam"><div class="leg-dot" style="background:var(--exam-clr)"></div>Exam / Test</div>
+        <div class="leg-chip leg-imp"><div class="leg-dot" style="background:var(--imp-clr)"></div>Important</div>
+        <div class="leg-chip leg-sunday"><div class="leg-dot" style="background:var(--sunday-clr)"></div>Sunday</div>
+        <div class="leg-chip leg-normal"><div class="leg-dot" style="background:#43a047"></div>Event</div>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Day</th>
-                <th>Particulars & Events</th>
-            </tr>
-        </thead>
-        <tbody id="planner-table"></tbody>
-    </table>
+    <!-- Navigator -->
+    <div class="nav-bar">
+        <button class="nav-btn" onclick="changeMonth(-1)">&#8249;</button>
+        <div class="month-display">
+            <h2 id="month-name"></h2>
+            <small id="month-quote"></small>
+        </div>
+        <button class="nav-btn" onclick="changeMonth(1)">&#8250;</button>
+    </div>
 
+    <!-- Calendar Grid -->
+    <div class="calendar-wrap">
+        <div class="cal-header">
+            <span>SUN</span><span>MON</span><span>TUE</span>
+            <span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+    </div>
+
+    <!-- Event List -->
+    <div class="event-list-wrap">
+        <div class="event-list-title" id="event-list-title">Events This Month</div>
+        <div id="event-list"></div>
+    </div>
+
+    <!-- Quote -->
     <div class="quote-wrap">
-        <p id="quote-display" class="quote-text"></p>
+        <div class="quote-label">Thought of the Month</div>
+        <p class="quote-text" id="quote-display"></p>
     </div>
 </div>
 
 <script>
-    const fullData = {
-        "2026-04": {
-            quote: "Well done is better than well said",
-            events: {
-                "1": "New Academic Year Begins",
-                "3": "GOOD FRIDAY (H)",
-                "14": "DR. AMBEDKAR JAYANTI (H)",
-                "16": "Unit Test for Class X & XII",
-                "20": "PARSHURAM JAYANTI (H)",
-                "29": "PTM for Class X & XII"
-            }
-        },
-        "2026-05": {
-            quote: "In seed time Learn, in harvest teach, in winter Enjoy",
-            events: {
-                "1": "LABOUR DAY & BUDDH PURNIMA (H)",
-                "27": "ID UL ZUHA (H)"
-            }
-        },
-        "2026-06": {
-            quote: "Hope is the pillar that holds up the World",
-            events: {
-                "8": "Teachers Rejoining",
-                "10": "Teachers Orientation Programme",
-                "15": "Classes Resumes",
-                "17": "MAHARANA PRATAP JAYANTHI (H)",
-                "26": "MUHARRAM (H)",
-                "29": "St. Paul's Day Celebration"
-            }
-        },
-        "2026-07": {
-            quote: "Always make the best of the best, and never make bad worse",
-            events: {
-                "1": "Investiture Ceremony for Primary",
-                "4": "Meritorious Students Award Ceremony / PTA Election",
-                "10": "Students Led Conference for Class X",
-                "13": "PT-1 (Nur to X), Unit Test (XI), Quarterly (XII)",
-                "31": "PTM for Primary"
-            }
-        },
-        "2026-08": {
-            quote: "The best way to predict the future is to create it",
-            events: {
-                "1": "PTM for Pre-Primary & High School",
-                "3": "Student Led Conference for Class IX",
-                "4": "Fr. W. J. Lenzen's Anniversary",
-                "7": "(SPS MUN) Starts",
-                "8": "(SPS MUN) Day 2",
-                "9": "(SPS MUN) Finale",
-                "11": "Exhibition KGI & KG II",
-                "15": "Independence Day",
-                "26": "ID E MILAD (H)",
-                "28": "RAKSHA BANDHAN (H)"
-            }
-        },
-        "2026-09": {
-            quote: "It always seems impossible until it is done",
-            events: {
-                "4": "JANAM ASHATAMI (H)",
-                "5": "Teacher's Day Celebration",
-                "8": "Hindi Diwas Celebration by PTA",
-                "14": "GANESH CHATURTHI (H)",
-                "15": "Half yearly Exams (Nur-X & XII), Quarterly (XI)",
-                "26": "ANANT CHATURDARSHI (H)"
-            }
-        },
-        "2026-10": {
-            quote: "A journey of a thousand miles begin with a single step",
-            events: {
-                "2": "GANDHI JAYANTHI (H)",
-                "9": "PTM for Primary",
-                "10": "PTM for Pre-Primary & High School",
-                "13": "Student Led Conference for Class VII",
-                "18": "MAHA ASHTAMI",
-                "19": "MAHA NAVAMI (H)",
-                "20": "VIJAYA DASHMI (H)",
-                "21": "DUSSEHRA HOLIDAY (H)",
-                "26": "VALMIKI JANATHI (H)",
-                "31": "PTA-Dance Competition"
-            }
-        },
-        "2026-11": {
-            quote: "We grow great by dreams",
-            events: {
-                "2": "Student led Conference for Class VI",
-                "5": "DHANTERAS (H)",
-                "6": "ROOP CHOUDAS (H)",
-                "7": "LAXMI PUJAN (H)",
-                "9": "GOWARDHAN PADWA (H)",
-                "10": "BHAI DUJ (H)",
-                "14": "CHILDRENS DAY",
-                "15": "BIRSA MUNDA JAYANTI (H)",
-                "21": "Annual Function Pre-Primary",
-                "23": "Annual Function High School",
-                "24": "GURUNANAK JAYANTI (H)",
-                "27": "Gaurav Memorial Inter School Compt",
-                "28": "Exhibition (Primary)"
-            }
-        },
-        "2026-12": {
-            quote: "Only surround yourself with people who will lift you higher",
-            events: {
-                "1": "1st Pre-Board (X & XII)",
-                "2": "PT-2 for Nursery to IX",
-                "14": "Internal Assessment & Pre-Board Practicals (XII)",
-                "15": "Charity Week Begins",
-                "22": "Christmas Celebration",
-                "23": "PTM for all classes",
-                "25": "CHRISTMAS (H)",
-                "30": "ANNUAL SPORTS DAY (HIGH SCHOOL)",
-                "31": "WINTER HOLIDAYS START"
-            }
-        },
-        "2027-01": {
-            quote: "Simplicity is ultimately a matter of focus",
-            events: {
-                "1": "WINTER HOLIDAYS",
-                "2": "WINTER HOLIDAYS",
-                "3": "WINTER HOLIDAYS",
-                "4": "WINTER HOLIDAYS",
-                "5": "Classes Resumes",
-                "6": "Annual Board Practical for Class XII",
-                "14": "MAKAR SANKRANTI (H)",
-                "16": "Sports Day (Primary) / II Pre-Board (X)",
-                "26": "REPUBLIC DAY",
-                "27": "Annual Exams (Minor Subjects VI-XI)",
-                "30": "PTM and Farewell Class XII"
-            }
-        },
-        "2027-02": {
-            quote: "The joy of small that makes life large",
-            events: {
-                "6": "PTM for Class X",
-                "8": "Annual Exam for Classes IX & XI",
-                "11": "BASANT PANCHMI (H) / Convocation KG-II",
-                "27": "Result - IX & XI"
-            }
-        },
-        "2027-03": {
-            quote: "Life is dessert- too brief to hurry",
-            events: {
-                "1": "Annual Exams for Nursery to VIII",
-                "6": "MAHA SHIVRATRI (H)",
-                "10": "ID-UL-FITR (H)",
-                "20": "Induction - Nursery",
-                "22": "HOLI (H)",
-                "25": "Result - Nursery to VIII",
-                "26": "GOOD FRIDAY (H)",
-                "27": "RANG PANCHMI (H)"
-            }
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DAYS_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+// Today
+const TODAY = new Date();
+
+// Event classification
+function classify(text) {
+    if (!text) return null;
+    const t = text.toUpperCase();
+    if (t.includes("(H)")) return "holiday";
+    if (t.includes("EXAM") || t.includes("PRE-BOARD") || t.includes("PT-") || t.includes("PT1") || t.includes("PT2") || t.includes("UNIT TEST") || t.includes("HALF YEARLY") || t.includes("ANNUAL EXAM") || t.includes("BOARD") || t.includes("QUARTERLY") || t.includes("RESULT")) return "exam";
+    if (t.includes("PTM") || t.includes("INVESTITURE") || t.includes("AWARD") || t.includes("ANNUAL") || t.includes("SPORTS") || t.includes("MUN") || t.includes("FAREWELL") || t.includes("CONVOCATION") || t.includes("FUNCTION") || t.includes("COMPETITION") || t.includes("EXHIBITION") || t.includes("INDUCTION") || t.includes("PRACTICAL") || t.includes("CONFERENCE") || t.includes("CELEBRATION") || t.includes("CHARITY")) return "imp";
+    return "normal";
+}
+
+const fullData = {
+    "2026-04": {
+        quote: "Well done is better than well said",
+        events: {
+            "1": "New Academic Year Begins", "3": "GOOD FRIDAY (H)",
+            "14": "DR. AMBEDKAR JAYANTI (H)", "16": "Unit Test for Class X & XII",
+            "20": "PARSHURAM JAYANTI (H)", "29": "PTM for Class X & XII"
         }
-    };
-
-    let viewDate = new Date(2026, 3, 1);
-
-    function render() {
-        const key = `${viewDate.getFullYear()}-${String(viewDate.getMonth() + 1).padStart(2, '0')}`;
-        const monthData = fullData[key] || { quote: "Live free live happy", events: {} };
-        
-        document.getElementById('month-name').innerText = viewDate.toLocaleString('default', { month: 'long', year: 'numeric' }).toUpperCase();
-        document.getElementById('quote-display').innerText = `"${monthData.quote}"`;
-
-        const tableBody = document.getElementById('planner-table');
-        tableBody.innerHTML = '';
-
-        const daysInMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0).getDate();
-
-        for (let i = 1; i <= daysInMonth; i++) {
-            const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), i);
-            const dayName = d.toLocaleString('default', { weekday: 'long' }).toUpperCase();
-            const isSunday = d.getDay() === 0;
-            const eventText = monthData.events[i] || (isSunday ? "SUNDAY" : "");
-
-            let rowClass = isSunday ? "is-sunday" : "";
-            if (eventText.includes("(H)")) rowClass = "is-holiday";
-
-            tableBody.innerHTML += `
-                <tr class="${rowClass}">
-                    <td class="date-col">${i}</td>
-                    <td class="day-col">${dayName}</td>
-                    <td class="event-text">${eventText}</td>
-                </tr>
-            `;
+    },
+    "2026-05": {
+        quote: "In seed time learn, in harvest teach, in winter enjoy",
+        events: { "1": "LABOUR DAY & BUDDH PURNIMA (H)", "27": "ID UL ZUHA (H)" }
+    },
+    "2026-06": {
+        quote: "Hope is the pillar that holds up the world",
+        events: {
+            "8": "Teachers Rejoining", "10": "Teachers Orientation Programme",
+            "15": "Classes Resumes", "17": "MAHARANA PRATAP JAYANTHI (H)",
+            "26": "MUHARRAM (H)", "29": "St. Paul's Day Celebration"
+        }
+    },
+    "2026-07": {
+        quote: "Always make the best of the best, and never make bad worse",
+        events: {
+            "1": "Investiture Ceremony for Primary",
+            "4": "Meritorious Students Award Ceremony / PTA Election",
+            "10": "Students Led Conference for Class X",
+            "13": "PT-1 (Nur to X), Unit Test (XI), Quarterly (XII)",
+            "31": "PTM for Primary"
+        }
+    },
+    "2026-08": {
+        quote: "The best way to predict the future is to create it",
+        events: {
+            "1": "PTM for Pre-Primary & High School",
+            "3": "Student Led Conference for Class IX",
+            "4": "Fr. W. J. Lenzen's Anniversary",
+            "7": "SPS MUN – Day 1", "8": "SPS MUN – Day 2", "9": "SPS MUN – Finale",
+            "11": "Exhibition KG-I & KG-II",
+            "15": "INDEPENDENCE DAY (H)",
+            "26": "ID E MILAD (H)", "28": "RAKSHA BANDHAN (H)"
+        }
+    },
+    "2026-09": {
+        quote: "It always seems impossible until it is done",
+        events: {
+            "4": "JANAM ASHTAMI (H)", "5": "Teacher's Day Celebration",
+            "8": "Hindi Diwas Celebration (PTA)",
+            "14": "GANESH CHATURTHI (H)",
+            "15": "Half Yearly Exams (Nur–X & XII), Quarterly (XI)",
+            "26": "ANANT CHATURDASHI (H)"
+        }
+    },
+    "2026-10": {
+        quote: "A journey of a thousand miles begins with a single step",
+        events: {
+            "2": "GANDHI JAYANTHI (H)", "9": "PTM for Primary",
+            "10": "PTM for Pre-Primary & High School",
+            "13": "Student Led Conference for Class VII",
+            "18": "MAHA ASHTAMI", "19": "MAHA NAVAMI (H)",
+            "20": "VIJAYA DASHAMI (H)", "21": "DUSSEHRA HOLIDAY (H)",
+            "26": "VALMIKI JANATHI (H)", "31": "PTA Dance Competition"
+        }
+    },
+    "2026-11": {
+        quote: "We grow great by dreams",
+        events: {
+            "2": "Student Led Conference for Class VI",
+            "5": "DHANTERAS (H)", "6": "ROOP CHAUDAS (H)",
+            "7": "LAXMI PUJAN (H)", "9": "GOWARDHAN PADWA (H)",
+            "10": "BHAI DUJ (H)", "14": "CHILDREN'S DAY",
+            "15": "BIRSA MUNDA JAYANTI (H)",
+            "21": "Annual Function – Pre-Primary",
+            "23": "Annual Function – High School",
+            "24": "GURUNANAK JAYANTI (H)",
+            "27": "Gaurav Memorial Inter School Competition",
+            "28": "Exhibition (Primary)"
+        }
+    },
+    "2026-12": {
+        quote: "Only surround yourself with people who will lift you higher",
+        events: {
+            "1": "1st Pre-Board (X & XII)", "2": "PT-2 for Nursery to IX",
+            "14": "Internal Assessment & Pre-Board Practicals (XII)",
+            "15": "Charity Week Begins", "22": "Christmas Celebration",
+            "23": "PTM for All Classes", "25": "CHRISTMAS (H)",
+            "30": "Annual Sports Day (High School)", "31": "WINTER HOLIDAYS START (H)"
+        }
+    },
+    "2027-01": {
+        quote: "Simplicity is ultimately a matter of focus",
+        events: {
+            "1": "WINTER HOLIDAYS (H)", "2": "WINTER HOLIDAYS (H)",
+            "3": "WINTER HOLIDAYS (H)", "4": "WINTER HOLIDAYS (H)",
+            "5": "Classes Resumes",
+            "6": "Annual Board Practical for Class XII",
+            "14": "MAKAR SANKRANTI (H)",
+            "16": "Sports Day (Primary) / II Pre-Board (X)",
+            "26": "REPUBLIC DAY (H)",
+            "27": "Annual Exams – Minor Subjects (VI–XI)",
+            "30": "PTM and Farewell Class XII"
+        }
+    },
+    "2027-02": {
+        quote: "The joy of small things makes life large",
+        events: {
+            "6": "PTM for Class X",
+            "8": "Annual Exam for Classes IX & XI",
+            "11": "BASANT PANCHMI (H) / Convocation KG-II",
+            "27": "Result – IX & XI"
+        }
+    },
+    "2027-03": {
+        quote: "Life is dessert – too brief to hurry",
+        events: {
+            "1": "Annual Exams for Nursery to VIII",
+            "6": "MAHA SHIVRATRI (H)", "10": "ID-UL-FITR (H)",
+            "20": "Induction – Nursery", "22": "HOLI (H)",
+            "25": "Result – Nursery to VIII", "26": "GOOD FRIDAY (H)",
+            "27": "RANG PANCHAMI (H)"
         }
     }
+};
 
-    function changeMonth(step) {
-        viewDate.setMonth(viewDate.getMonth() + step);
-        render();
+// Figure out start month: if today is in planner range, go there; else April 2026
+function defaultViewDate() {
+    const d = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
+    const start = new Date(2026, 3, 1);
+    const end   = new Date(2027, 2, 31);
+    if (d >= start && d <= end) return d;
+    return new Date(2026, 3, 1);
+}
+
+let viewDate = defaultViewDate();
+
+function padKey(year, month) {
+    return `${year}-${String(month + 1).padStart(2, '0')}`;
+}
+
+function render() {
+    const year  = viewDate.getFullYear();
+    const month = viewDate.getMonth();
+    const key   = padKey(year, month);
+    const data  = fullData[key] || { quote: "Live. Learn. Lead.", events: {} };
+
+    // Month name
+    document.getElementById('month-name').textContent = `${MONTHS[month]} ${year}`;
+    document.getElementById('month-quote').textContent = `"${data.quote}"`;
+    document.getElementById('quote-display').textContent = `"${data.quote}"`;
+    document.getElementById('event-list-title').textContent = `Events in ${MONTHS[month]} ${year}`;
+
+    // Calendar grid
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+
+    const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Empty cells before first
+    for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        empty.className = 'cal-day empty';
+        grid.appendChild(empty);
     }
 
+    for (let d = 1; d <= daysInMonth; d++) {
+        const date = new Date(year, month, d);
+        const isSunday = date.getDay() === 0;
+        const eventText = data.events[String(d)] || '';
+        const cls = classify(eventText);
+        const isToday = (date.getFullYear() === TODAY.getFullYear() &&
+                         date.getMonth()    === TODAY.getMonth()    &&
+                         date.getDate()     === TODAY.getDate());
+
+        let cellClass = 'cal-day';
+        if (isSunday && !cls) cellClass += ' is-sunday';
+        if (cls === 'holiday') cellClass += ' is-holiday';
+        else if (cls === 'exam') cellClass += ' is-exam';
+        else if (cls === 'imp') cellClass += ' is-imp';
+        if (isToday) cellClass += ' is-today';
+
+        const cell = document.createElement('div');
+        cell.className = cellClass;
+
+        // Day number
+        const numEl = document.createElement('div');
+        numEl.className = 'day-num';
+        numEl.textContent = d;
+        cell.appendChild(numEl);
+
+        // Event pill
+        if (eventText) {
+            const pills = document.createElement('div');
+            pills.className = 'event-pills';
+            const pill = document.createElement('div');
+            const pillCls = cls || (isSunday ? 'sunday' : 'normal');
+            pill.className = `e-pill ${pillCls}`;
+            // Shorten label on mobile by trimming "(H)"
+            pill.textContent = eventText.replace(' (H)', '').replace('(H)', '');
+            pills.appendChild(pill);
+            cell.appendChild(pills);
+        } else if (isSunday) {
+            const pills = document.createElement('div');
+            pills.className = 'event-pills';
+            const pill = document.createElement('div');
+            pill.className = 'e-pill sunday';
+            pill.textContent = 'Sunday';
+            pills.appendChild(pill);
+            cell.appendChild(pills);
+        }
+
+        grid.appendChild(cell);
+    }
+
+    // Event list
+    const listEl = document.getElementById('event-list');
+    listEl.innerHTML = '';
+    const evEntries = Object.entries(data.events).sort((a, b) => +a[0] - +b[0]);
+    if (evEntries.length === 0) {
+        listEl.innerHTML = '<div class="no-events">No events this month.</div>';
+        return;
+    }
+    evEntries.forEach(([day, text]) => {
+        const date = new Date(year, month, +day);
+        const cls  = classify(text) || 'normal';
+        const row  = document.createElement('div');
+        row.className = `event-row er-${cls}`;
+        row.innerHTML = `
+            <div class="er-date">${String(day).padStart(2,'0')}<small>${DAYS_SHORT[date.getDay()]}</small></div>
+            <div class="er-divider"></div>
+            <div class="er-text">${text.replace(' (H)', ' 🔴').replace('(H)', '🔴')}</div>
+        `;
+        listEl.appendChild(row);
+    });
+}
+
+function changeMonth(step) {
+    viewDate.setMonth(viewDate.getMonth() + step);
+    // Clamp to planner range
+    const start = new Date(2026, 3, 1);
+    const end   = new Date(2027, 2, 1);
+    if (viewDate < start) viewDate = new Date(start);
+    if (viewDate > end)   viewDate = new Date(end);
     render();
-</script>
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
+render();
+</script>
 </body>
 </html>
