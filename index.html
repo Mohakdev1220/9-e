@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -189,6 +188,31 @@ body {
   align-items: center; justify-content: center;
 }
 .tb-menu-btn:hover { background: var(--bg); }
+
+/* ══════════════════════════════════════════
+   ANNOUNCEMENT BAR
+══════════════════════════════════════════ */
+.announcement-bar {
+  background: var(--amber-light);
+  border-bottom: 1px solid #fde68a;
+  color: var(--amber);
+  padding: 10px 28px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  position: sticky;
+  top: 60px;
+  z-index: 99;
+}
+.announcement-bar span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 
 /* ══════════════════════════════════════════
    HERO BANNER
@@ -713,6 +737,11 @@ body {
     </div>
   </div>
 </header>
+
+<!-- ── ANNOUNCEMENT BAR ────────────────────────── -->
+<div class="announcement-bar">
+  <span>📢 <strong>Announcement:</strong> Term 1 Exams from 10th of September</span>
+</div>
 
 <!-- ── MAIN ────────────────────────────────────── -->
 <main>
